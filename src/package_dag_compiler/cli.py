@@ -1,4 +1,5 @@
 """Contains all the command line interface code for the Package-DAG-Compiler package."""
+import os
 
 import typer
 
@@ -11,9 +12,11 @@ app = typer.Typer()
 
 @app.command(name = "compile")
 def compile(pyproject_toml_path: str):
-    """Compile the package DAG."""
+    """Compile the package DAG."""    
+    # Discover the TOML files
+    pyproject_toml_files = discover_pyproject_files(pyproject_toml_path)
     # Read the TOML files
-    toml_data = read_toml_files(pyproject_toml_path)
+    toml_data = read_toml_files(pyproject_toml_files)
 
     # Create the DAG from the loaded TOML files
     package_dag = create_dag_from_dict(toml_data)
