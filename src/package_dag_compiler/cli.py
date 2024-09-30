@@ -3,9 +3,8 @@ import os
 
 import typer
 
-from package_dag_compiler.toml_files.discover_toml import discover_pyproject_files
-from package_dag_compiler.toml_files.read_toml import read_toml_files
-from package_dag_compiler.dag.create_dag import create_dag_from_dict
+from package_dag_compiler.toml_files.discover_toml import discover_pyproject_files, sort_dependencies_edge_list, edge_list_to_vector_list
+from package_dag_compiler.dag.create_dag import create_dag_from_edge_list_of_toml_files
 
 # Create a Typer CLI endpoint
 app = typer.Typer()
@@ -13,13 +12,14 @@ app = typer.Typer()
 @app.command(name = "compile")
 def compile(pyproject_toml_path: str):
     """Compile the package DAG."""    
-    # Discover the TOML files
-    pyproject_toml_files = discover_pyproject_files(pyproject_toml_path)
-    # Read the TOML files
-    toml_data = read_toml_files(pyproject_toml_files)
+    # Discover the TOML files, return the edge list of paths
+    pyproject_toml_edge_list            = discover_pyproject_files(pyproject_toml_path)
+
+    # Sort the dependencies edge list. Must be kept as an edge list to handle dependencies properly.
+    sorted_pyproject_toml_edge_list     = sort_dependencies_edge_list(pyproject_toml_edge_list)       
 
     # Create the DAG from the loaded TOML files
-    package_dag = create_dag_from_dict(toml_data)
+    package_dag                         = create_dag_from_edge_list_of_toml_files(sorted_pyproject_toml_edge_list)
     return package_dag
 
 @app.command(name = "discover")

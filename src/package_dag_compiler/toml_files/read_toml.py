@@ -1,66 +1,76 @@
 """Module to read all of the TOML files that a package depends on."""
 
 import toml
+import networkx as nx
+
+from package_dag_compiler.toml_files.index import get_index_reader
 
 INDEX_PATH_IN_TOML = "tool.package-dag-compiler.index"
-RUNNABLE_PATH_IN_INDEX = "runnable"
+RUNNABLE_TABLE_NAME = "runnable"
 
-def read_toml_files(pyproject_toml_paths: list):
-    """Read all the TOML files in the package.
-    TODO: The final dict returned needs to be in topological order for attribute replacements."""
-    # Read the pyproject.toml file
-    if not isinstance(pyproject_toml_paths, list):
-        pyproject_toml_paths = [pyproject_toml_paths]
+def get_package_dag_from_index_dict(index_dict: dict) -> nx.DiGraph:
+    """Get the package DAG from the index dictionary.
+    NOTE: The index dict in the index.toml file can have any dictionary structure that suits the person, where each final value is the relative path to a TOML file.
+    Within each toml file, there will be a list of [[runnable]] tables."""
+    package_dag = nx.MultiDiGraph()
+    # The index dict can be potentially infinitely nested. Flatten it here to a list of paths
+    index_paths_list = flatten_index_dict(index_dict)
+    for path in index_dict.items():
+        toml_file_data = load_toml_file(path)
+        runnables = toml_file_data.get(RUNNABLE_TABLE_NAME, [])
+        for runnable in runnables:
+            runnable = clean_and_validate_runnable(runnable)
+            runnable_type = runnable["type"]
+                
+        reader_fcn = get_index_reader(key)
+        for runnable_toml_path in path_list:
+            toml_data = load_toml_file(runnable_toml_path)
+            runnables_dag = reader_fcn(toml_data)
+            package_dag = nx.compose(package_dag, runnables_dag)
+    return package_dag
+    
+def flatten_index_dict(index_dict: dict) -> list:
+    """Flatten the index dictionary to a list of paths."""
+    # Flatten the dictionary. This is a recursive function.
+    def flatten_dict(d: dict, parent_key: str = "", sep: str = ".") -> dict:
+        items = []
+        for k, v in d.items():
+            new_key = f"{parent_key}{sep}{k}" if parent_key else k
+            if isinstance(v, dict):
+                items.extend(flatten_dict(v, new_key, sep=sep).items())
+            else:
+                items.append((new_key, v))
+        return dict(items)
+    return flatten_dict(index_dict)
 
-    toml_data = {}
-    for pyproject_toml_path in pyproject_toml_paths:
-        # Read the pyproject.toml file
-        pyproject_data = read_pyproject(pyproject_toml_path)
-        # Read the index.toml file
-        index_toml_path = subset_toml_data(pyproject_data, INDEX_PATH_IN_TOML)
-        index_data = read_index_toml(index_toml_path)
-        # Read the runnable.toml file        
-        runnable_data = read_runnables(index_data["runnables"])
-        bridges_data = read_bridges(index_data["bridges"])
+def read_package_name(pyproject_toml_path: str):
+    """Read the name of the package from the pyproject.toml file."""
+    with open(pyproject_toml_path, "r") as file:
+        pyproject_data = toml.load(file)
+    if "project" not in pyproject_data:
+        raise ValueError(f"Project section not found in {pyproject_toml_path}.")
+    if "name" not in pyproject_data["project"]:
+        raise ValueError(f"Name not found in project section of {pyproject_toml_path}.")
+    package_name = pyproject_data["project"]["name"]
+    return package_name
 
-        toml_data[pyproject_toml_path]["pyproject"] = pyproject_data
-        toml_data[pyproject_toml_path]["index"] = index_data
-        toml_data[pyproject_toml_path]["runnables"] = runnable_data
-        toml_data[pyproject_toml_path]["bridges"] = bridges_data
-    return toml_data
-
-def read_runnables(index_runnables_dict: dict):
-    """Read the runnable.toml files."""
-    read_fcns = {}
-    read_fcns["process"] = read_runnable_process
-    read_fcns["plot"] = read_runnable_plot
-    read_fcns["stats"] = read_runnable_stats
-    runnables_data = {}
-    # For each runnable type, read the runnables' data
-    for runnable_type, runnable_path in index_runnables_dict.items():
-        runnables_data_of_type = read_fcns[runnable_type](runnable_path)
-        runnables_data[runnable_type] = runnables_data_of_type
-    return runnables_data
-
-def read_runnable_process(runnable_path: str):
+def read_runnable_process(runnable_toml_data: str):
     """Read the process runnable.toml file."""
-    runnable_data = load_toml_file(runnable_path)
-    return runnable_data
+    # Clean the runnable TOML data, ensuring it has the required fields
+    process_required_fields = ["name", "inputs", "outputs", "command"]
+    return runnable_toml_data
 
-def read_runnable_plot(runnable_path: str):
+def read_runnable_plot(runnable_toml_data: str):
     """Read the plot runnable.toml file."""
-    runnable_data = load_toml_file(runnable_path)
-    return runnable_data
+    return runnable_toml_data
 
-def read_runnable_stats(runnable_path: str):
+def read_runnable_stats(runnable_toml_data: str):
     """Read the stats runnable.toml file."""
-    runnable_data = load_toml_file(runnable_path)
-    return runnable_data
+    return runnable_toml_data
 
-def read_bridges(index_bridges_dict: dict):
+def read_bridges(bridges_toml_data: dict):
     """Read the bridge.toml files."""
-    bridges_data = load_toml_file(index_bridges_dict)
-    return bridges_data
+    return bridges_toml_data
 
 def read_pyproject(pyproject_toml_path: str):
     """Read the pyproject.toml file."""
