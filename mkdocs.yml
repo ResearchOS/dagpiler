@@ -41,10 +41,3 @@ markdown_extensions:
 nav:
   - Home: docs/index.md
 
-theme:
-  name: 'mkdocs'
-
-markdown_extensions:
-  - toc:
-      permalink: true
-
