@@ -14,12 +14,6 @@ At a high level, there are two types of nodes: Runnables, and Variables. Runnabl
 Further Reading:
 1. Recommended package directory structure
     - Can use a template to generate the TOML files and directory structure
-2. Various types of TOML files and their formats
-    - pyproject, index, runnables, bridges
-3. How the DAG is structured
-    - Node naming conventions, and how it relates to TOML
-    - Node metadata. Which metadata changes the hash?
-    - Polyfurcations. What are they, when do they occur, why are they good, and what are the implementation details?
 3. How to use this package
     - Example project
     - Templates
