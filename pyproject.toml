@@ -9,8 +9,8 @@ description = 'Create a DAG representation of a data processing pipeline from TO
 authors = [{name = "Mitchell Tillman", email ="mtillman14@gmail.com"}]
 dependencies = []
 
-[project.scripts]
-dag = "package_dag_compiler.cli:app"
+# [project.scripts]
+# dag = "package_dag_compiler.cli:app"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/package_dag_compiler"]
