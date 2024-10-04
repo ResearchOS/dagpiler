@@ -40,7 +40,8 @@ markdown_extensions:
   - admonition
 nav:
   - Home: index.md
-  - Docs: package_design.md
-  - Publish Packages: publishing_packages.md
-  - Dictionary: terms.md
+  # - Docs: package_design.md
+  # - Publish Packages: publishing_packages.md
+  - Config Files: toml_files.md
+  - Dictionary: terms.md  
 
