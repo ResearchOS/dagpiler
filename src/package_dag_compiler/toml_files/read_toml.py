@@ -3,7 +3,7 @@
 import toml
 import networkx as nx
 
-from package_dag_compiler.toml_files.index import get_index_reader
+from package_dag_compiler.toml_files.index import clean_and_validate_runnable
 
 INDEX_PATH_IN_TOML = "tool.package-dag-compiler.index"
 RUNNABLE_TABLE_NAME = "runnable"
@@ -22,10 +22,12 @@ def get_package_dag_from_index_dict(index_dict: dict) -> nx.DiGraph:
             runnable = clean_and_validate_runnable(runnable)
             runnable_type = runnable["type"]
                 
-        reader_fcn = get_index_reader(key)
+        # reader_fcn = get_index_reader(key)
+        path_list = []
         for runnable_toml_path in path_list:
             toml_data = load_toml_file(runnable_toml_path)
-            runnables_dag = reader_fcn(toml_data)
+            # runnables_dag = reader_fcn(toml_data)
+            runnables_dag = nx.DiGraph()
             package_dag = nx.compose(package_dag, runnables_dag)
     return package_dag
     

@@ -4,8 +4,8 @@ from pathlib import Path
 
 import networkx as nx
 
-from package_dag_compiler.toml_files.read_toml import load_toml_file, subset_toml_data
-from package_dag_compiler.toml_files.venv_handler import package_name_to_toml_path
+# from package_dag_compiler.toml_files.read_toml import load_toml_file, subset_toml_data
+# from package_dag_compiler.toml_files.venv_handler import package_name_to_toml_path
 
 PYPROJECT_FILENAME = "pyproject.toml"
 
@@ -15,7 +15,7 @@ PROJECT_DEPENDENCIES = "project.dependencies"
 def discover_pyproject_files(pyproject_folder: str, dependencies_edge_list: list = None) -> list:
     """Discover all of the pyproject.toml files - including dependencies - within the specified project.
     Input can be folder (containing one pyproject.toml file) or a pyproject.toml file.
-    NOTE: Assumes that all packages have already been installed."""
+    NOTE: Assumes that all packages have already been installed."""    
 
     # Input validation
     if dependencies_edge_list is None:
@@ -65,7 +65,8 @@ def discover_pyproject_files(pyproject_folder: str, dependencies_edge_list: list
         if os.path.basename(dep) != PYPROJECT_FILENAME:
             raise ValueError(f"Dependency path: {dep} is not a pyproject.toml file.")
     project_dependencies_names = subset_toml_data(pyproject_data, PROJECT_DEPENDENCIES) # Package names
-    project_dependencies_paths = [package_name_to_toml_path(name) for name in project_dependencies_names]
+    # project_dependencies_paths = [package_name_to_toml_path(name) for name in project_dependencies_names]
+    project_dependencies_paths = []
 
     # Dependencies list consists of absolute .toml file paths
     tmp_deps = []

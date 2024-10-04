@@ -1,0 +1,6 @@
+Metadata-Version: 2.3
+Name: package_dag_compiler
+Version: 0.1.0
+Summary: Create a DAG representation of a data processing pipeline from TOML files.
+Author-email: Mitchell Tillman <mtillman14@gmail.com>
+License-File: LICENSE

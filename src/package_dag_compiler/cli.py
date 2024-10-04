@@ -2,16 +2,25 @@
 import os
 
 import typer
+import sys
+print(sys.path)
 
-from package_dag_compiler.toml_files.discover_toml import discover_pyproject_files, sort_dependencies_edge_list, edge_list_to_vector_list
-from package_dag_compiler.dag.create_dag import create_dag_from_edge_list_of_toml_files
+from runnables.process import Process
+
+from natsort import natsorted
+a = ["package1", "package2", "package3", "package4", "package5"]
+b = natsorted(a)
+
+from toml_files.discover_toml import discover_pyproject_files
+# from package_dag_compiler.dag.create_dag import create_dag_from_edge_list_of_toml_files
 
 # Create a Typer CLI endpoint
 app = typer.Typer()
 
 @app.command(name = "compile")
-def compile(pyproject_toml_path: str):
-    """Compile the package DAG."""    
+def main(pyproject_toml_path: str):
+    """Compile the package DAG."""        
+
     # Discover the TOML files, return the edge list of paths
     pyproject_toml_edge_list            = discover_pyproject_files(pyproject_toml_path)
 
@@ -33,4 +42,6 @@ def discover_toml_files():
         print(file)    
 
 if __name__=="__main__":
-    app()
+    # app()
+    pyproject_path = "/Users/mitchelltillman/Desktop/Not_Work/Code/Python_Projects/Package-DAG-Compiler/tests/fixtures/packages/package1/pyproject.toml"
+    main(pyproject_path)
