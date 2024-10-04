@@ -13,6 +13,7 @@ theme:
     - navigation.expand
     - toc.follow
     - navigation.top
+    - content.code.copy
 
 plugins:
   - search  
@@ -42,6 +43,7 @@ nav:
   - Home: index.md
   # - Docs: package_design.md
   # - Publish Packages: publishing_packages.md
-  - Config Files: toml_files.md
+  - Config Files:
+    - Config Files: toml_files.md
   - Dictionary: terms.md  
 

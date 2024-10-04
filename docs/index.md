@@ -1,11 +1,11 @@
 # Package-DAG-Compiler
 
-The Directional Acyclic Graph (DAG) is a data structure (a type of Graph) that at its most fundamental level consists of nodes and directed (Directional) edges, and does not contain any loops (Acyclic). Typically, nodes are objects, and directed edges are the directional relationships between them, such as `gas -> car`. It is the same in this package. Typically, edges are notated using some variant of `source -> target` (equivalently, `(source, target)`), which can be read in one of two ways:
+The Directional Acyclic Graph (DAG) is a data structure (a type of Graph) that at its most fundamental level consists of nodes and directed (Directional) edges, and does not contain any loops (Acyclic). Typically, nodes are objects, and directed edges are the directional relationships between them, such as `gas -> car` indicating that the car depends on gas. It is the same in this package. Typically, edges are notated using some variant of `source -> target` (equivalently, `(source, target)`), which can be read in one of two ways:
 
 1. The target depends on the source.
 2. The source feeds in to the target.
 
-The second, more source-centric interpretation guides the design philosophy of this package. In the context of a workflow orchestration tool, where data flows from a dataset to a final output, this makes more sense. In the DAG, nodes are Runnable functions and the edges are the Variables' data flowing between them, the edges look more like `Runnable -> Variable` which can be read as "data from this Runnable node flows into this output Variable". Similarly, `Variable -> Runnable` indicates that data flows from a Variable and is an input to a Runnable.
+The second, more source-centric interpretation guides the design philosophy of this package. In the context of a workflow orchestration tool, where data flows from a dataset to a final output, I think this makes more sense. In the DAG, nodes are Runnable functions and the edges are the Variables' data flowing between them, the edges look more like `Runnable -> Variable` which can be read as "data from this Runnable node flows into this output Variable". Similarly, `Variable -> Runnable` indicates that data flows from a Variable and is an input to a Runnable.
 
 In this package, edges carry no meaning or metadata, they simply define directional connectivity. All of the metadata is contained in the node properties.
 

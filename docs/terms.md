@@ -19,4 +19,4 @@ Recommended to be located at the root of your project folder, `pyproject.toml` i
 
 ### Runnable: Plot
 
-### Runnable: Stats
+### Runnable: Summary

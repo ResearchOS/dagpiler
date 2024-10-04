@@ -49,7 +49,7 @@ bridges = "path/to/bridges.toml"
 ```
 
 ## runnables.toml
-The main contents of a package reside in its 1+ runnables' .toml files. Every runnable needs at minimum the following attributes to connect them to other runnables.
+The main contents of a package reside in its 1+ runnables' .toml files, of which there are multiple types. Every type of runnable needs at minimum the following attributes: `type`, `exec`, and `inputs`.
 
 Example runnable format:
 ```toml
@@ -58,11 +58,6 @@ type = "runnable_type"
 exec = "path/to/file.ext:func_name"
 inputs.input1 = "runnable1.variable1"
 ```
-
-There are multiple types of runnables:
-1. Process
-2. Plots
-3. Stats
 
 ### Process
 Process type runnables are the most frequent runnable type. They process and transform data, and are the only type that has output variables. Inputs are identified by name, similar to keyword arguments available in most languages. As there are no named outputs, output variables are specified in a list in the same order that they are output.
