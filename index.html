@@ -14,7 +14,7 @@
       
       
       
-        <link rel="next" href="package_design/">
+        <link rel="next" href="toml_files/">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -195,33 +195,17 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="package_design/" class="md-tabs__link">
-        
-  
     
-  
-  Docs
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="publishing_packages/" class="md-tabs__link">
-        
-  
     
+      <li class="md-tabs__item">
+        <a href="toml_files/" class="md-tabs__link">
+          
   
-  Publish Packages
+  Config Files
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -329,12 +313,52 @@
   
   
   
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Config Files
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Config Files
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="package_design/" class="md-nav__link">
+      <a href="toml_files/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Docs
+    Config Files
   </span>
   
 
@@ -342,23 +366,11 @@
     </li>
   
 
-    
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="publishing_packages/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Publish Packages
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -420,23 +432,17 @@
 
 
 <h1 id="package-dag-compiler">Package-DAG-Compiler</h1>
-<p>The Directional Acyclic Graph (DAG) is a data structure (a type of Graph) that at its most fundamental level consists of nodes and directed (Directional) edges, and does not contain any loops (Acyclic). Typically, nodes are objects, and directed edges are the directional relationships between them, such as <code>gas -&gt; car</code>. It is the same in this package. Typically, edges are notated using some variant of <code>source -&gt; target</code> (equivalently, <code>(source, target)</code>), which can be read in one of two ways:</p>
+<p>The Directional Acyclic Graph (DAG) is a data structure (a type of Graph) that at its most fundamental level consists of nodes and directed (Directional) edges, and does not contain any loops (Acyclic). Typically, nodes are objects, and directed edges are the directional relationships between them, such as <code>gas -&gt; car</code> indicating that the car depends on gas. It is the same in this package. Typically, edges are notated using some variant of <code>source -&gt; target</code> (equivalently, <code>(source, target)</code>), which can be read in one of two ways:</p>
 <ol>
 <li>The target depends on the source.</li>
 <li>The source feeds in to the target.</li>
 </ol>
-<p>The second, more source-centric interpretation guides the design philosophy of this package. In the context of a workflow orchestration tool, where data flows from a dataset to a final output, this makes more sense. In the DAG, nodes are Runnable functions and the edges are the Variables' data flowing between them, the edges look more like <code>Runnable -&gt; Variable</code> which can be read as "data from this Runnable node flows into this output Variable". Similarly, <code>Variable -&gt; Runnable</code> indicates that data flows from a Variable and is an input to a Runnable.</p>
+<p>The second, more source-centric interpretation guides the design philosophy of this package. In the context of a workflow orchestration tool, where data flows from a dataset to a final output, I think this makes more sense. In the DAG, nodes are Runnable functions and the edges are the Variables' data flowing between them, the edges look more like <code>Runnable -&gt; Variable</code> which can be read as "data from this Runnable node flows into this output Variable". Similarly, <code>Variable -&gt; Runnable</code> indicates that data flows from a Variable and is an input to a Runnable.</p>
 <p>In this package, edges carry no meaning or metadata, they simply define directional connectivity. All of the metadata is contained in the node properties.</p>
 <p>At a high level, there are two types of nodes: Runnables, and Variables. Runnables represent things that you run, generally a function that you can call or a script you can run. Categories of Runnables include Process, Stats, and Plot. More on those later. The other node type is Variables, which as you would expect help direct the flow of data. Runnable nodes can only directly connect to Variables, they cannot connect to each other directly. However, Variable nodes can connect to either a Runnable or another Variable. The edges between nodes, whether they be Runnable -&gt; Variable, Variable -&gt; Runnable, or Variable - Variable, represent the flow of data between steps in a data processing pipeline. There can only be one connection between an output variable node and an input variable node without triggering a split in the DAG. A split is exactly what it sounds like. An exact copy of the subgraph of nodes descended from the current  Runnable node is created, and attached to that same Runnable node.</p>
 <p>Further Reading:
 1. Recommended package directory structure
     - Can use a template to generate the TOML files and directory structure
-2. Various types of TOML files and their formats
-    - pyproject, index, runnables, bridges
-3. How the DAG is structured
-    - Node naming conventions, and how it relates to TOML
-    - Node metadata. Which metadata changes the hash?
-    - Polyfurcations. What are they, when do they occur, why are they good, and what are the implementation details?
 3. How to use this package
     - Example project
     - Templates
@@ -494,7 +500,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.path", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "navigation.top"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.path", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "navigation.top", "content.code.copy"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="assets/javascripts/bundle.525ec568.min.js"></script>

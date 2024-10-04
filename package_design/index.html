@@ -13,10 +13,6 @@
         <link rel="canonical" href="https://researchos.github.io/package_design/">
       
       
-        <link rel="prev" href="..">
-      
-      
-        <link rel="next" href="../publishing_packages/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -24,7 +20,7 @@
     
     
       
-        <title>Docs - Package-DAG-Compiler</title>
+        <title>Package Design - Package-DAG-Compiler</title>
       
     
     
@@ -104,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Docs
+              Package Design
             
           </span>
         </div>
@@ -194,36 +190,18 @@
         
   
   
-    
-  
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
-        
   
     
-  
-  Docs
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../publishing_packages/" class="md-tabs__link">
-        
-  
     
+      <li class="md-tabs__item">
+        <a href="../toml_files/" class="md-tabs__link">
+          
   
-  Publish Packages
+  Config Files
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -319,111 +297,66 @@
       
   
   
+  
+  
     
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
+    
+    
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
       
         
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+        
           
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
-    Docs
+    Config Files
   </span>
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
-  
-  <span class="md-ellipsis">
-    Docs
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#highest-level-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Highest Level Summary
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Highest Level Summary">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-reads-toml-files-for-a-given-project" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Reads TOML files for a given project.
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-constructs-a-directional-acyclic-graph-dag-from-those-toml-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Constructs a Directional Acyclic Graph (DAG) from those TOML files
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-    
-      
-      
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Config Files
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
   
   
   
   
     <li class="md-nav__item">
-      <a href="../publishing_packages/" class="md-nav__link">
+      <a href="../toml_files/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Publish Packages
+    Config Files
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -530,7 +463,7 @@
 <h2 id="highest-level-summary">Highest Level Summary</h2>
 <p>At the highest level, this package does the following:</p>
 <h3 id="1-reads-toml-files-for-a-given-project">1. Reads TOML files for a given project.</h3>
-<p>Finds all listed dependencies recursively.</p>
+<p>Finds all listed dependencies recursively. Goes from pyproject.toml through index.toml, to each Runnable file listed in the index.toml, and finally to the bridges.toml</p>
 <h3 id="2-constructs-a-directional-acyclic-graph-dag-from-those-toml-files">2. Constructs a Directional Acyclic Graph (DAG) from those TOML files</h3>
 <p>Using the data from the TOML files, a DAG is constructed that defines a data processing pipeline, where data flows from source to target nodes.</p>
 
@@ -585,7 +518,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "navigation.top"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.525ec568.min.js"></script>

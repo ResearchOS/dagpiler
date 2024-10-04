@@ -10,7 +10,7 @@
         <meta name="author" content="Mitchell Tillman">
       
       
-        <link rel="canonical" href="https://researchos.github.io/publishing_packages/">
+        <link rel="canonical" href="https://researchos.github.io/dag_structure/">
       
       
       
@@ -20,7 +20,7 @@
     
     
       
-        <title>Publishing Packages - Package-DAG-Compiler</title>
+        <title>DAG Structure - Package-DAG-Compiler</title>
       
     
     
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#publishing-packages" class="md-skip">
+        <a href="#dag-structure" class="md-skip">
           Skip to content
         </a>
       
@@ -100,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Publishing Packages
+              DAG Structure
             
           </span>
         </div>
@@ -417,16 +417,25 @@
   
 
 
-<h1 id="publishing-packages">Publishing Packages</h1>
-<p>You've created a set of TOML files, you've compiled them to a DAG, maybe you've even bridged your package with others to create something even more powerful, and you're ready to share your package with the world. </p>
-<p>There are multiple ways to share your package with the world.</p>
-<h1 id="1-pypi">1. PyPI</h1>
-<p>The Python Packaging Authority maintains the Python Packaging Index (PyPI), which is where the majority of Python packages reside. Packages in PyPI can be easily installed using <code>pip install</code>.</p>
-<h1 id="2-github-or-other-online-version-control">2. GitHub (or Other Online Version Control)</h1>
-<p>If your package is publicly visible and hosted in an online version control platform such as GitHub or another service, you can simply leave it there! Others can pip install directly from your GitHub repository.</p>
+<h1 id="dag-structure">DAG Structure</h1>
 <div class="admonition todo">
 <p class="admonition-title">Todo</p>
 </div>
+<ol>
+<li>Understand the types of DAG's that this compiler may generate. At the moment, it only puts out furcated (split) graphs. </li>
+<li>What does a split represent, why do I want it, and how do I trigger it?</li>
+<li></li>
+<li>
+<p>How the DAG is structured</p>
+<ul>
+<li>Node naming conventions, and how it relates to TOML</li>
+<li>Node metadata. Which metadata changes the hash?  </li>
+</ul>
+</li>
+<li>
+<p>Polyfurcations. What are they, when do they occur, why are they good, and what are the implementation details?</p>
+</li>
+</ol>
 
 
 
