@@ -6,7 +6,7 @@ class IndexParser():
         self.index_dict = index_dict
 
     def get_and_remove_bridges(self) -> list:
-        """Return the bridges from the index dictionary and remove that key from the index dictionary."""
+        """Return the bridges from the index dictionary and remove that key from the index dictionary so that all that's left is the runnables."""
         bridges = self.index_dict.get("bridges", [])
         if not isinstance(bridges, list):
             raise ValueError(f"Expected list, got {type(bridges)}")
