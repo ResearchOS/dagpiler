@@ -1,6 +1,8 @@
 
+EXEC_SEPARATOR = ":" # Separates the file path from the function name
 
 class DictValidator():
+    """Validate the dictionary of a runnable."""
     def __init__(self):
         self.factory = ValidatorFactory()
 
@@ -17,7 +19,7 @@ class DictValidator():
 class AttributeValidator:
     """Interface for attribute cleaning strategies."""
     def validate(self, value):
-        raise NotImplementedError("Each validator must implement a clean method")
+        raise NotImplementedError("Each validator must implement a validation method")
     
 class ValidatorFactory:
     """Factory class to manage and provide appropriate validators for attributes."""
@@ -57,6 +59,9 @@ class ExecValidator(AttributeValidator):
     def validate(self, value):
         if not isinstance(value, str):
             raise ValueError(f"Expected 'exec' to be a str, got {type(value)}")
+        if EXEC_SEPARATOR not in value:
+            raise ValueError(f"Expected 'exec' to contain a separator '{EXEC_SEPARATOR}'")
+        split_exec = value.split(sep=EXEC_SEPARATOR)
         return value.strip()
 
 @register_validator("inputs")

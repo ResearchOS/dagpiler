@@ -1,6 +1,7 @@
 
 
 class DictCleaner():
+    """Clean the dictionary for a runnable."""
     def __init__(self):
         self.factory = CleanerFactory()
 
