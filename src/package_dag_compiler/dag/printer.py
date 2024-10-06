@@ -35,9 +35,9 @@ def pretty_format_toml(dag_dict: dict) -> str:
     # Replace the list brackets with newlines
     result = []
     result.append("nodes = [\n")
-    result.append("\n".join([f"    '{node}'," for node in dag_dict["nodes"]]))
-    result.append("\n]\n")
+    result.append("\n".join([f"""    "{node}",""" for node in dag_dict["nodes"]]))
+    result.append("\n]\n\n")
     result.append("edges = [\n")
-    result.append("\n".join([f"    '{edge}'," for edge in dag_dict["edges"]]))
+    result.append("\n".join([f"""    "{edge}",""" for edge in dag_dict["edges"]]))
     result.append("\n]\n")
     return "".join(result)
