@@ -1,9 +1,9 @@
 
 import networkx as nx
 
-from variables.variables import VARIABLE_FACTORY
+from variables.variables import VARIABLE_FACTORY, get_variable_type
 
-def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, package_dependency_graph: nx.MultiDiGraph, processed_packages: dict) -> None:
+def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, dag: nx.MultiDiGraph, processed_packages: dict) -> None:
     """Add package dependencies to the package dependency graph."""
     from compile_dag import process_package, get_package_name_from_runnable
 
@@ -19,23 +19,46 @@ def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, package_de
         for source in sources:
             source_package = get_package_name_from_runnable(source)
             for target in targets:
+                if source == target:
+                    raise ValueError(f"Source and target are the same: {source}")
+                
                 target_package = get_package_name_from_runnable(target)
                                      
                 # Recursively process target and source packages if not already done
                 if target_package not in processed_packages:
-                    process_package(target_package, processed_packages, package_dependency_graph)
+                    process_package(target_package, processed_packages, dag)
                 if source_package not in processed_packages:
-                    process_package(source_package, processed_packages, package_dependency_graph)
+                    process_package(source_package, processed_packages, dag)
 
-                # TODO: Add edge from source to target (if both dynamic)
+                # Add edge from source to target (if both dynamic)
                 # OR if source is hard-coded and target is dynamic, then don't add an edge
-                # TODO: Either way, need to convert unspecified to another variable type.
-                if source != target:
-                    # Be sure to remove slicing from the source variable, and use the full variable name
-                    input_variable = VARIABLE_FACTORY.create_variable(target, source)
-                    # Handle the case where source and target are both dynamic variables
-                    # Handle the case where source is hard-coded and target is dynamic. In that 
+                # Either way, need to convert unspecified to another variable type.
+
+                # Get the variable type for the source variable
+                source_variable_type = get_variable_type(source)
+                if source_variable_type == "output":
+                     # Create output variable
                     output_variable = VARIABLE_FACTORY.create_variable(source)
-                    assert input_variable in package_dependency_graph.nodes, f"Variable value {input_variable} not found as an input variable in the DAG. Check your spelling and ensure that the variable is an input to a runnable."
-                    assert output_variable in package_dependency_graph.nodes, f"Variable value {output_variable} not found as an output variable in the DAG. Check your spelling and ensure that the variable is an output from a runnable."
-                    package_dependency_graph.add_edge(output_variable, input_variable)
+                else:
+                    output_variable = None
+
+                previous_input_variable = [v for v in dag.nodes if v.name == target]
+                if not previous_input_variable:
+                    raise ValueError(f"No input variable found for target {target}")
+                previous_input_variable = previous_input_variable[0]                
+
+                converted_input_variable = VARIABLE_FACTORY.convert_variable(previous_input_variable, source)                
+                # Replace references to the previous variable in each successor runnable's inputs
+                successor_runnables = list(dag.successors(previous_input_variable))
+                for runnable in successor_runnables:
+                    if hasattr(runnable, 'inputs') and previous_input_variable in runnable.inputs.values():
+                        # Replace old variable with new variable in inputs
+                        for key, value in runnable.inputs.items():
+                            if value == previous_input_variable:
+                                runnable.inputs[key] = converted_input_variable
+                mapping = {previous_input_variable: converted_input_variable}                
+                dag = nx.relabel_nodes(dag, mapping, copy = False)
+
+                # Add edge from source to target
+                if output_variable is not None:
+                    dag.add_edge(output_variable, converted_input_variable)

@@ -53,28 +53,7 @@ class VariableFactory:
         self.variable_types[variable_type] = variable_class
         
     def create_variable(self, variable_name: str, raw_user_inputted_value: Any = None) -> Variable:
-        variable_type = "hardcoded" # Default to constant if an integer or float is found
-        if raw_user_inputted_value is None:
-            variable_type = "output"
-        if isinstance(raw_user_inputted_value, str):
-            # Get the number of "." in the string
-            num_periods = raw_user_inputted_value.count(".")
-            if num_periods > 0:
-                variable_type = "dynamic"
-            elif raw_user_inputted_value != "?":
-                variable_type = "hardcoded" # Any string besides "?" that doesn't contain a "."
-            else:
-                variable_type = "unspecified" # "?" string
-        elif isinstance(raw_user_inputted_value, dict):
-            key = list(raw_user_inputted_value.keys())[0]     
-            variable_type = VARIABLE_TYPES_KEYS.get(key, None)
-            if variable_type is None:
-                variable_type = "hardcoded" # Default to constant if no special key is found
-            else:
-                raw_user_inputted_value = raw_user_inputted_value[key]
-        elif isinstance(raw_user_inputted_value, list):
-            # TODO: Implement parameter sweep
-            pass
+        variable_type = get_variable_type(variable_name, raw_user_inputted_value)
 
         variable_class = self.variable_types.get(variable_type, None)
         if variable_class is None:
@@ -94,6 +73,41 @@ class VariableFactory:
         # If not, store the variable in the cache and return it
         self.variable_cache[cache_key] = variable_class(variable_name, raw_user_inputted_value)
         return temp_variable
+    
+    def convert_variable(self, previous_input_variable: Variable, source: Any) -> Variable:
+        """Convert a variable to a different type."""
+        # Remove old variable from cache
+        cache_key = (previous_input_variable.name, previous_input_variable.__hash__())
+        self.variable_cache.pop(cache_key, None)
+
+        # Create a new variable
+        new_variable = self.create_variable(previous_input_variable.name, source)
+        return new_variable
+    
+def get_variable_type(variable_name: str, raw_user_inputted_value: Any = None) -> str:
+    variable_type = "hardcoded" # Default to constant if an integer or float is found
+    if raw_user_inputted_value is None:
+        variable_type = "output"
+    if isinstance(raw_user_inputted_value, str):
+        # Get the number of "." in the string
+        num_periods = raw_user_inputted_value.count(".")
+        if num_periods > 0:
+            variable_type = "dynamic"
+        elif raw_user_inputted_value != "?":
+            variable_type = "hardcoded" # Any string besides "?" that doesn't contain a "."
+        else:
+            variable_type = "unspecified" # "?" string
+    elif isinstance(raw_user_inputted_value, dict):
+        key = list(raw_user_inputted_value.keys())[0]     
+        variable_type = VARIABLE_TYPES_KEYS.get(key, None)
+        if variable_type is None:
+            variable_type = "hardcoded" # Default to constant if no special key is found
+        else:
+            raw_user_inputted_value = raw_user_inputted_value[key]
+    elif isinstance(raw_user_inputted_value, list):
+        # TODO: Implement parameter sweep
+        pass
+    return variable_type
     
 VARIABLE_FACTORY = VariableFactory()
 
@@ -147,7 +161,8 @@ class LoadFromFile(Variable):
     
     def set_value_for_hashing(self):
         package_path = os.environ.get("PACKAGE_FOLDER", None)
-        full_path = os.path.join(package_path, self.user_inputted_value)
+        key = list(self.user_inputted_value.keys())[0]
+        full_path = os.path.join(package_path, self.user_inputted_value[key])
         config_reader = CONFIG_READER_FACTORY.get_config_reader(full_path)
         self.value_for_hashing = config_reader.read_config(full_path)
 

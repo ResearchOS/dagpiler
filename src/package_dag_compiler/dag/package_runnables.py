@@ -43,4 +43,4 @@ def add_package_runnables_to_dag(package_name: str, package_runnables_dict: dict
             # Ensure that the value_for_hashing has any slicing removed, and the full variable name is used to match the output variable
             output_var = VARIABLE_FACTORY.create_variable(runnable_node.value_for_hashing)
             assert output_var in dag.nodes, f"Variable value {output_var} from {input_var} not found as an output variable in the DAG. Check your spelling and ensure that the variable is an output from a runnable."
-            dag.add_edge(output_var, runnable_node)
+            dag.add_edge(output_var, input_var)

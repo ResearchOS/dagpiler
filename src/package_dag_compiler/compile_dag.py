@@ -9,6 +9,14 @@ from config_reader import CONFIG_READER_FACTORY
 from dag.package_runnables import add_package_runnables_to_dag
 from bridges.bridges import add_bridges_to_dag
 
+def check_no_unspecified_variables(dag: nx.MultiDiGraph) -> None:
+    """Check that there are no unspecified variables in the DAG."""
+    unspecified_input_variables = [n for n in dag.nodes if n.__class__.__name__=="UnspecifiedInputVariable"]
+    if len(unspecified_input_variables) > 0:
+        for unspecified_input_variable in unspecified_input_variables:
+            print(f"Unspecified input variable found in the DAG: {unspecified_input_variable}")
+        raise ValueError("Unspecified input variables found in the DAG. Please specify all inputs.")
+
 def process_package(package_name: str, processed_packages: dict, package_dependency_graph: nx.MultiDiGraph) -> None:
     """Recursively process packages based on bridges."""
     # Check if the package has already been processed
@@ -76,10 +84,11 @@ def get_index_file_path(package_name: str) -> str:
         package_folder_path = os.path.join(dist_info_folder_path, package_name)
         return os.path.join(package_folder_path, "index.toml")
     
-    ## Editable installation
+    # Read the direct_url.json file
     with open(os.path.join(dist_info_folder_path, "direct_url.json"), 'r') as f:
         direct_url_json = json.load(f)            
     if direct_url_json.get("dir_info") and direct_url_json["dir_info"].get("editable") and direct_url_json["dir_info"]["editable"] is True:
+        ## Editable installation
         package_folder_path = direct_url_json["url"].split("://")[-1]
         return os.path.join(package_folder_path, "src", package_name, 'index.toml')
     else:
