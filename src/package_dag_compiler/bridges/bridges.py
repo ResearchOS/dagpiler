@@ -1,6 +1,8 @@
 
 import networkx as nx
 
+from variables.variables import VARIABLE_FACTORY
+
 def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, package_dependency_graph: nx.MultiDiGraph, processed_packages: dict) -> None:
     """Add package dependencies to the package dependency graph."""
     from compile_dag import process_package, get_package_name_from_runnable
@@ -24,3 +26,16 @@ def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, package_de
                     process_package(target_package, processed_packages, package_dependency_graph)
                 if source_package not in processed_packages:
                     process_package(source_package, processed_packages, package_dependency_graph)
+
+                # TODO: Add edge from source to target (if both dynamic)
+                # OR if source is hard-coded and target is dynamic, then don't add an edge
+                # TODO: Either way, need to convert unspecified to another variable type.
+                if source != target:
+                    # Be sure to remove slicing from the source variable, and use the full variable name
+                    input_variable = VARIABLE_FACTORY.create_variable(target, source)
+                    # Handle the case where source and target are both dynamic variables
+                    # Handle the case where source is hard-coded and target is dynamic. In that 
+                    output_variable = VARIABLE_FACTORY.create_variable(source)
+                    assert input_variable in package_dependency_graph.nodes, f"Variable value {input_variable} not found as an input variable in the DAG. Check your spelling and ensure that the variable is an input to a runnable."
+                    assert output_variable in package_dependency_graph.nodes, f"Variable value {output_variable} not found as an output variable in the DAG. Check your spelling and ensure that the variable is an output from a runnable."
+                    package_dependency_graph.add_edge(output_variable, input_variable)
