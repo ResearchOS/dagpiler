@@ -20,8 +20,8 @@ def add_package_runnables_to_dag(package_name: str, package_runnables_dict: dict
         # Add the inputs and outputs as edges to the DAG
         for input_var in runnable_node.inputs.values():
             dag.add_node(input_var)
-            dag.add_edge(input_var, runnable_name)
+            dag.add_edge(input_var, runnable_node)
 
         for output_var in runnable_node.outputs.values():
             dag.add_node(output_var)
-            dag.add_edge(runnable_name, output_var)
+            dag.add_edge(runnable_node, output_var)

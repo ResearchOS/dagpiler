@@ -10,8 +10,10 @@ class IndexParser():
         bridges = self.index_dict.get("bridges", [])
         if not isinstance(bridges, list):
             raise ValueError(f"Expected list, got {type(bridges)}")
+        package_folder = os.environ.get("PACKAGE_FOLDER")
         for b in bridges:
-            if not os.path.exists(b):
+            full_bridge_path = os.path.join(package_folder, b)
+            if not os.path.exists(full_bridge_path):
                 raise FileNotFoundError(f"Bridge {b} not found")
         self.index_dict.pop("bridges", None)
         return bridges

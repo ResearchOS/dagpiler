@@ -43,6 +43,11 @@ class VariableFactory:
     def __init__(self):
         self.variable_types = {}
         self.variable_cache = {} # Cache to store unique Variable instances
+        self.use_singleton = True # Use the singleton pattern for Variable objects by default
+
+    def toggle_singleton_off(self):
+        """Turn off the singleton pattern for Variable objects."""
+        self.use_singleton = False
     
     def register_variable(self, variable_type: str, variable_class):
         self.variable_types[variable_type] = variable_class
@@ -78,12 +83,13 @@ class VariableFactory:
         # Create a temporary variable object to get its value_for_hashing
         temp_variable = variable_class(variable_name, raw_user_inputted_value)
 
-        # Use (name, value_for_hashing) tuple as the key for the cache
-        cache_key = (temp_variable.name, temp_variable.value_for_hashing)
+        # Use (name, hash(value_for_hashing)) tuple as the key for the cache
+        cache_key = (temp_variable.name, temp_variable.__hash__())
 
         # If the variable is already in the cache, return the cached variable
-        if cache_key in self.variable_cache:
-            return self.variable_cache[cache_key]
+        if self.use_singleton:
+            if cache_key in self.variable_cache:
+                return self.variable_cache[cache_key]
         
         # If not, store the variable in the cache and return it
         self.variable_cache[cache_key] = variable_class(variable_name, raw_user_inputted_value)
