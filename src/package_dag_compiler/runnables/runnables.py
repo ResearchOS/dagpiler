@@ -15,6 +15,12 @@ class Runnable():
     @abstractmethod
     def initialize_variables(self):
         raise NotImplementedError("initialize_variables method not implemented")
+    
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}({self.name})"
+    
+    def __repr__(self) -> str:
+        return self.__str__()
 
 class RunnableFactory():
     """Factory for creating Runnable objects."""

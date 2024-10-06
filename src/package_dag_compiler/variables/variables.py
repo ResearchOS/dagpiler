@@ -21,10 +21,10 @@ class Variable:
         self.slices = None # The slices of the variable, if any
 
     def __str__(self):
-        return f"Variable({self.name})"
+        return f"{self.__class__.__name__}({self.name})"
     
     def __repr__(self) -> str:
-        raise NotImplementedError("repr method not implemented")
+        return self.__str__()
 
     @abstractmethod
     def set_value_for_hashing(self):
@@ -120,9 +120,7 @@ def register_variable(variable_type: str):
 @register_variable("unspecified")
 class UnspecifiedVariable(Variable):
     """Variable that is "?" in the TOML file."""
-
-    def __repr__(self) -> str:
-        return f"UnspecifiedInputVariable({self.name})"
+    pass
 
 @register_variable("output")
 class OutputVariable(Variable):
@@ -134,16 +132,10 @@ class OutputVariable(Variable):
 
     def set_value_for_hashing(self):
         self.value_for_hashing = self.name
-    
-    def __repr__(self) -> str:
-        return f"OutputVariable({self.name})"
 
 @register_variable("hardcoded")
 class HardcodedVariable(Variable):
     """Variable that is hard-coded in the TOML file."""
-
-    def __repr__(self) -> str:
-        return f"HardCodedVariable({self.name})"
     
     def set_value_for_hashing(self):
         self.value_for_hashing = self.user_inputted_value
@@ -151,9 +143,6 @@ class HardcodedVariable(Variable):
 @register_variable("load_from_file")
 class LoadFromFile(Variable):
     """Variable that loads its value from a file."""
-
-    def __repr__(self) -> str:
-        return f"LoadFromFileVariable({self.name})"
 
     def __init__(self, name: str, user_inputted_value: str):
         super().__init__(name, user_inputted_value)
@@ -169,9 +158,6 @@ class LoadFromFile(Variable):
 @register_variable("data_object_file_path")
 class DataObjectFilePath(Variable):
     """Variable that represents the path to a data object file."""
-
-    def __repr__(self) -> str:
-        return f"DataObjectFilePathVariable({self.name})"
     
     def set_value_for_hashing(self):
         self.value_for_hashing = self.user_inputted_value
@@ -179,9 +165,6 @@ class DataObjectFilePath(Variable):
 @register_variable("data_object_name")
 class DataObjectName(Variable):
     """Variable that represents the name of a data object."""
-
-    def __repr__(self) -> str:
-        return f"DataObjectNameVariable({self.name})"
     
     def set_value_for_hashing(self):
         self.value_for_hashing = self.user_inputted_value
@@ -189,9 +172,6 @@ class DataObjectName(Variable):
 @register_variable("dynamic")
 class DynamicVariable(Variable):
     """Variable that is a dynamic reference to an output variable."""
-
-    def __repr__(self) -> str:
-        return f"DynamicInputVariable({self.name})"
 
     def __init__(self, name: str, user_inputted_value: str):
         super().__init__(name, user_inputted_value)
