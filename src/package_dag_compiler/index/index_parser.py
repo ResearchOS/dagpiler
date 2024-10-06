@@ -20,17 +20,14 @@ class IndexParser():
         """Flatten the index dictionary."""
         # Recursively flatten the nested dictionary, returning a list of just the values, and omitting the keys
         def flatten(d):
-            for k, v in d.items():
-                if isinstance(v, dict):
-                    yield from flatten(v)
+            for key, value in d.items():
+                if isinstance(value, dict):
+                    yield from flatten(value)
                 else:
-                    yield v
+                    for v in value:
+                        yield v
         return list(flatten(self.index_dict))
     
     def get_runnables_paths_from_index(self) -> dict:
         """Return the index dictionary."""
-        paths = self._flatten_index()
-        for path in paths:
-            if not os.path.exists(path):
-                raise FileNotFoundError(f"Path {path} not found")
-        return paths
+        return self._flatten_index()        

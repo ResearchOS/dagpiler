@@ -1,97 +1,110 @@
+from runnables.dict_attr_validator import ATTRIBUTE_VALIDATOR_FACTORY
 
-EXEC_SEPARATOR = ":" # Separates the file path from the function name
-
-class DictValidator():
-    """Validate the dictionary of a runnable."""
-    def __init__(self):
-        self.factory = ValidatorFactory()
-
-    def validate(self, dictionary: dict) -> dict:
-        cleaned_dict = {}
-        for key, value in dictionary.items():
-            validator = self.factory.get_validator(key)
-            if validator:
-                cleaned_dict[key] = validator.validate(value)
-            else:
-                cleaned_dict[key] = value # Allows for optional keys
-        return cleaned_dict
-    
-class AttributeValidator:
-    """Interface for attribute cleaning strategies."""
-    def validate(self, value):
-        raise NotImplementedError("Each validator must implement a validation method")
-    
-class ValidatorFactory:
+class DictValidatorFactory:
     """Factory class to manage and provide appropriate validators for attributes."""
     
     def __init__(self):
         self.validators = {}
 
-    def register_validator(self, key: str, validator: AttributeValidator):
+    def register_validator(self, key: str, validator):
         """Registers a validator for a specific attribute key."""
         self.validators[key] = validator
 
     def get_validator(self, key: str):
         """Retrieves the validator for the given key, if it exists."""
         return self.validators.get(key, None)
-    
+
 # ValidatorFactory instance, used for registering validators
-validator_factory = ValidatorFactory()
+dict_validator_factory = DictValidatorFactory()
+
+class DictValidator():
+    """Validate the dictionary of a runnable."""
+    def __init__(self):
+        self.runnable_validator_factory = RUNNABLE_VALIDATOR_FACTORY
+
+    def validate(self, dictionary: dict) -> dict:
+        # Retrieve the 'type' attribute
+        runnable_type = dictionary.get('type')
+        if not runnable_type:
+            raise ValueError(f"""Missing "type" attribute in "{dictionary["name"]}" dictionary""")
+        
+        # Retrieve the appropriate validator for the 'type' attribute
+        validator = self.runnable_validator_factory.get_validator(runnable_type)
+
+        # Use the validator to validate the dictionary
+        validator.validate(dictionary)
 
 # Register validator decorator to automatically register new validators
 def register_validator(key: str):
     def decorator(validator_cls):
-        validator_factory.register_validator(key, validator_cls())
+        dict_validator_factory.register_validator(key, validator_cls())
         return validator_cls
     return decorator
 
-@register_validator("name")
-class NameValidator(AttributeValidator):
-    """Cleans the 'name' attribute."""
-    def validate(self, value):
-        if not isinstance(value, str):
-            raise ValueError(f"Expected 'name' to be a str, got {type(value)}")
-        return value.strip()
+class RunnableValidator:
+    """Interface for runnable validators."""            
+    def validate(self, dictionary: dict) -> dict:
+        # Check for missing required attributes
+        missing_attrs = [attr for attr in self.required_attributes if attr not in dictionary]
+        if missing_attrs:
+            raise ValueError(f"Missing required attributes for 'process': {missing_attrs}")
 
-@register_validator("exec")
-class ExecValidator(AttributeValidator):
-    """Cleans the 'exec' attribute."""
-    def validate(self, value):
-        if not isinstance(value, str):
-            raise ValueError(f"Expected 'exec' to be a str, got {type(value)}")
-        if EXEC_SEPARATOR not in value:
-            raise ValueError(f"Expected 'exec' to contain a separator '{EXEC_SEPARATOR}'")
-        split_exec = value.split(sep=EXEC_SEPARATOR)
-        return value.strip()
+        cleaned_dict = {}
+        # Validate each attribute present in the dictionary
+        for key in dictionary:
+            validator = self.attribute_validator_factory.get_validator(key)
+            if validator:
+                cleaned_dict[key] = validator.validate(dictionary[key])
+            else:
+                cleaned_dict[key] = dictionary[key]  # Handle unexpected attributes if necessary
+        return cleaned_dict
 
-@register_validator("inputs")
-class InputsValidator(AttributeValidator):
-    """Cleans the 'inputs' attribute."""
-    def validate(self, value):
-        if not isinstance(value, dict):
-            raise ValueError(f"Expected 'inputs' to be a dict, got {type(value)}")
-        return value
+class RunnableValidatorFactory:
+    """Factory to manage and provide appropriate runnable validators based on type."""
+    def __init__(self):
+        self.validators = {}
 
-@register_validator("outputs")
-class OutputsValidator(AttributeValidator):
-    """Cleans the 'outputs' attribute."""
-    def validate(self, value):
-        if not isinstance(value, list):
-            raise ValueError(f"Expected 'outputs' to be a list, got {type(value)}")
-        return value
+    def register_validator(self, type_key: str, validator: RunnableValidator):
+        """Registers a runnable validator for a specific type."""
+        self.validators[type_key] = validator
 
-@register_validator("level")
-class LevelValidator(AttributeValidator):
-    """Cleans the 'level' attribute."""
-    def validate(self, value):
-        if not isinstance(value, list):
-            raise ValueError(f"Expected 'level' to be a list, got {type(value)}")
-        return value
+    def get_validator(self, type_key: str):
+        """Retrieves the runnable validator for the given type."""
+        validator = self.validators.get(type_key)
+        if validator is None:
+            raise ValueError(f"No RunnableValidator registered for type '{type_key}'")
+        return validator
 
-@register_validator("batch")
-class BatchValidator(AttributeValidator):
-    """Cleans the 'batch' attribute."""
-    def validate(self, value):
-        if not isinstance(value, list):
-            raise ValueError(f"Expected 'batch' to be a list, got {type(value)}")
-        return value
+# Global factory instance for registering runnable validators
+RUNNABLE_VALIDATOR_FACTORY = RunnableValidatorFactory()
+
+def register_runnable_validator(type_key: str):
+    """Decorator to register a new RunnableValidator."""
+    def decorator(validator_cls):
+        RUNNABLE_VALIDATOR_FACTORY.register_validator(type_key, validator_cls())
+        return validator_cls
+    return decorator
+
+@register_runnable_validator("process")
+class ProcessValidator(RunnableValidator):
+    """Validator for 'process' type runnables."""
+    def __init__(self):
+        self.required_attributes = ["name", "exec", "inputs", "outputs", "type"]
+        self.optional_attributes = ["batch", "level", "subset"]
+        self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators
+
+@register_runnable_validator("plot")
+class PlotValidator(RunnableValidator):
+    """Validator for 'process' type runnables."""
+    def __init__(self):
+        self.required_attributes = ["name", "exec", "inputs", "type"]
+        self.optional_attributes = ["batch", "level", "subset"]
+        self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators   
+
+@register_runnable_validator("summary")
+class SummaryValidator(RunnableValidator):
+    """Validator for 'process' type runnables."""
+    def __init__(self):
+        self.required_attributes = ["name", "exec", "inputs", "type"]
+        self.optional_attributes = ["batch", "level", "subset"]
+        self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators

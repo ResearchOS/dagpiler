@@ -17,6 +17,34 @@ class AttributeCleaner:
     def clean(self, value):
         raise NotImplementedError("Each cleaner must implement a clean method")
     
+class FallbackCleaner(AttributeCleaner):
+    """Fallback cleaner for values of any type."""
+    def clean(self, value):
+        if isinstance(value, str):
+            return self._clean_string(value)
+        elif isinstance(value, list):
+            return self._clean_list(value)
+        elif isinstance(value, dict):
+            return self._clean_dict(value)
+        else:
+            return self._clean_generic(value)
+
+    def _clean_string(self, value: str):
+        """Trims whitespace for strings."""
+        return value.strip()
+
+    def _clean_list(self, value: list):
+        """Cleans each element of a list."""
+        return [self.clean(item) for item in value]
+
+    def _clean_dict(self, value: dict):
+        """Cleans each key-value pair in a dict."""
+        return {k: self.clean(v) for k, v in value.items()}
+
+    def _clean_generic(self, value):
+        """Returns the value as-is for types that don't need special cleaning."""
+        return value
+    
 class CleanerFactory:
     """Factory class to manage and provide appropriate cleaners for attributes."""
     
@@ -99,32 +127,4 @@ class BatchCleaner(AttributeCleaner):
     def clean(self, value):
         if not isinstance(value, list):
             raise ValueError(f"Expected 'batch' to be a list, got {type(value)}")
-        return value
-
-class FallbackCleaner(AttributeCleaner):
-    """Fallback cleaner for values of any type."""
-    def clean(self, value):
-        if isinstance(value, str):
-            return self._clean_string(value)
-        elif isinstance(value, list):
-            return self._clean_list(value)
-        elif isinstance(value, dict):
-            return self._clean_dict(value)
-        else:
-            return self._clean_generic(value)
-
-    def _clean_string(self, value: str):
-        """Trims whitespace for strings."""
-        return value.strip()
-
-    def _clean_list(self, value: list):
-        """Cleans each element of a list."""
-        return [self.clean(item) for item in value]
-
-    def _clean_dict(self, value: dict):
-        """Cleans each key-value pair in a dict."""
-        return {k: self.clean(v) for k, v in value.items()}
-
-    def _clean_generic(self, value):
-        """Returns the value as-is for types that don't need special cleaning."""
         return value

@@ -1,21 +1,18 @@
+import os
 import json
 import toml
 
 class ConfigReader:
     """Interface for reading all configuration files except index files."""
-    def __init__(self, factory):
-        self.factory = factory
-
     def read_config(self, config_path: str) -> dict:
-        config_reader = self.factory.get_config_reader(config_path)
-        return config_reader.read_config(config_path)
+        raise NotImplementedError("Each config reader must implement a read_config method")
 
 class ConfigReaderFactory:
 
     config_readers = {}
 
     def get_config_reader(self, config_path: str) -> ConfigReader:
-        ext = config_path.split('.')[-1]
+        ext = os.path.splitext(config_path)[1]
         config_reader = self.config_readers.get(ext, None)
         if config_reader is None:
             raise ValueError(f"No config reader found for extension {ext}")
@@ -24,11 +21,11 @@ class ConfigReaderFactory:
     def register_config_reader(self, ext: str, config_reader: ConfigReader):
         self.config_readers[ext] = config_reader
 
-config_reader_factory = ConfigReaderFactory()
+CONFIG_READER_FACTORY = ConfigReaderFactory()
 
 def register_config_reader(ext: str):
     def decorator(cls):
-        config_reader_factory.register_config_reader(ext, cls())
+        CONFIG_READER_FACTORY.register_config_reader(ext, cls())
         return cls
     return decorator
 

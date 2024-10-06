@@ -1,10 +1,15 @@
 import os
+import json
 
 import networkx as nx
 
-from index.index_processor import IndexLoaderFactory, IndexProcessor
+from index.index_processor import INDEX_LOADER_FACTORY, IndexProcessor
 from index.index_parser import IndexParser
-from config_reader import ConfigReaderFactory, ConfigReader
+from config_reader import CONFIG_READER_FACTORY
+from dag.package_runnables import add_package_runnables_to_dag
+
+# Hard-coded import to load Runnable types for now. In the future this should be read from configuration files.
+from runnables.process import Process
 
 
 def compile_dag(package_name: str) -> nx.MultiDiGraph:
@@ -12,6 +17,8 @@ def compile_dag(package_name: str) -> nx.MultiDiGraph:
     NOTE: This is NOT the final compiled graph, as it still needs to be fully validated and cleaned."""
     processed_packages = {}
     package_dependency_graph = nx.MultiDiGraph()
+
+    # Get the DAG with all packages and their runnables, and bridged edges.
     process_package(package_name, processed_packages, package_dependency_graph)
 
     # Perform a topological sort to get packages in the correct order
@@ -38,10 +45,13 @@ def process_package(package_name: str, processed_packages: dict, package_depende
     """Recursively process packages based on bridges."""
     # Check if the package has already been processed
     if package_name in processed_packages:
-        return
+        return    
 
     # Get the index file path for the package
     index_file_path = get_index_file_path(package_name)
+
+    os.environ["PACKAGE_NAME"] = package_name
+    os.environ["PACKAGE_FOLDER"] = os.path.dirname(index_file_path)
     
     # Read the package's bridges and runnables
     package_runnables_and_bridges = get_package_runnables_and_bridges(index_file_path)
@@ -54,6 +64,13 @@ def process_package(package_name: str, processed_packages: dict, package_depende
         "bridges": package_bridges_dict
     }
 
+    if not package_runnables_dict:
+        print(f"WARNING: No runnables found for package {package_name}")
+
+    add_package_runnables_to_dag(package_name, package_runnables_dict, package_dependency_graph)    
+
+    if not package_bridges_dict:
+        print(f"INFO: No bridges found for package {package_name}")
     # From bridges, extract package dependencies
     for bridge_name, bridge in package_bridges_dict.items():
         sources = bridge.get("sources", [])
@@ -84,15 +101,48 @@ def get_package_name_from_runnable(runnable_full_name: str) -> str:
 
 def get_index_file_path(package_name: str) -> str:
     """Map a package name to its index file path."""
-    # Implement the logic based on your project structure
-    # For example, if packages are stored in 'packages/{package_name}/index.toml':
-    return os.path.join('packages', package_name, 'index.toml')
+    # Get the python folder
+    python_version_folders = os.listdir(os.path.join(os.getcwd(), '.venv', 'lib'))
+    # Remove folders that don't contain "python"
+    python_version_folders = [folder for folder in python_version_folders if "python" in folder]
+    if not python_version_folders:
+        raise ValueError("No python version folders found in the virtual environment.")
+    python_version_folder = python_version_folders[0]    
+    installed_package_folders = os.listdir(os.path.join(os.getcwd(), '.venv', 'lib', python_version_folder, 'site-packages'))
+    # Get the package folders that contain the project name
+    lower_package_name = package_name.lower()
+    package_folders = [folder for folder in installed_package_folders if lower_package_name in folder]
+    if not package_folders:
+        raise ValueError(f"No package folder found for {package_name}")
+    # Remove folders that don't start with the package name
+    package_folders = [folder for folder in package_folders if folder.startswith(lower_package_name)]    
+    # If a folder has "dist-info" in its name, use that one.
+    dist_info_folders = [folder for folder in package_folders if "dist-info" in folder]    
+
+    if len(dist_info_folders) > 1:
+        raise ValueError(f"Multiple dist-info folders found for {package_name}. Please specify the correct one.")
+    # If a dist-info folder is found, use that one
+    dist_info_folder = dist_info_folders[0]
+
+    dist_info_folder_path = os.path.join(os.getcwd(), '.venv', 'lib', python_version_folder, 'site-packages', dist_info_folder)
+    if "direct_url.json" not in os.listdir(dist_info_folder_path):
+        ## Non-editable package
+        package_folder_path = os.path.join(dist_info_folder_path, package_name)
+        return os.path.join(package_folder_path, "index.toml")
+    
+    ## Editable installation
+    with open(os.path.join(dist_info_folder_path, "direct_url.json"), 'r') as f:
+        direct_url_json = json.load(f)            
+    if direct_url_json.get("dir_info") and direct_url_json["dir_info"].get("editable") and direct_url_json["dir_info"]["editable"] is True:
+        package_folder_path = direct_url_json["url"].split("://")[-1]
+        return os.path.join(package_folder_path, "src", package_name, 'index.toml')
+   
 
 def get_package_runnables_and_bridges(index_file_path: str) -> dict:
     """Read the configuration files."""
+    package_root_folder = os.path.dirname(index_file_path)
     # Initialize the factory and processor
-    index_loader_factory = IndexLoaderFactory()
-    index_processor = IndexProcessor(index_loader_factory)
+    index_processor = IndexProcessor(INDEX_LOADER_FACTORY)
 
     # Process the index file to get the index dictionary
     package_index_dict = index_processor.process_index(index_file_path)
@@ -104,11 +154,18 @@ def get_package_runnables_and_bridges(index_file_path: str) -> dict:
     bridges_file_paths = index_parser.get_and_remove_bridges()
     runnables_file_paths = index_parser.get_runnables_paths_from_index()
 
+    for bridge_file_path in bridges_file_paths:
+        if not os.path.exists(os.path.join(package_root_folder, bridge_file_path)):
+            raise FileNotFoundError(f"Path {bridge_file_path} not found")
+    for runnables_file_path in runnables_file_paths:
+        if not os.path.exists(os.path.join(package_root_folder, runnables_file_path)):
+            raise FileNotFoundError(f"Path {runnables_file_path} not found")
+
     # Read the package's bridges and runnables files
-    config_reader_factory = ConfigReaderFactory()
-    config_reader = ConfigReader(config_reader_factory)    
+    config_reader = CONFIG_READER_FACTORY.get_config_reader(index_file_path)
     package_bridges = [config_reader.read_config(bridge) for bridge in bridges_file_paths]
-    package_runnables = [config_reader.read_config(runnable) for runnable in runnables_file_paths]
+    runnable_full_file_paths = [os.path.join(package_root_folder, runnable) for runnable in runnables_file_paths]
+    package_runnables = [config_reader.read_config(runnable) for runnable in runnable_full_file_paths]
 
     # Convert the list of dicts to a single dict for bridges and runnables
     package_bridges_dict = {}

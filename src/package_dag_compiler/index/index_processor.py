@@ -46,12 +46,12 @@ class IndexLoaderFactory:
         return loader
     
 # Factory instance for registering index loaders
-index_loader_factory = IndexLoaderFactory()
+INDEX_LOADER_FACTORY = IndexLoaderFactory()
 
 def register_index_loader(ext: str):
     """Decorator to register a new IndexLoader."""
     def decorator(cls):
-        index_loader_factory.register_index_loader(ext, cls())
+        INDEX_LOADER_FACTORY.register_index_loader(ext, cls())
         return cls
     return decorator
 

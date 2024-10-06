@@ -1,20 +1,35 @@
-from runnables.runnables import Runnable
-from runnables.dict_cleaner import DictCleaner
+from runnables.runnables import Runnable, register_runnable, initialize_inputs, initialize_outputs
 from runnables.dict_validator import DictValidator
 
+RUNNABLE_TYPE = "process"
+
+@register_runnable(RUNNABLE_TYPE)
 class Process(Runnable):
     """A process object that can be run in a DAG."""
-
-    type = "process"
     
     def __init__(self, 
                  name: str, 
                  exec: str,
                  inputs: dict, 
                  outputs: list, 
-                 level: list, 
-                 batch: list
-                 ):        
+                 level: list = "", 
+                 batch: list = [],
+                 subset: str = "",
+                 **kwargs
+                 ):    
+        runnable_dict = {
+            "name": name,
+            "type": RUNNABLE_TYPE,
+            "exec": exec,                        
+            "inputs": inputs,
+            "outputs": outputs,
+            "level": level,
+            "batch": batch,
+            "subset": subset
+        }
+        runnable_dict.update(kwargs)
+        dict_validator = DictValidator()
+        dict_validator.validate(runnable_dict)    
         self.name = name
         self.exec = exec
         self.inputs = inputs
@@ -23,19 +38,13 @@ class Process(Runnable):
         self.batch = batch
 
     @classmethod
-    def from_dict(cls, runnable_dict: dict):
-        cleaner = DictCleaner()
-        validator = DictValidator()
-        cleaned_dict = cleaner.clean(runnable_dict)
-        is_valid = validator.validate(cleaned_dict)
-        if not is_valid:
-            raise ValueError("Invalid process dictionary")
-        return cls(**cleaned_dict)
+    def from_dict(cls, runnable_dict: dict):        
+        return cls(**runnable_dict)
 
     def to_dict(self) -> dict:
         runnable_dict = {
             "name": self.name,
-            "type": self.type,
+            "type": RUNNABLE_TYPE,
             "exec": self.exec,                        
             "inputs": self.inputs,
             "outputs": self.outputs,
@@ -43,5 +52,9 @@ class Process(Runnable):
             "batch": self.batch
         }
         return runnable_dict
+    
+    def initialize_variables(self):
+        initialize_inputs(self)
+        initialize_outputs(self)
 
     
