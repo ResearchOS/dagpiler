@@ -95,10 +95,18 @@ class ProcessValidator(RunnableValidator):
 
 @register_runnable_validator("plot")
 class PlotValidator(RunnableValidator):
-    """Validator for 'process' type runnables."""
+    """Validator for 'plot' type runnables."""
     def __init__(self):
-        self.required_attributes = ["name", "exec", "inputs", "type"]
-        self.optional_attributes = ["batch", "level", "subset"]
+        self.required_attributes = ["name", "type", "inputs", "axes"]
+        self.optional_attributes = ["batch", "level", "subset", "save_folder", "view", "movie"]
+        self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators   
+
+@register_runnable_validator("plot_component")
+class PlotComponentValidator(RunnableValidator):
+    """Validator for 'plot' type runnables."""
+    def __init__(self):
+        self.required_attributes = ["name", "type", "exec", "inputs"]
+        self.optional_attributes = ["batch", "level", "subset", "save_folder", "view", "movie"]
         self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators   
 
 @register_runnable_validator("summary")
