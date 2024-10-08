@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://researchos.github.io/Packaging/installing_packages/">
       
       
-        <link rel="prev" href="../folder_structure/">
+        <link rel="prev" href="../..">
       
       
         <link rel="next" href="../publishing_packages/">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Installing packages - Package-DAG-Compiler</title>
+        <title>Installing Packages - Package-DAG-Compiler</title>
       
     
     
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Installing packages
+              Installing Packages
             
           </span>
         </div>
@@ -200,7 +200,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../folder_structure/" class="md-tabs__link">
+        <a href="./" class="md-tabs__link">
           
   
   Packaging
@@ -221,7 +221,7 @@
   
     
   
-  Dictionary
+  Glossary
 
       </a>
     </li>
@@ -364,27 +364,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../folder_structure/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Package Folder Structure
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -401,7 +380,7 @@
           
   
   <span class="md-ellipsis">
-    Installing packages
+    Installing Packages
   </span>
   
 
@@ -412,7 +391,7 @@
         
   
   <span class="md-ellipsis">
-    Installing packages
+    Installing Packages
   </span>
   
 
@@ -455,6 +434,15 @@
   <a href="#installing-from-a-local-directory" class="md-nav__link">
     <span class="md-ellipsis">
       Installing from a local directory
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-from-the-internet-other-than-version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing from the Internet (other than version control)
     </span>
   </a>
   
@@ -508,7 +496,7 @@
         
   
   <span class="md-ellipsis">
-    Dictionary
+    Glossary
   </span>
   
 
@@ -680,6 +668,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#installing-from-the-internet-other-than-version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing from the Internet (other than version control)
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -698,23 +695,37 @@
   
 
 
-<h1 id="installing-packages">Installing packages</h1>
-<p>You've found a package you want to use, and now you want to install it.</p>
+<h1 id="installing-packages">Installing Packages</h1>
+<p>You've found a package you want to use, and now you want to install it. First, you need to put that package in your pyproject.toml file. Depending on where the package is being installed from, there are a few ways to do this using Python's default syntax. For more information than is provided here, check out the linked documentation in the sections below.</p>
 <h2 id="installing-from-pypi">Installing from PyPI</h2>
-<p>Packages are installed using:
-<div class="highlight"><pre><span></span><code>ros<span class="w"> </span>install<span class="w"> </span>&lt;package_name&gt;
+<p>Packages installed from PyPI can be specified with their package name, and optionally version restrctions. See <a href="https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#dependencies-and-requirements">Python docs</a> for details. 
+<div class="highlight"><pre><span></span><code><span class="k">[project]</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pandas&quot;</span>
+<span class="p">]</span>
 </code></pre></div></p>
-<p>Under the hood, this runs <code>pip install &lt;package_name&gt; --target &lt;project_root&gt;/.dependencies</code>. This installs the package into the <code>.dependencies</code> directory of your project folder.</p>
 <h2 id="installing-from-github">Installing from GitHub</h2>
-<p>You can install a package from GitHub using:
-<div class="highlight"><pre><span></span><code>ros<span class="w"> </span>install<span class="w"> </span>&lt;github_repo_url&gt;
+<p>From the <a href="https://hatch.pypa.io/1.8/config/dependency/#supported-vcs">Hatch documentation</a>, packages can also be installed directly from GitHub repositories.
+<div class="highlight"><pre><span></span><code><span class="k">[project]</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;Package-DAG-Compiler @ git+https://github.com/ResearchOS/Package-DAG-Compiler&quot;</span>
+<span class="p">]</span>
 </code></pre></div></p>
-<p>This runs <code>pip install git+&lt;github_repo_url&gt; --target &lt;project_root&gt;/.dependencies</code>.</p>
 <h2 id="installing-from-a-local-directory">Installing from a local directory</h2>
-<p>You can install a package from a local directory using:
-<div class="highlight"><pre><span></span><code>ros<span class="w"> </span>install<span class="w"> </span>&lt;path_to_package&gt;
+<p>Similarly, dependency packages can be <a href="https://hatch.pypa.io/1.8/config/dependency/#local">installed from a local directory</a> as well by specifying paths to either the package folder, a wheel (.whl), or source archive (.tar.gz).
+<div class="highlight"><pre><span></span><code><span class="k">[project]</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;Package-DAG-Compiler @ file:///path/to/dependent/package/Package-DAG-Compiler&quot;</span><span class="w"> </span><span class="c1"># Package folder path</span>
+<span class="p">]</span>
 </code></pre></div></p>
-<p>This runs <code>pip install &lt;path_to_package&gt; --target &lt;project_root&gt;/.dependencies</code>.</p>
+<h2 id="installing-from-the-internet-other-than-version-control">Installing from the Internet (other than version control)</h2>
+<p>Finally, packages can also be downloaded from any location on the Internet by specifying the package name and the link to the wheel or source archive. For example:
+<div class="highlight"><pre><span></span><code><span class="k">[project]</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;pytorch @ https://download.pytorch.org/whl/cu102/torch-1.10.0%2Bcu102-cp39-cp39-linux_x86_64.whl&quot;</span>
+<span class="p">]</span>
+</code></pre></div></p>
 
 
 

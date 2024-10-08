@@ -24,7 +24,7 @@
     
     
       
-        <title>Dictionary - Package-DAG-Compiler</title>
+        <title>Glossary - Package-DAG-Compiler</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#dictionary" class="md-skip">
+        <a href="#glossary" class="md-skip">
           Skip to content
         </a>
       
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Dictionary
+              Glossary
             
           </span>
         </div>
@@ -198,7 +198,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../Packaging/folder_structure/" class="md-tabs__link">
+        <a href="../Packaging/installing_packages/" class="md-tabs__link">
           
   
   Packaging
@@ -221,7 +221,7 @@
   
     
   
-  Dictionary
+  Glossary
 
       </a>
     </li>
@@ -364,32 +364,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../Packaging/folder_structure/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Package Folder Structure
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../Packaging/installing_packages/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Installing packages
+    Installing Packages
   </span>
   
 
@@ -447,7 +426,7 @@
           
   
   <span class="md-ellipsis">
-    Dictionary
+    Glossary
   </span>
   
 
@@ -458,7 +437,7 @@
         
   
   <span class="md-ellipsis">
-    Dictionary
+    Glossary
   </span>
   
 
@@ -478,6 +457,15 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-note-on-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      A note on notation
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#dag" class="md-nav__link">
@@ -543,12 +531,7 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
+          <li class="md-nav__item">
   <a href="#runnable-plotcomponent" class="md-nav__link">
     <span class="md-ellipsis">
       Runnable: PlotComponent
@@ -556,13 +539,18 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#runnable-summary" class="md-nav__link">
     <span class="md-ellipsis">
       Runnable: Summary
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -711,6 +699,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#a-note-on-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      A note on notation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#dag" class="md-nav__link">
     <span class="md-ellipsis">
       DAG
@@ -774,12 +771,7 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
+          <li class="md-nav__item">
   <a href="#runnable-plotcomponent" class="md-nav__link">
     <span class="md-ellipsis">
       Runnable: PlotComponent
@@ -787,13 +779,18 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#runnable-summary" class="md-nav__link">
     <span class="md-ellipsis">
       Runnable: Summary
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -815,23 +812,27 @@
   
 
 
-<h1 id="dictionary">Dictionary</h1>
-<p>Throughout the dictionary and the docs, you'll see notation for file and folder paths that may include dollar signs <code>$</code>. Whatever comes after this symbol is intended to be a dynamic variable, e.g. <code>$project_folder</code> will be replaced with the actual folder path for your project.</p>
-<h3 id="dag">DAG</h3>
-<p>The output of this package is a Directional Acyclic Graph (DAG) consisting of nodes and edges. Nodes can be Runnables or Variables, and edges are the connections between nodes. </p>
-<h3 id="indextoml">index.toml</h3>
-<p>Recommended to be located at <code>$project_folder/src/$project_name/index.toml</code>. This file contains all of the file paths to all of the files that comprise this package. For maximum flexibility, the only requirement as to the structure of this file is that it consist only of dictionaries with any degree of nesting, where each key is whatever string the user wants, and the values are either a subdictionary, or an absolute file path. No relative file paths or other strings, no numbers, or lists are allowed outside of dictionaries.</p>
-<h3 id="pyprojecttoml">pyproject.toml</h3>
-<p>Recommended to be located at the root of your project folder, <code>pyproject.toml</code> is a type of text file that is Python's default way of providing the metadata needed to share Python packages. This is the only Python-standard .toml file, the rest are defined by me for the purposes of compiling a DAG from a TOML-based modular package format.</p>
-<h3 id="variable">Variable</h3>
+<h1 id="glossary">Glossary</h1>
+<h4 id="a-note-on-notation">A note on notation</h4>
+<p>Throughout the glossary and the docs, you may see notation for file and folder paths that include dollar signs <code>$</code>. Whatever comes after this symbol is intended to be a dynamic variable, e.g. <code>$project_folder</code> will be replaced with the actual folder path for your project.</p>
+<h2 id="dag">DAG</h2>
+<p>The output of this package is a Directional Acyclic Graph (DAG) consisting of nodes and edges as <a href="https://networkx.org/documentation/stable/reference/classes/multidigraph.html">NetworkX MultiDiGraph</a> object. Nodes can be Runnables or Variables, and edges are the connections between nodes. </p>
+<h2 id="indextoml">index.toml</h2>
+<p>Recommended to be located at <code>$project_folder/src/$project_name/index.toml</code>. This file contains all of the file paths to all of the files that comprise this package. For maximum flexibility, the only requirement as to the structure of this file is that it consist only of dictionaries (with any degree of nesting for organizational purposes), where each key is a user-defined string, and the values are either a subdictionary, or a file path. No other strings, no numbers, or lists are allowed outside of dictionaries. Relative file paths are preferred for portability. They are relative to the <code>$project_folder/src/$project_name</code> directory, as that is the root directory when the package is installed. Absolute file paths should be used only when needed to access files outside of the project folder.</p>
+<h2 id="pyprojecttoml">pyproject.toml</h2>
+<p>Recommended to be located at the root of your project folder, <code>pyproject.toml</code> is a type of text file that is <a href="https://packaging.python.org/en/latest/guides/writing-pyproject-toml/">Python's default way of providing the metadata needed to share Python packages</a>. This is the only Python-standard .toml file, the rest are custom-defined in this package for the purposes of compiling a DAG from a TOML-based modular package format.</p>
+<h2 id="variable">Variable</h2>
 <p>A Variable node in the DAG is an input Variable if its successor is a Runnable, and an output Variable if its predecessor is a Runnable. Input Variables can be any of several types: hard-coded, loading a file, specifying a data object's name or file path, or even unspecified. Output variables do not have these delineations - they are all simply "outputs".</p>
-<h3 id="runnable">Runnable</h3>
+<h2 id="runnable">Runnable</h2>
 <p>"Runnable" is an umbrella term for any node type that is not a Variable, and executes code. The default Runnable types are Process, Plot, PlotComponent, and Summary (in development). There are different types of Runnables because they each require different attributes to function, though some attributes are mandatory and shared between all Runnable types.</p>
-<h4 id="runnable-process">Runnable: Process</h4>
+<h3 id="runnable-process">Runnable: Process</h3>
 <p>The most common type of Runnable. Takes in data, processes it by executing the associated code, and outputs data.</p>
-<h4 id="runnable-plot">Runnable: Plot</h4>
+<h3 id="runnable-plot">Runnable: Plot</h3>
 <p>Runnable that visualizes data. Takes in data and metadata about the Plot, Axes, and PlotComponent to construct and save the plot. NOTE: Plots themselves do not have code associated with them. However, PlotComponents do.</p>
 <h3 id="runnable-plotcomponent">Runnable: PlotComponent</h3>
+<div class="admonition todo">
+<p class="admonition-title">Todo</p>
+</div>
 <p>Used by Plot-type Runnables to define a single layer of the plot. Executes the plotting functions, while Plot Runnables themselves do not.</p>
 <h3 id="runnable-summary">Runnable: Summary</h3>
 <div class="admonition todo">

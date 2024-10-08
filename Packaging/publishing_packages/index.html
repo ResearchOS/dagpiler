@@ -200,7 +200,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../folder_structure/" class="md-tabs__link">
+        <a href="../installing_packages/" class="md-tabs__link">
           
   
   Packaging
@@ -221,7 +221,7 @@
   
     
   
-  Dictionary
+  Glossary
 
       </a>
     </li>
@@ -367,32 +367,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../folder_structure/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Package Folder Structure
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../installing_packages/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Installing packages
+    Installing Packages
   </span>
   
 
@@ -418,6 +397,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Publishing Packages
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -427,6 +417,49 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formatting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Formatting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#package-folder-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package Folder Structure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -451,7 +484,7 @@
         
   
   <span class="md-ellipsis">
-    Dictionary
+    Glossary
   </span>
   
 
@@ -590,6 +623,38 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formatting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Formatting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#package-folder-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Package Folder Structure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -607,8 +672,35 @@
 
 
 <h1 id="publishing-packages">Publishing Packages</h1>
-<p>You've created a set of TOML files, you've compiled them to a DAG, maybe you've even bridged your package with others to create something even more powerful, and you're ready to share your package with the world. </p>
-<p>There are multiple ways to share your package with the world.</p>
+<p>You've created a set of TOML files, you've compiled them to a DAG, maybe you've even leveraged pre-existing packages by bridging your package with theirs, and you're ready to share your package with the world. </p>
+<h2 id="formatting">Formatting</h2>
+<p>The packaging format described here is inteded to be flexible enough to work with projects of all sizes using the provided tools.</p>
+<div class="admonition todo">
+<p class="admonition-title">Todo</p>
+<p>Command line tools will be provided to generate the folder structure below, including auto-populating the minimum required contents of pyproject.toml files.</p>
+</div>
+<h3 id="package-folder-structure">Package Folder Structure</h3>
+<p>Verify that your package follows the expected folder structure.</p>
+<div class="highlight"><pre><span></span><code>root/
+├── .venv/ # created by the user with python -m venv .venv
+├── src/
+│   ├── $project_name/
+│   │   ├── index.toml # Package metadata
+├── tests/
+│   ├── test_main.py
+├── docs/
+│   ├── index.md
+├── pyproject.toml
+├── README.md
+├── LICENSE
+├── CONTRIBUTING.md
+</code></pre></div>
+<p>Use the provided tools to check that your package matches the required format.</p>
+<div class="admonition todo">
+<p class="admonition-title">Todo</p>
+<p>A command line tool will ensure that the above folder structure is adhered to, including a <code>docs</code> and <code>tests</code> folder.</p>
+</div>
+<p>Once your package is in the proper format and fully functioning, there are multiple ways to share your package with the world.</p>
 <h1 id="1-pypi">1. PyPI</h1>
 <p>The Python Packaging Authority maintains the Python Packaging Index (PyPI), which is where the majority of Python packages reside. Packages in PyPI can be easily installed using <code>pip install</code>.</p>
 <h1 id="2-github-or-other-online-version-control">2. GitHub (or Other Online Version Control)</h1>
