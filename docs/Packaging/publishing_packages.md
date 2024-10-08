@@ -33,10 +33,10 @@ Use the provided tools to check that your package matches the required format.
 Once your package is in the proper format and fully functioning, there are multiple ways to share your package with the world.
 
 # 1. PyPI
-The Python Packaging Authority maintains the Python Packaging Index (PyPI), which is where the majority of Python packages reside. Packages in PyPI can be easily installed using `pip install`.
+The Python Packaging Authority maintains the Python Packaging Index (PyPI), which is where the majority of Python packages reside. Packages in PyPI can be easily installed using `pip install $package_name`.
 
 # 2. GitHub (or Other Online Version Control)
-If your package is publicly visible and hosted in an online version control platform such as GitHub or another service, you can simply leave it there! Others can pip install directly from your GitHub repository. It's always a good idea to test from another computer that your package can be successfully installed and run.
-
-!!!todo
+If your package is publicly visible and hosted in an online version control platform such as GitHub or another service, you can simply leave it there! Others can `pip install` directly from your GitHub repository (see [how to install packages from GitHub](installing_packages.md#installing-from-github)). It's always a good idea to test from another computer that your package can be successfully installed and run.
     
+# 3. Other Online Repositories
+There are other locations online that can host your package besides version control platforms, such as the [Open Science Foundation](https://osf.io), [Zenodo](https://zenodo.org), etc. To share your package there, you must include either a wheel or source archive of your package, ideally both.

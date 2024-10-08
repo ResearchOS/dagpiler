@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from package_dag_compiler.toml_files.read_toml import read_runnable_plot, read_runnable_process, read_runnable_stats
+from dagpiler.toml_files.read_toml import read_runnable_plot, read_runnable_process, read_runnable_stats
 
 REQUIRED_INDEX_FIELDS = ["process", "plot", "stats"]
 

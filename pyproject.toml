@@ -3,7 +3,7 @@ requires = ['hatchling']
 build-backend = 'hatchling.build'
 
 [project]
-name = "package_dag_compiler"
+name = "dagpiler"
 version = '0.1.0'
 description = 'Create a DAG representation of a data processing pipeline from TOML files.'
 authors = [{name = "Mitchell Tillman", email ="mtillman14@gmail.com"}]

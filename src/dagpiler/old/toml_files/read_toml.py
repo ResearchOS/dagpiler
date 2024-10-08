@@ -3,7 +3,7 @@
 import toml
 import networkx as nx
 
-from package_dag_compiler.toml_files.index import clean_and_validate_runnable
+from dagpiler.toml_files.index import clean_and_validate_runnable
 
 INDEX_PATH_IN_TOML = "tool.package-dag-compiler.index"
 RUNNABLE_TABLE_NAME = "runnable"

@@ -1,5 +1,6 @@
 nav:
     - Home: index.md
-    - Packaging: Packaging
+    - How to Use: Packaging
     - Glossary: terms.md
-    - Learning in Public: dev_blog
+    - Philosophy: philosophy.md
+    - Learning in Public: dev_blog    

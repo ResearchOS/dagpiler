@@ -1,0 +1,5 @@
+nav:
+    - TOML Files: toml_files.md
+    - Creating Packages: creating_packages.md
+    - Installing Packages: installing_packages.md    
+    - Publishing Packages: publishing_packages.md

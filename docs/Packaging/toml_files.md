@@ -3,7 +3,7 @@
 TOML (Tom's Obvious Minimal Language) is a configuration file syntax that defines a format for human and machine-readable structured plain text. I like it a lot because it's just as full featured as JSON and YAML, has multiple ways to represent the same dictionaries, unlike JSON and YAML (which I find helpful), and due to negligible indentation, TOML is a very robust and easy to work with language. Its primary downside is that it has not been around for as long as YAML or JSON, and so not every language has an existing TOML parser, and not all TOML parsers are created equal (some may not handle the more advanced features in TOML like arrays of tables).
 
 ## pyproject.toml
-Python relies on pyproject.toml files for publishing packages. The default file structure is:
+Python relies on pyproject.toml files to specify the metadata for publishing packages. The minimal default file structure is:
 ```toml
 [build-system]
 requires = ['hatchling']
@@ -14,13 +14,9 @@ name = "package_name"
 version = '0.1.0'
 description = 'Package description'
 authors = [{name = "Author Name", email ="author@email.com"}]
-dependencies = []
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/package_name"]
-
-[tool.package-dag-compiler]
-index = "index.toml" # Path to the package's index.toml file
+dependencies = [
+    "package-dag-compiler"
+]
 ```
 
 ## index.toml
