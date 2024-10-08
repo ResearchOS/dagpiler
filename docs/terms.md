@@ -1,22 +1,33 @@
-# Dictionary
+# Glossary
 
-Throughout the dictionary and the docs, you'll see notation for file and folder paths that may include dollar signs `$`. Whatever comes after this symbol is intended to be a dynamic variable, e.g. `$project_folder` will be replaced with the actual folder path for your project.
+#### A note on notation
+Throughout the glossary and the docs, you may see notation for file and folder paths that include dollar signs `$`. Whatever comes after this symbol is intended to be a dynamic variable, e.g. `$project_folder` will be replaced with the actual folder path for your project.
 
-### DAG
-A Directional Acyclic Graph (DAG) consisting of nodes and edges. Nodes can be Runnables or Variables, and edges represent the connections between nodes.
+## DAG
+The output of this package is a Directional Acyclic Graph (DAG) consisting of nodes and edges as [NetworkX MultiDiGraph](https://networkx.org/documentation/stable/reference/classes/multidigraph.html) object. Nodes can be Runnables or Variables, and edges are the connections between nodes. 
 
-### index.toml
-Recommended to be located at `$project_folder/src/$project_name/index.toml`. This file contains all of the file paths to all of the files that comprise this package. For maximum flexibility, the only requirement as to the structure of this file is that it consist only of dictionaries with any degree of nesting, where each key is whatever string the user wants, and the values are either a subdictionary, or an absolute file path. No relative file paths or other strings, no numbers, or lists are allowed outside of dictionaries.
+## index.toml
+Recommended to be located at `$project_folder/src/$project_name/index.toml`. This file contains all of the file paths to all of the files that comprise this package. For maximum flexibility, the only requirement as to the structure of this file is that it consist only of dictionaries (with any degree of nesting for organizational purposes), where each key is a user-defined string, and the values are either a subdictionary, or a file path. No other strings, no numbers, or lists are allowed outside of dictionaries. Relative file paths are preferred for portability. They are relative to the `$project_folder/src/$project_name` directory, as that is the root directory when the package is installed. Absolute file paths should be used only when needed to access files outside of the project folder.
 
-### pyproject.toml
-Recommended to be located at the root of your project folder, `pyproject.toml` is a type of text file that is Python's default way of providing the metadata needed to share Python packages. This is the only Python-standard .toml file, the rest are defined by me for the purposes of compiling a DAG from a TOML-based modular package format.
+## pyproject.toml
+Recommended to be located at the root of your project folder, `pyproject.toml` is a type of text file that is [Python's default way of providing the metadata needed to share Python packages](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/). This is the only Python-standard .toml file, the rest are custom-defined in this package for the purposes of compiling a DAG from a TOML-based modular package format.
 
-### Runnable
+## Variable
+A Variable node in the DAG is an input Variable if its successor is a Runnable, and an output Variable if its predecessor is a Runnable. Input Variables can be any of several types: hard-coded, loading a file, specifying a data object's name or file path, or even unspecified. Output variables do not have these delineations - they are all simply "outputs".
 
-### Variable
+## Runnable
+"Runnable" is an umbrella term for any node type that is not a Variable, and executes code. The default Runnable types are Process, Plot, PlotComponent, and Summary (in development). There are different types of Runnables because they each require different attributes to function, though some attributes are mandatory and shared between all Runnable types.
 
 ### Runnable: Process
+The most common type of Runnable. Takes in data, processes it by executing the associated code, and outputs data.
 
 ### Runnable: Plot
+Runnable that visualizes data. Takes in data and metadata about the Plot, Axes, and PlotComponent to construct and save the plot. NOTE: Plots themselves do not have code associated with them. However, PlotComponents do.
+
+### Runnable: PlotComponent
+!!!todo
+Used by Plot-type Runnables to define a single layer of the plot. Executes the plotting functions, while Plot Runnables themselves do not.
 
 ### Runnable: Summary
+!!!todo
+Responsible for summarizing the data so it can be entered into statistical analysis.

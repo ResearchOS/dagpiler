@@ -1,5 +1,5 @@
 nav:
     - Home: index.md
     - Packaging: Packaging
-    - Dictionary: terms.md
+    - Glossary: terms.md
     - Learning in Public: dev_blog
