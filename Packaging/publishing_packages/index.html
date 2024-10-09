@@ -200,10 +200,10 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../installing_packages/" class="md-tabs__link">
+        <a href="../creating_packages/" class="md-tabs__link">
           
   
-  Packaging
+  How to Use
 
         </a>
       </li>
@@ -222,6 +222,23 @@
     
   
   Glossary
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../philosophy/" class="md-tabs__link">
+        
+  
+    
+  
+  Philosophy
 
       </a>
     </li>
@@ -346,7 +363,7 @@
             
   
   <span class="md-ellipsis">
-    Packaging
+    How to Use
   </span>
   
 
@@ -356,9 +373,162 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            Packaging
+            How to Use
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../creating_packages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating New Packages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Writing TOML Files
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Writing TOML Files
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toml_files/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Types of TOML Files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plot_component/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PlotComponent
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
             
               
                 
@@ -499,6 +669,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../philosophy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -512,10 +702,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -526,8 +716,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Learning in Public
           </label>
@@ -702,12 +892,11 @@
 </div>
 <p>Once your package is in the proper format and fully functioning, there are multiple ways to share your package with the world.</p>
 <h1 id="1-pypi">1. PyPI</h1>
-<p>The Python Packaging Authority maintains the Python Packaging Index (PyPI), which is where the majority of Python packages reside. Packages in PyPI can be easily installed using <code>pip install</code>.</p>
+<p>The Python Packaging Authority maintains the Python Packaging Index (PyPI), which is where the majority of Python packages reside. Packages in PyPI can be easily installed using <code>pip install $package_name</code>.</p>
 <h1 id="2-github-or-other-online-version-control">2. GitHub (or Other Online Version Control)</h1>
-<p>If your package is publicly visible and hosted in an online version control platform such as GitHub or another service, you can simply leave it there! Others can pip install directly from your GitHub repository. It's always a good idea to test from another computer that your package can be successfully installed and run.</p>
-<div class="admonition todo">
-<p class="admonition-title">Todo</p>
-</div>
+<p>If your package is publicly visible and hosted in an online version control platform such as GitHub or another service, you can simply leave it there! Others can <code>pip install</code> directly from your GitHub repository (see <a href="../installing_packages/#installing-from-github">how to install packages from GitHub</a>). It's always a good idea to test from another computer that your package can be successfully installed and run.</p>
+<h1 id="3-other-online-repositories">3. Other Online Repositories</h1>
+<p>There are other locations online that can host your package besides version control platforms, such as the <a href="https://osf.io">Open Science Foundation</a>, <a href="https://zenodo.org">Zenodo</a>, etc. To share your package there, you must include either a wheel or source archive of your package, ideally both.</p>
 
 
 
