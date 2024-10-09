@@ -382,6 +382,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#future-toolkit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Toolkit
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -625,6 +634,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Packaging/bridging_packages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridging Packages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -826,6 +856,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#future-toolkit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Toolkit
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -852,7 +891,8 @@
 <p>It is challenging to integrate data analyses written by other people or organizations into your own data processing pipelines due to the large variation in data analyses and data. Presently, many organizations custom building their data processing pipelines, spending much of their time managing the uninteresting aspects such as file saving/loading, handling dependencies, etc. wasting lots of time re-creating infrastructure that already exists elsewhere.</p>
 <p>While there are established workflow orchestration tools such as Apache Airflow, they do not focus on being able to share and use data processing pipelines written by others. There is a need for a lightweight, standardized way to define data processing pipelines that can be shared and used by others.</p>
 <h2 id="solution">Solution</h2>
-<p>The <code>dagpiler</code> package solves the problem of reusing and sharing data analysis pipelines in the same way that modern software development reuses and shares software: by treating data processing pipelines as standalone packages. These packages use <a href="https://toml.io/en/v1.0.0">TOML files</a> and Python's native packaging system to define and publicly share data processing pipelines. These packages can then be installed using <code>pip install</code> and used by others in their own data processing pipelines via a "bridging" mechanism. When compiled, the TOML files are converted into a NetworkX Directed Acyclic Graph (DAG) that is intended to provide all of the requisite metadata for running the data processing pipeline.</p>
+<p>The <code>dagpiler</code> package solves the problem of reusing and sharing data analysis pipelines in the same way that modern software development reuses and shares software: by treating data processing pipelines as standalone packages. These packages use <a href="https://toml.io/en/v1.0.0">TOML files</a> and Python's native packaging system to define and publicly share data processing pipelines. These packages can then be installed using <code>pip install</code> and incorporated by others in their own data processing pipelines via a "<a href="Packaging/bridging_packages/">bridging</a>" mechanism. The compilation process converts TOML files into a NetworkX Directed Acyclic Graph (DAG) that is intended to provide all of the requisite metadata for running the data processing pipeline.</p>
+<h2 id="future-toolkit">Future Toolkit</h2>
 <p><code>dagpiler</code> is the first of a larger suite of tools that will be developed to support the entire data processing pipeline lifecycle, from dataset creation to data analysis, visualization, and reporting. The goal is to make it easy to share and use data processing pipelines, and to make it easy to integrate data analyses from multiple sources into a single pipeline.</p>
 
 
