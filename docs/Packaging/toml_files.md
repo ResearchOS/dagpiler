@@ -1,31 +1,44 @@
 # TOML Configuration Files
 
-TOML (Tom's Obvious Minimal Language) is a configuration file syntax that defines a format for human and machine-readable structured plain text. I like it a lot because it's just as full featured as JSON and YAML, has multiple ways to represent the same dictionaries, unlike JSON and YAML (which I find helpful), and due to negligible indentation, TOML is a very robust and easy to work with language. Its primary downside is that it has not been around for as long as YAML or JSON, and so not every language has an existing TOML parser, and not all TOML parsers are created equal (some may not handle the more advanced features in TOML like arrays of tables).
+TOML ([Tom's Obvious Minimal Language](https://toml.io/en/v1.0.0)) is a configuration file syntax that defines a format for human and machine-readable structured plain text. I selected it for this project because it's just as full featured as JSON and YAML, and has multiple ways to represent the same dictionaries, unlike JSON and YAML (which I find helpful). Due to negligible indentation, TOML is very robust and easy to work with. Its primary downside is that it has not been around for as long as YAML or JSON, and so not every language has an existing TOML parser (though Python, MATLAB, and R all do). I take care to keep the TOML files in this package as simple as possible, and to avoid using any advanced features, though this may occasionally lead to some repetition.
+
+!!!tip
+    This page is focused on how to write and use the TOML files. For a more high-level introduction to the concepts on this page, check out the [Glossary](../terms.md).
 
 ## pyproject.toml
-Python relies on pyproject.toml files to specify the metadata for publishing packages. The minimal default file structure is:
+Python relies on pyproject.toml files to specify the metadata for publishing packages (see [Python docs](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/) for details). For use with the `dagpiler` package, a minimal default file structure is provided below. The contents of this file are created when you run `dagpiler init` in a new project folder.
 ```toml
+# $project_folder/pyproject.toml
 [build-system]
 requires = ['hatchling']
 build-backend = 'hatchling.build'
 
 [project]
-name = "package_name"
+name = "your_package_name"
 version = '0.1.0'
-description = 'Package description'
+description = 'Your package description'
 authors = [{name = "Author Name", email ="author@email.com"}]
 dependencies = [
-    "package-dag-compiler"
+    "dagpiler"
 ]
 ```
 
 ## index.toml
-This file points to all of the other files in the package. It can be any format, but every value must be a file path. At its simplest, it could contain just one file path:
+This file specifies the paths to all of the other files in the package. For your package to work, this file must be located at `$project_folder/src/$project_name/index.toml`. It can contain arbitrarily nested dictionaries, but every value must be a file path or list of file paths. Relative file paths are preferred for portability. The root directory for the relative file paths is the directory containing the index.toml file, `$project_folder/src/$project_name`, as that is the root directory when the package is installed via `pip`.
+
+!!!tip
+    The index.toml file is the only file that is required to be in a specific location. The rest of the files can be located anywhere in the `$project_folder/src/$project_name` directory, as long as the paths are correctly specified in the index.toml file.
+!!!tip
+    Use relative paths whenever your files are within the `$project_folder/src/$project_name` directory. Use absolute paths only when you need to access files outside of the project folder.
+
+At its simplest, this file must contain a reference to at least one file path:
 ```toml
+# $project_folder/src/$project_name/index.toml
 package_file = "path/to/package_file.toml"
 ```
 In larger packages with more files, more organization becomes useful. For example, categorizing paths by type:
 ```toml
+# $project_folder/src/$project_name/index.toml
 processes = [
     "path/to/process1.toml",
     "path/to/process2.toml"
@@ -35,8 +48,9 @@ plots = [
 ]
 ```
 ### Special keys
-- bridges: The files that help connect the current package to others.
+bridges: The files that connect the current package to other packages. It is a file path or list of file paths.
 ```toml
+# $project_folder/src/$project_name/index.toml
 runnables = [
     "path/to/runnables1.toml",
     "path/to/runnables2.toml"
@@ -45,10 +59,11 @@ bridges = "path/to/bridges.toml"
 ```
 
 ## runnables.toml
-The main contents of a package reside in its 1+ runnables' .toml files, of which there are multiple types. Every type of runnable needs at minimum the following attributes: `type`, `exec`, and `inputs`.
+The main contents of a package reside in its 1+ runnables' .toml files, of which there are multiple types. Every type of runnable needs at minimum the following attributes: `type`, `exec` (except [Plot](../terms.md#runnable-plot) Runnables), and `inputs`. Below are outlines of the different types of builtin Runnable types. For more information on a specific type, see that Runnable's page.
 
 Example runnable format:
 ```toml
+# $project_folder/src/$project_name/path/to/runnables.toml
 [runnable_name]
 type = "runnable_type"
 exec = "path/to/file.ext:func_name"
@@ -56,7 +71,7 @@ inputs.input1 = "runnable1.variable1"
 ```
 
 ### Process
-Process type runnables are the most frequent runnable type. They process and transform data, and are the only type that has output variables. Inputs are identified by name, similar to keyword arguments available in most languages. As there are no named outputs, output variables are specified in a list in the same order that they are output.
+Process type runnables are the most frequent runnable type. They process and transform data, and are the only Runnable type that has output variables. Inputs are identified by name, similar to keyword arguments available in most languages. As multiple outputs are typically identified by their ordering, output variables are specified in a list (in the same order that they are output).
 
 ```toml
 [runnable_name]

@@ -13,6 +13,8 @@ Recommended to be located at `$project_folder/src/$project_name/index.toml`. Thi
 Recommended to be located at the root of your project folder, `pyproject.toml` is a type of text file that is [Python's default way of providing the metadata needed to share Python packages](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/). This is the only Python-standard .toml file, the rest are custom-defined in this package for the purposes of compiling a DAG from a TOML-based modular package format.
 
 ## Variable
+Variables are defined within the Runnables where they are used, they do not have their own sections of a TOML file. Variables can be specified as inputs or outputs, and are the primary way that data flows between Runnables.
+
 A Variable node in the DAG is an input Variable if its successor is a Runnable, and an output Variable if its predecessor is a Runnable. Input Variables can be any of several types: hard-coded, loading a file, specifying a data object's name or file path, or even unspecified. Output variables do not have these delineations - they are all simply "outputs".
 
 ## Runnable
@@ -22,7 +24,10 @@ A Variable node in the DAG is an input Variable if its successor is a Runnable, 
 The most common type of Runnable. Takes in data, processes it by executing the associated code, and outputs data.
 
 ### Runnable: Plot
-Runnable that visualizes data. Takes in data and metadata about the Plot, Axes, and PlotComponent to construct and save the plot. NOTE: Plots themselves do not have code associated with them. However, PlotComponents do.
+Runnable that visualizes data. Takes in data and metadata about the Plot, Axes, and PlotComponent to construct and save the plot. 
+
+!!!info
+    Plots themselves do not have code associated with them, and so do not have an `exec`property. However, PlotComponents do.
 
 ### Runnable: PlotComponent
 !!!todo

@@ -1,9 +1,9 @@
 """Create the DAG from the loaded TOML data."""
 import networkx as nx
 
-from dagpiler.toml_files.discover_toml import edge_list_to_vector_list
-from dagpiler.toml_files.read_toml import load_toml_file, INDEX_PATH_IN_TOML, subset_toml_data, get_package_dag_from_index_dict
-from dagpiler.toml_files.index import clean_index_dict
+from toml_files.discover_toml import edge_list_to_vector_list
+from toml_files.read_toml import load_toml_file, INDEX_PATH_IN_TOML, subset_toml_data, get_package_dag_from_index_dict
+from toml_files.index import clean_index_dict
 
 def create_dag_from_edge_list_of_toml_files(sorted_edge_list: list) -> nx.DiGraph:
     """High level function to create the DAG from the edge list of TOML file paths.

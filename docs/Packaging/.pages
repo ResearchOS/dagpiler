@@ -1,5 +1,9 @@
 nav:
-    - TOML Files: toml_files.md
-    - Creating Packages: creating_packages.md
+    - Creating New Packages: creating_packages.md
+    - Writing TOML Files: 
+        - Types of TOML Files: toml_files.md
+        - Process: process.md
+        - Plot: plot.md    
+        - PlotComponent: plot_component.md
     - Installing Packages: installing_packages.md    
     - Publishing Packages: publishing_packages.md
