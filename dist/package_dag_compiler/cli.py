@@ -1,4 +1,4 @@
-"""Contains all the command line interface code for the Package-DAG-Compiler package."""
+"""Contains all the command line interface code for the dagpiler package."""
 import os
 
 import typer

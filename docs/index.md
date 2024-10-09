@@ -1,14 +1,17 @@
-# Package-DAG-Compiler
+# DAGpiler
 
-Build data processing pipelines from independent packages.
+Compile data processing pipelines from independent packages as a NetworkX DAG with the `dagpiler` package.
+```bash
+pip install dagpiler
+```
 
 ## Problem Statement
-It is challenging to share data processing pipelines due to the large variety of data analyses and data. Presently, many organizations custom build their data processing pipelines, making it difficult for others to build on their work, and wasting lots of time duplicating existing infrastructure. 
+It is challenging to integrate data analyses written by other people or organizations into your own data processing pipelines due to the large variation in data analyses and data. Presently, many organizations custom building their data processing pipelines, spending much of their time managing the uninteresting aspects such as file saving/loading, handling dependencies, etc. wasting lots of time re-creating infrastructure that already exists elsewhere.
 
-While there are established workflow orchestration tools such as Apache Airflow, they tend to be overkill for smaller teams or academic settings in which a large-scale "production" environment is not required, and are not focused on sharing and building upon existing pipelines.
+While there are established workflow orchestration tools such as Apache Airflow, they do not focus on being able to share and use data processing pipelines written by others. There is a need for a lightweight, standardized way to define data processing pipelines that can be shared and used by others.
 
 ## Solution
-This package aims to solve the problem of combining independently developed packages by providing a lightweight, standardized way to define data processing pipelines using [TOML files](https://toml.io/en/v1.0.0). It is designed to be flexible and extensible, allowing users to define their own data processing steps and connect them in a Directed Acyclic Graph (DAG) to create a data processing pipeline. 
+The `dagpiler` package solves the problem of reusing and sharing data analysis pipelines in the same way that modern software development reuses and shares software: by treating data processing pipelines as standalone packages. These packages use [TOML files](https://toml.io/en/v1.0.0) and Python's native packaging system to define and publicly share data processing pipelines. These packages can then be installed using `pip install` and used by others in their own data processing pipelines via a "bridging" mechanism. When compiled, the TOML files are converted into a NetworkX Directed Acyclic Graph (DAG) that is intended to provide all of the requisite metadata for running the data processing pipeline.
 
-The Package-DAG-Compiler focuses on compiling a data processing pipeline from independent packages, similar to how software development uses packages published by others to build software. It is the first of a larger suite of tools that will be developed to support the entire data processing pipeline lifecycle, from data collection to analysis to visualization.
+`dagpiler` is the first of a larger suite of tools that will be developed to support the entire data processing pipeline lifecycle, from dataset creation to data analysis, visualization, and reporting. The goal is to make it easy to share and use data processing pipelines, and to make it easy to integrate data analyses from multiple sources into a single pipeline.
 
