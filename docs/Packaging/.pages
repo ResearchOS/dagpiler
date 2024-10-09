@@ -7,3 +7,4 @@ nav:
         - PlotComponent: plot_component.md
     - Installing Packages: installing_packages.md    
     - Publishing Packages: publishing_packages.md
+    - Bridging Packages: bridging_packages.md

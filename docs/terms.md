@@ -36,3 +36,6 @@ Used by Plot-type Runnables to define a single layer of the plot. Executes the p
 ### Runnable: Summary
 !!!todo
 Responsible for summarizing the data so it can be entered into statistical analysis.
+
+## Bridges
+The mechanism to connect Runnables in different packages. Using similar syntax as in the package's TOML files, the separation of the bridge file allows for the separation of concerns between the package's internal structure and its external connections. This means that a package can be written to reference variables from other packages without knowing anything about those other packages. For more information, see the [Bridging](Packaging/bridging_packages.md) page.

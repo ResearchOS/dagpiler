@@ -2,7 +2,7 @@
 site_name: "dagpiler"
 site_author: "Mitchell Tillman"
 repo_name: ""
-repo_url: "https://github.com/ResearchOS/Package-DAG-Compiler"
+repo_url: "https://github.com/ResearchOS/dagpiler"
 site_url: "https://researchos.github.io//"
 theme:
   name: material
