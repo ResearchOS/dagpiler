@@ -11,8 +11,3 @@ dependencies = []
 
 [project.scripts]
 dagpiler = "dagpiler.cli:app"
-
-# [tool.hatch.build]
-# include = [
-#     "src/package_dag_compiler/**"
-# ]

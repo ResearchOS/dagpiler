@@ -1,6 +1,8 @@
 
 import networkx as nx
 
+from runnables.runnables import Runnable
+
 
 def order_nodes(dag: nx.MultiDiGraph):
     """Order the nodes in the DAG. Within each topological generation, order by the node name."""
@@ -27,3 +29,25 @@ def order_edges(dag: nx.MultiDiGraph):
         sorted_edges.extend(edges_sorted)
     
     return sorted_edges
+
+def get_dag_of_runnables(dag: nx.MultiDiGraph) -> nx.MultiDiGraph:
+    """Given a DAG with variables & Runnables, return a DAG with only Runnable nodes.
+    This DAG has the advantage of being able to topologically sort the Runnable nodes."""
+    # Get the transitive closure
+    trans_clos_dag = nx.transitive_closure_dag(dag)
+    runnable_nodes = [node for node in dag.nodes(data=True) if isinstance(node, Runnable)]
+    runnable_dag = trans_clos_dag.subgraph(runnable_nodes).copy()
+    # Isolate only the edges between Runnable nodes that are supposed to be connected to one another.
+    
+    # Remove duplicate edges
+    runnable_dag = nx.MultiDiGraph(nx.DiGraph(runnable_dag))
+    
+    # Get the edges to remove between Runnable nodes that are not neighbors
+    edges_to_remove = []
+    for edge in runnable_dag.edges(data=True):
+        source_node, target_node = edge[0], edge[1]
+        prev_path_length = nx.shortest_path_length(dag, source_node, target_node)
+        if prev_path_length > 3:
+            edges_to_remove.append((source_node, target_node))
+    runnable_dag.remove_edges_from(edges_to_remove)
+    return 

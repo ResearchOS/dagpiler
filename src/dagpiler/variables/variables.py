@@ -4,12 +4,8 @@ import re
 import os
 
 from config_reader import CONFIG_READER_FACTORY
+from constants import VARIABLE_TYPES_KEYS
 
-VARIABLE_TYPES_KEYS = {
-    "__load__": "load_from_file",
-    "__data_object_path__": "data_object_file_path",
-    "__data_object_name__": "data_object_name"
-}
 
 class Variable:
     """Variable object that can be used as input or output to a Runnable."""

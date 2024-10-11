@@ -26,7 +26,6 @@ def process_package(package_name: str, processed_packages: dict, package_depende
     # Get the index file path for the package
     index_file_path = get_index_file_path(package_name)
 
-    # os.environ["PACKAGE_NAME"] = package_name
     os.environ["PACKAGE_FOLDER"] = os.path.dirname(index_file_path)
     
     # Read the package's bridges and runnables

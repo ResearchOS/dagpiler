@@ -1,7 +1,4 @@
-
-
-EXEC_SEPARATOR = "::" # Separates the file path from the function name
-
+from constants import DELIMITER
      
 class AttributeValidator:
     """Interface for attribute cleaning strategies."""
@@ -44,9 +41,9 @@ class ExecValidator(AttributeValidator):
     def validate(self, value):
         if not isinstance(value, str):
             raise ValueError(f"Expected 'exec' to be a str, got {type(value)}")
-        if EXEC_SEPARATOR not in value:
-            raise ValueError(f"Expected 'exec' to contain a separator '{EXEC_SEPARATOR}'")
-        split_exec = value.split(sep=EXEC_SEPARATOR)
+        if DELIMITER not in value:
+            raise ValueError(f"Expected 'exec' to contain a separator '{DELIMITER}'")
+        split_exec = value.split(sep=DELIMITER)
         return value.strip()
 
 @register_attr_validator("inputs")
