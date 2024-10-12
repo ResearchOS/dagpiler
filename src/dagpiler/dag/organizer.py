@@ -35,19 +35,16 @@ def get_dag_of_runnables(dag: nx.MultiDiGraph) -> nx.MultiDiGraph:
     This DAG has the advantage of being able to topologically sort the Runnable nodes."""
     # Get the transitive closure
     trans_clos_dag = nx.transitive_closure_dag(dag)
-    runnable_nodes = [node for node in dag.nodes(data=True) if isinstance(node, Runnable)]
+    runnable_nodes = [node for node in dag.nodes if issubclass(node.__class__, Runnable)]
     runnable_dag = trans_clos_dag.subgraph(runnable_nodes).copy()
-    # Isolate only the edges between Runnable nodes that are supposed to be connected to one another.
-    
-    # Remove duplicate edges
-    runnable_dag = nx.MultiDiGraph(nx.DiGraph(runnable_dag))
     
     # Get the edges to remove between Runnable nodes that are not neighbors
     edges_to_remove = []
-    for edge in runnable_dag.edges(data=True):
+    for edge in runnable_dag.edges(data=False):
         source_node, target_node = edge[0], edge[1]
         prev_path_length = nx.shortest_path_length(dag, source_node, target_node)
         if prev_path_length > 3:
             edges_to_remove.append((source_node, target_node))
     runnable_dag.remove_edges_from(edges_to_remove)
-    return 
+    
+    return runnable_dag

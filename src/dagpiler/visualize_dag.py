@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
 from runnables.process import Process
 from runnables.plot import Plot
-from dag.organizer import order_nodes
+from dag.organizer import order_nodes, get_dag_of_runnables
 
 colors_dict = {
     HardcodedVariable: 'blue',
@@ -44,9 +44,9 @@ def visualize_dag(dag: nx.MultiDiGraph, layout: str = 'generation'):
     layer_width = 1.0   # Horizontal space between nodes in the same layer
 
     if layout == 'generation':
-        pos, label_pos = set_generational_layout(dag, layers, layer_width, layer_height)
+        pos = set_generational_layout(dag, layers, layer_width, layer_height)
     else:
-        pos, label_pos = set_topological_layout(dag, layer_width, layer_height)
+        pos = set_topological_layout(dag, layer_width, layer_height)
 
     node_colors = [colors_dict.get(node.__class__, 'black') for node in dag.nodes]
 
@@ -56,12 +56,13 @@ def visualize_dag(dag: nx.MultiDiGraph, layout: str = 'generation'):
             nodes_with_labels[node] = node.name.split('.')[-1]
 
     nx.draw(dag, pos, with_labels=False, labels=nodes_with_labels, node_color=node_colors, edge_color='grey')
-    nx.draw_networkx_labels(dag, label_pos, nodes_with_labels, font_size=8)
+    nx.draw_networkx_labels(dag, pos, nodes_with_labels, font_size=8)
     plt.show()
 
 def set_topological_layout(dag: nx.MultiDiGraph, layer_width: float, layer_height: float):
     """Left to right layout"""
-    sorted_runnable_nodes = order_nodes(dag)       
+    runnables_dag = get_dag_of_runnables(dag)   
+    sorted_runnable_nodes = order_nodes(runnables_dag)
 
     pos = {}    
     for i, node in enumerate(sorted_runnable_nodes):
@@ -78,8 +79,8 @@ def set_topological_layout(dag: nx.MultiDiGraph, layer_width: float, layer_heigh
         for j, output_node in enumerate(outputs):
             pos[output_node] = (pos[node][0] + 1, output_offsets[j])
 
-    label_pos = deepcopy(pos)
-    return pos, label_pos
+    # label_pos = deepcopy(pos)
+    return pos
 
 def set_generational_layout(dag: nx.MultiDiGraph, layers: list, layer_width: float, layer_height: float):
     """Top to bottom layout"""
@@ -103,14 +104,14 @@ def set_generational_layout(dag: nx.MultiDiGraph, layers: list, layer_width: flo
         for i, node in enumerate(nodes):
             pos[node] = (i * layer_width, -layer * layer_height)
 
-    label_pos = {}
-    for layer, nodes in layers.items():
-        for i, node in enumerate(nodes):
-            mod = i % 2
-            label_pos[node] = (pos[node][0], pos[node][1])
-            if mod == 0:
-                label_pos[node] = (pos[node][0], pos[node][1] - 0.1*layer_height)
-            else:
-                label_pos[node] = (pos[node][0], pos[node][1] + 0.1*layer_height) 
+    # label_pos = {}
+    # for layer, nodes in layers.items():
+    #     for i, node in enumerate(nodes):
+    #         mod = i % 2
+    #         label_pos[node] = (pos[node][0], pos[node][1])
+    #         if mod == 0:
+    #             label_pos[node] = (pos[node][0], pos[node][1] - 0.1*layer_height)
+    #         else:
+    #             label_pos[node] = (pos[node][0], pos[node][1] + 0.1*layer_height) 
 
-    return pos, label_pos
+    return pos
