@@ -3,7 +3,7 @@ import requests
 import toml, yaml
 
 # GitHub repository details
-OWNER = "mtillman14"
+OWNER = "researchos"
 REPO = "dagpiler"
 BRANCH = "main"  # or the branch you want to replicate
 
@@ -23,6 +23,9 @@ def init():
     for item in tree:
         if INIT_TEMPLATE_DIR not in item['path']:
             continue
+        path = item['path'].replace(INIT_TEMPLATE_DIR, "")
+        if path and path[0] == os.sep:
+            path = path[1:]
         # Process directories
         item_path = os.path.join(local_path, item['path'])
         if item['type'] == 'tree':
@@ -64,9 +67,9 @@ def personalize_pyproject_toml(toml_path: str, project_name: str, author_name: s
         pyproject_toml = toml.load(file)
     pyproject_toml["project"]["name"] = project_name
     if author_name:
-        pyproject_toml["authors"]["name"] = author_name
+        pyproject_toml["project"]["authors"]["name"] = author_name
     if author_email:
-        pyproject_toml["authors"]["email"] = author_email
+        pyproject_toml["project"]["authors"]["email"] = author_email
     with open(toml_path, "w") as file:
         toml.dump(pyproject_toml, file)
     print("Project name updated in pyproject.toml")
