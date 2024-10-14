@@ -62,3 +62,11 @@ def initialize_outputs(runnable: Runnable):
         full_var_name = f"{runnable.name}.{output_var_string}"
         outputs_dict[output_var_string] = VARIABLE_FACTORY.create_variable(full_var_name)
     runnable.outputs = outputs_dict
+
+class NodeFactory:
+    """Decides whether to create a Runnable or Variable based on the dictionary passed in."""
+
+    def create_node(self, node_dict: dict):
+        if "inputs" in node_dict or "outputs" in node_dict:
+            return RUNNABLE_FACTORY.create_runnable(node_dict)
+        return VARIABLE_FACTORY.create_variable(node_dict)

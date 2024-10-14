@@ -19,6 +19,7 @@ def main():
     # Subparser for the 'plot' command
     parser_plot = subparsers.add_parser("plot", help="Compile and plot the DAG to the specified path.")
     parser_plot.add_argument("output_path", type=str, help="The path where the plot should be saved")
+    parser_plot.add_argument("layout", type=str, default='generation', help="The layout of the plot")
 
     # Initialize the subparser for the 'init' command
     parser_init = subparsers.add_parser("init", help="Initialize a new package in the current directory.")
@@ -36,7 +37,7 @@ def main():
     if args.command == "compile":
         return dag
     elif args.command == "plot":
-        plot_dag(dag, args.output_path)
+        plot_dag(dag, args.output_path, args.layout)
     elif args.command == "print":
         print_dag(dag)
     else:

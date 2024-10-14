@@ -10,11 +10,20 @@ from ..constants import VARIABLE_TYPES_KEYS
 class Variable:
     """Variable object that can be used as input or output to a Runnable."""
     
-    def __init__(self, name: str, user_inputted_value: str = None):
-        self.name = name
-        self.user_inputted_value = user_inputted_value # The exact value from the config file input by the user, including slices
-        self.value_for_hashing = None # The value used for hashing, obtained from self.set_value_for_hashing() by Variable subclasses
-        self.slices = None # The slices of the variable, if any
+    def __init__(self, 
+                 name: str, 
+                 user_inputted_value: str = None,
+                 **kwargs):
+        var_dict = {
+            "name": name,
+            "user_inputted_value": user_inputted_value,
+            "value_for_hashing": None,
+            "slices": None            
+        }
+        # No validation here because there really isn't any validation to perform. Any value can be a variable.
+        var_dict.update(kwargs)
+        for key, value in var_dict.items():
+            setattr(self, key, value)
 
     def __str__(self):
         return f"{self.__class__.__name__}({self.name})"
@@ -32,6 +41,18 @@ class Variable:
 
     def __hash__(self):
         return hash(self.name)
+    
+    def to_dict(self) -> dict:
+        return {
+            "name": self.name,
+            "user_inputted_value": self.user_inputted_value,
+            "value": self.user_inputted_value,
+            "value_for_hashing": self.value_for_hashing,
+        }
+    
+    @abstractmethod
+    def from_dict(var_dict: dict) -> "Variable":
+        return VARIABLE_FACTORY.create_variable(var_dict["name"], var_dict["user_inputted_value"])
     
 class VariableFactory:
     """Factory for creating Variable objects."""

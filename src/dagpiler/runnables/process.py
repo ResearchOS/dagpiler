@@ -29,8 +29,7 @@ class Process(Runnable):
         }
         runnable_dict.update(kwargs)
         dict_validator = DictValidator()
-        dict_validator.validate(runnable_dict)    
-        # Include any additional kwargs as attributes
+        dict_validator.validate(runnable_dict)
         for key, value in runnable_dict.items():
             setattr(self, key, value)
 

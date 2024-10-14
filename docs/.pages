@@ -1,6 +1,7 @@
 nav:
     - Home: index.md
     - How to Use: Packaging
+    - Commands: commands
     - Glossary: terms.md
     - Philosophy: philosophy.md
     - Learning in Public: dev_blog    
