@@ -7,7 +7,20 @@ name = "dagpiler"
 version = '0.1.0'
 description = 'Compile a DAG representation of a data processing pipeline from TOML files.'
 authors = [{name = "Mitchell Tillman", email ="mtillman14@gmail.com"}]
-dependencies = []
+dependencies = [
+    "toml",
+    "networkx"
+]
+[dependency-groups]
+docs = [
+    "mkdocs-material",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-awesome-pages-plugin",
+    "mkdocstrings",
+]
+tests = [
+    "pytest",
+]
 
 [project.scripts]
 dagpiler = "dagpiler.__main__:main"

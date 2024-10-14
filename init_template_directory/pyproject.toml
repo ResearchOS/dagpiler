@@ -1,0 +1,12 @@
+[build-system]
+requires = ['hatchling']
+build-backend = 'hatchling.build'
+
+[project]
+name = "initialized_project"
+version = '0.1.0'
+description = 'A newly initialized project from dagpiler'
+authors = [{name = "My Name", email ="my@email.com"}]
+dependencies = [
+
+]

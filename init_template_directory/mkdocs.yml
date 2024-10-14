@@ -1,9 +1,9 @@
 
-site_name: "dagpiler"
-site_author: "Mitchell Tillman"
+site_name: "project_name"
+site_author: "My Name"
 repo_name: ""
-repo_url: "https://github.com/ResearchOS/dagpiler"
-site_url: "https://researchos.github.io//"
+repo_url: "https://github.com/username/repo"
+site_url: "https://repo.github.io//"
 theme:
   name: material
   features:

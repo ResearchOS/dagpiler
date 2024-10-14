@@ -1,0 +1,2 @@
+# Learning in Public
+This is a place for me to document my thoughts and learnings as I develop. It may or may not be useful to anyone else, but the act of writing helps me to solidify my understanding of a topic.
