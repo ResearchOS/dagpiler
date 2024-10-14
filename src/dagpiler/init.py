@@ -4,11 +4,8 @@ import requests
 import toml
 import yaml
 
-# GitHub repository details
-OWNER = "researchos"
-REPO = "dagpiler"
-BRANCH = "main"  # or the branch you want to replicate
 
+from .constants import OWNER, REPO, BRANCH
 from .constants import INIT_TEMPLATE_DIR, DEFAULT_PROJECT_NAME, DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_EMAIL
 
 def init():

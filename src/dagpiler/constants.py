@@ -17,3 +17,8 @@ INIT_TEMPLATE_DIR = "init_template_directory"
 DEFAULT_PROJECT_NAME = "My Project"
 DEFAULT_AUTHOR_NAME = "Author Name"
 DEFAULT_AUTHOR_EMAIL = "author@email.com"
+
+# GitHub repository details
+OWNER = "researchos"
+REPO = "dagpiler"
+BRANCH = "main"  # or the branch you want to replicate
