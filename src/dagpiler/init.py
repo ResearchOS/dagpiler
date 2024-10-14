@@ -9,7 +9,7 @@ BRANCH = "main"  # or the branch you want to replicate
 
 INIT_TEMPLATE_DIR = "init_template_directory"
 
-def init_package():
+def init():
     """Download the init_template_directory from the package's GitHub repository."""
     # GitHub API URL to fetch repository content
     api_url = f"https://api.github.com/repos/{OWNER}/{REPO}/git/trees/{BRANCH}?recursive=1"

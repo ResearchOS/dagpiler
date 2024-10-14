@@ -26,11 +26,27 @@ pip install dagpiler
 ```
 
 4. Initialize the project with the `dagpiler init` command. This creates the [folder structure and files needed for the project](publishing_packages.md#package-folder-structure).
-!!!todo
 ```bash
 dagpiler init
 ```
+It will ask you for the following metadata to set up the pyproject.toml and mkdocs.yml files:
+    - `name`: The name of the package (REQUIRED)
+    - `author name`: The name of the author (OPTIONAL)
+    - `author email`: The email of the author (OPTIONAL)
+!!!tip
+    If you don't want to provide any metadata here (including the package name), you can provide it later in the pyproject.toml and mkdocs.yml files manually. This step is inteded only to save you time later.
 
 5. Write the TOML files that define your data processing pipeline components. For more information on the types of TOML files, see the [Types of TOML Files](toml_files.md) page.
 
-6. Compile the TOML files into a NetworkX Directed Acyclic Graph (DAG) using the `dagpiler compile` command. This command will check the TOML files for errors and compile them into
+6. Compile the TOML files into a Directed Acyclic Graph (DAG) as a NetworkX MultiDiGraph object using the `dagpiler compile` command line command. This command will check the TOML files for errors and compile them into the DAG.
+
+!!!warning
+    No matter how you run the `compile` command, the package name must match a package that has been pip installed in the current folder's virtual environment (.venv).
+
+To run the command from Python:
+```python
+from dagpiler import compile_dag
+
+package_name = "my_package"
+dag = compile_dag(package_name)
+```

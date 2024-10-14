@@ -24,14 +24,15 @@ dependencies = [
 ```
 
 ## index.toml
-This file specifies the paths to all of the other files in the package. For your package to work, this file must be located at `$project_folder/src/$project_name/index.toml`. It can contain arbitrarily nested dictionaries, but every value must be a file path or list of file paths. Relative file paths are preferred for portability. The root directory for the relative file paths is the directory containing the index.toml file, `$project_folder/src/$project_name`, as that is the root directory when the package is installed via `pip`.
+This file specifies the paths to all of the other files in the package. For your package to work, this file must be located at `$project_folder/src/$project_name/index.toml`. It can contain arbitrarily nested dictionaries, but every value must be a file path or list of file paths. **Relative file paths are preferred for portability.** The root directory for the relative file paths is the directory containing the index.toml file, `$project_folder/src/$project_name`, as that is the root directory when the package is installed via `pip`.
 
 !!!tip
-    The index.toml file is the only file that is required to be in a specific location. The rest of the files can be located anywhere in the `$project_folder/src/$project_name` directory, as long as the paths are correctly specified in the index.toml file.
+    The index.toml file is the only file that is required to be in a specific location. The rest of the files can be located anywhere as long as the paths are correctly specified in the index.toml file.
 !!!tip
-    Use relative paths whenever your files are within the `$project_folder/src/$project_name` directory. Use absolute paths only when you need to access files outside of the project folder.
+    Try to keep all of the package's files within the `$project_folder/src/$project_name` directory so that `index.toml` can reference them using relative paths. Use absolute paths to files outside of this folderonly when necessary, as this is not portable.
 
-At its simplest, this file must contain a reference to at least one file path:
+### Examples
+The simplest `index.toml` files are just one key-value pair, where the key can be any string and the value is a file path. For example:
 ```toml
 # $project_folder/src/$project_name/index.toml
 package_file = "path/to/package_file.toml"
@@ -59,16 +60,9 @@ bridges = "path/to/bridges.toml"
 ```
 
 ## runnables.toml
-The main contents of a package reside in its 1+ runnables' .toml files, of which there are multiple types. Every type of runnable needs at minimum the following attributes: `type`, `exec` (except [Plot](../terms.md#runnable-plot) Runnables), and `inputs`. Below are outlines of the different types of builtin Runnable types. For more information on a specific type, see that Runnable's page.
+The main contents of a package reside in its 1+ runnables' .toml files, of which there are multiple types. Every type of runnable needs to specify a `type` attribute, and most will have `inputs` and/or `outputs`. Any custom attributes that the user provides in addition to the built-in ones are stored in the nodes, but are not used by the compiler.
 
-Example runnable format:
-```toml
-# $project_folder/src/$project_name/path/to/runnables.toml
-[runnable_name]
-type = "runnable_type"
-exec = "path/to/file.ext:func_name"
-inputs.input1 = "runnable1.variable1"
-```
+Below are outlines of the different types of builtin Runnable types. For more information on a specific type, see that Runnable's page.
 
 ### Process
 Process type runnables are the most frequent runnable type. They process and transform data, and are the only Runnable type that has output variables. Inputs are identified by name, similar to keyword arguments available in most languages. As multiple outputs are typically identified by their ordering, output variables are specified in a list (in the same order that they are output).
@@ -76,7 +70,6 @@ Process type runnables are the most frequent runnable type. They process and tra
 ```toml
 [runnable_name]
 type = "process"
-exec = "path/to/file.ext:func_name"
 inputs.input1 = "runnable1.variable1"
 outputs = [
     "output1",
@@ -90,7 +83,6 @@ Plot type runnables are exactly what they sound like - they plot and visualize d
 ```toml
 [runnable_name]
 type = "plot"
-exec = "path/to/file.ext:func_name"
 inputs.input1 = "runnable1.variable1"
 ```
 
@@ -100,7 +92,6 @@ Summary type runnables summarize the data.
 ```toml
 [runnable_name]
 type = "summary"
-exec = "path/to/file.ext:func_name"
 inputs.input1 = "runnable1.variable1"
 ```
 
@@ -126,7 +117,7 @@ Note that each entry contains the package name, which is not included in the pac
 In this case, one output variable is being used as an input to multiple runnables. This is a common practice, as there are often computed variables that need to be used by multiple functions further along the pipeline.
 
 ### One target, multiple sources
-In this case, one input variable is receiving data from multiple sources, triggering a polyfurcation of the DAG, with one branch per input variable. Most commonly this would happen with Plot and Summary runnables, to reuse the same runnable to plot or summarize multiple variables. 
+In this case, one input variable is receiving data from multiple sources, triggering a polyfurcation of the DAG, with one branch per input variable. Most commonly this would happen with Plot and Summary runnables, to reuse the same runnable to plot or summarize multiple variables, though it is used with Process runnables as well.
 
 In the below example, two variables are both being connected to the input variable for a Summary runnable.
 ```toml

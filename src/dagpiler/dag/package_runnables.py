@@ -25,11 +25,15 @@ def add_package_runnables_to_dag(package_name: str, package_runnables_dict: dict
             for input_var in runnable_node.inputs.values():
                 dag.add_node(input_var)
                 dag.add_edge(input_var, runnable_node)
+                if not nx.is_directed_acyclic_graph(dag):
+                    raise ValueError(f"Adding edge {input_var} -> {runnable_node} would create a cycle in the DAG.")
 
         if "outputs" in runnable_node.__dict__:
             for output_var in runnable_node.outputs.values():
                 dag.add_node(output_var)
-                dag.add_edge(runnable_node, output_var)        
+                dag.add_edge(runnable_node, output_var)      
+                if not nx.is_directed_acyclic_graph(dag):
+                    raise ValueError(f"Adding edge {runnable_node} -> {output_var} would create a cycle in the DAG.")  
 
         
     # Connect the variables to one another
@@ -44,3 +48,5 @@ def add_package_runnables_to_dag(package_name: str, package_runnables_dict: dict
             output_var = VARIABLE_FACTORY.create_variable(runnable_node.value_for_hashing)
             assert output_var in dag.nodes, f"Variable value {output_var} from {input_var} not found as an output variable in the DAG. Check your spelling and ensure that the variable is an output from a runnable."
             dag.add_edge(output_var, input_var)
+            if not nx.is_directed_acyclic_graph(dag):
+                raise ValueError(f"Adding edge {output_var} -> {input_var} would create a cycle in the DAG.")

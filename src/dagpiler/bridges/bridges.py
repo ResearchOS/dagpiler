@@ -62,3 +62,5 @@ def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, dag: nx.Mu
                 # Add edge from source to target
                 if output_variable is not None:
                     dag.add_edge(output_variable, converted_input_variable)
+                    if not nx.is_directed_acyclic_graph(dag):
+                        raise ValueError(f"Adding edge {output_variable} -> {converted_input_variable} would create a cycle in the DAG.")

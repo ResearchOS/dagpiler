@@ -12,13 +12,19 @@ outputs = [
 ]
 ```
 
-Primarily, the focus when creating Process Runnables is on the `inputs` fields, as there are many different kinds of inputs that can be specified.
+Primarily, the focus when creating Process Runnables is on the `inputs` fields, as there are many different kinds of inputs that can be specified. Below are definitions and examples of several different kinds of supported inputs.
 
 ## Inputs
 ### Dynamic
 These are the names of variables that were output from a previous Runnable ***within the same package***. If they come from a different package, they should be specified in the `bridges.toml` file.
 
-The dynamic variable names are formatted as `runnable_name.variable_name`. The `runnable_name` is the name of the Runnable that produced the variable, and the `variable_name` is the name of the variable that was produced. It must match the name of the variable in the `outputs` list from the producing Runnable.
+The dynamic variable names are formatted as `runnable_name.variable_name`. The `runnable_name` is the name of the Runnable that produced the variable, and the `variable_name` is the name of the variable that was produced. It must match the name of the variable in the `outputs` list from the producing Runnable. For example:
+```toml
+[runnable1_name]
+type = "process"
+inputs.input1 = "runnable2_name.variable1"
+```
+This specifies that the input variable `variable1` from `runnable2_name` should be used as `input1` in `runnable1_name`.
 !!!warning
     If you specify a variable from a Runnable in a different package in the `inputs` field, the compiler will not be able to find it and will raise an error.
 !!!tip

@@ -1,9 +1,11 @@
 # Installing Packages
 
-You've found a package you want to use, and now you want to install it. First, you need to put that package in your pyproject.toml file. Depending on where the package is being installed from, there are a few ways to do this using Python's default syntax. For more information than is provided here, check out the linked documentation in the sections below.
+You've found a package you want to use, and now you want to install it! First, you need to put that package in your pyproject.toml file. Depending on where the package is being installed from, there are a few ways to do this using Python's default syntax. For more information than is provided here, check out the linked documentation in the sections below.
+
+After updating your `pyproject.toml` file, you can install all of your package's dependencies by installing your own package using `pip install .` or `pip install -e .` from the root directory of your package.
 
 ## Installing from PyPI
-Packages installed from PyPI can be specified with their package name, and optionally version restrctions. See [Python docs](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#dependencies-and-requirements) for details. 
+Packages installed from PyPI can be specified with their package name, and optionally version restrictions. See [Python docs](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#dependencies-and-requirements) for details. 
 ```toml
 [project]
 dependencies = [
@@ -17,7 +19,7 @@ From the [Hatch documentation](https://hatch.pypa.io/1.8/config/dependency/#supp
 ```toml
 [project]
 dependencies = [
-    "Package-DAG-Compiler @ git+https://github.com/ResearchOS/Package-DAG-Compiler"
+    "dagpiler @ git+https://github.com/ResearchOS/dagpiler"
 ]
 ```
 
@@ -26,7 +28,7 @@ Similarly, dependency packages can be [installed from a local directory](https:/
 ```toml
 [project]
 dependencies = [
-    "Package-DAG-Compiler @ file:///path/to/dependent/package/Package-DAG-Compiler" # Package folder path
+    "dagpiler @ file:///path/to/dependent/package/dagpiler" # Package folder path
 ]
 ```
 
