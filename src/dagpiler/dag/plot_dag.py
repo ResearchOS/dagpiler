@@ -3,7 +3,6 @@ from copy import deepcopy
 
 import networkx as nx
 
-# from ResearchOS.custom_classes import Constant, InputVariable, OutputVariable, Unspecified, Logsheet, Process, Runnable, Variable, Dynamic
 from ..variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
 from ..runnables.process import Process
 from ..runnables.plot import Plot
@@ -103,15 +102,5 @@ def set_generational_layout(dag: nx.MultiDiGraph, layers: list, layer_width: flo
     for layer, nodes in layers.items():
         for i, node in enumerate(nodes):
             pos[node] = (i * layer_width, -layer * layer_height)
-
-    # label_pos = {}
-    # for layer, nodes in layers.items():
-    #     for i, node in enumerate(nodes):
-    #         mod = i % 2
-    #         label_pos[node] = (pos[node][0], pos[node][1])
-    #         if mod == 0:
-    #             label_pos[node] = (pos[node][0], pos[node][1] - 0.1*layer_height)
-    #         else:
-    #             label_pos[node] = (pos[node][0], pos[node][1] + 0.1*layer_height) 
 
     return pos

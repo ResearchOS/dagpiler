@@ -1,7 +1,6 @@
 from abc import abstractmethod
 import os
 import json
-import toml
 
 class ConfigReader:
     """Interface for reading all configuration files except index files."""
@@ -41,8 +40,22 @@ class JSONConfigReader(ConfigReader):
 @register_config_reader(".toml")
 class TOMLConfigReader(ConfigReader):
     def read_config(self, config_path: str) -> dict:
+        try:
+            import toml
+        except ImportError:
+            raise ImportError("You need to install the 'toml' package to read TOML files.")
         with open(config_path, 'r') as f:
             return toml.load(f)
+        
+@register_config_reader(".yaml")
+class YAMLConfigReader(ConfigReader):
+    def read_config(self, config_path: str) -> dict:
+        try:
+            import yaml
+        except ImportError:
+            raise ImportError("You need to install the 'pyyaml' package to read YAML files.")
+        with open(config_path, 'r') as f:
+            return yaml.load(f, Loader=yaml.FullLoader)
         
 class RunnableParser:
     """Interface for parsing runnable dicts."""

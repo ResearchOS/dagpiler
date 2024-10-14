@@ -1,20 +1,15 @@
 import os
 import requests
-try:
-    import toml
-except ModuleNotFoundError:
-    pass
-try:
-    import yaml
-except ModuleNotFoundError:
-    pass
+
+import toml
+import yaml
 
 # GitHub repository details
 OWNER = "researchos"
 REPO = "dagpiler"
 BRANCH = "main"  # or the branch you want to replicate
 
-INIT_TEMPLATE_DIR = "init_template_directory"
+from .constants import INIT_TEMPLATE_DIR, DEFAULT_PROJECT_NAME, DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_EMAIL
 
 def init():
     """Download the init_template_directory from the package's GitHub repository."""
@@ -43,10 +38,13 @@ def init():
             os.makedirs(os.path.dirname(item_path), exist_ok=True)
             file_url = f"https://raw.githubusercontent.com/{OWNER}/{REPO}/{BRANCH}/{item['path']}"
             download_file(file_url, item_path)
-    print("Project initialized! Personalizing, please answer the following questions:")
-    project_name = input("Project name: ")
+    print("Successfully created the project structure!")
+    os.system("pip install -e .")
+    print("Successfully installed this package in editable mode!")
+    print("Please answer the following questions to set up your project:")
+    project_name = input("Project name (Enter to skip): ")
     if not project_name:
-        raise ValueError("Project name is required!")
+        project_name = DEFAULT_PROJECT_NAME
     author_names = []
     author_emails = []
     count = 0
@@ -60,14 +58,17 @@ def init():
             break
         author_names.append(author_name)
         author_emails.append(author_email)
+    if not author_names:
+        author_names = [DEFAULT_AUTHOR_NAME]
+    if not author_emails:
+        author_emails = [DEFAULT_AUTHOR_EMAIL]
     pyproject_toml_path = os.path.join(local_path, "pyproject.toml")
     personalize_pyproject_toml(pyproject_toml_path, project_name, author_names, author_emails)    
     # Change src/project_name to src/<project_name>
     os.rename(os.path.join(local_path, "src", "project_name"), os.path.join(local_path, "src", project_name))
     # Update the metadata in mkdocs.yml
     yml_path = os.path.join(local_path, "mkdocs.yml")
-    personalize_mkdocs_yml(yml_path, project_name, author_names)      
-    os.system("pip install -e .")
+    personalize_mkdocs_yml(yml_path, project_name, author_names)              
     print("Project initialized successfully!")    
 
 def personalize_mkdocs_yml(yml_path: str, project_name: str, author_names: str):

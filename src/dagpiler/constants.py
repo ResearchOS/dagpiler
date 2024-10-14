@@ -11,3 +11,9 @@ VARIABLE_TYPES_KEYS = {
     "__data_object_path__": "data_object_file_path",
     "__data_object_name__": "data_object_name"
 }
+
+# Used in the init() function to personalize the project
+INIT_TEMPLATE_DIR = "init_template_directory"
+DEFAULT_PROJECT_NAME = "My Project"
+DEFAULT_AUTHOR_NAME = "Author Name"
+DEFAULT_AUTHOR_EMAIL = "author@email.com"
