@@ -1,7 +1,7 @@
 import networkx as nx
 
-from runnables.runnables import RUNNABLE_FACTORY
-from variables.variables import VARIABLE_FACTORY
+from ..runnables.runnables import RUNNABLE_FACTORY
+from ..variables.variables import VARIABLE_FACTORY
 
 def add_package_runnables_to_dag(package_name: str, package_runnables_dict: dict, dag: nx.MultiDiGraph) -> None:
     """Add package runnables to the DAG."""

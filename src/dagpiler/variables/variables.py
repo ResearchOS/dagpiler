@@ -3,8 +3,8 @@ from typing import Any
 import re
 import os
 
-from config_reader import CONFIG_READER_FACTORY
-from constants import VARIABLE_TYPES_KEYS
+from ..config_reader import CONFIG_READER_FACTORY
+from ..constants import VARIABLE_TYPES_KEYS
 
 
 class Variable:

@@ -3,15 +3,17 @@ import json
 
 import networkx as nx
 
-from index.index_processor import INDEX_LOADER_FACTORY, IndexProcessor
-from index.index_parser import IndexParser
-from config_reader import CONFIG_READER_FACTORY
-from dag.package_runnables import add_package_runnables_to_dag
-from bridges.bridges import add_bridges_to_dag
+from .index.index_processor import INDEX_LOADER_FACTORY, IndexProcessor
+from .index.index_parser import IndexParser
+from .config_reader import CONFIG_READER_FACTORY, RUNNABLE_PARSER_FACTORY
+from .dag.package_runnables import add_package_runnables_to_dag
+from .bridges.bridges import add_bridges_to_dag
+
+from .variables.variables import UnspecifiedVariable
 
 def check_no_unspecified_variables(dag: nx.MultiDiGraph) -> None:
     """Check that there are no unspecified variables in the DAG."""
-    unspecified_input_variables = [n for n in dag.nodes if n.__class__.__name__=="UnspecifiedInputVariable"]
+    unspecified_input_variables = [n for n in dag.nodes if n.__class__==UnspecifiedVariable and dag.in_degree(n)>0]
     if len(unspecified_input_variables) > 0:
         for unspecified_input_variable in unspecified_input_variables:
             print(f"Unspecified input variable found in the DAG: {unspecified_input_variable}")
@@ -66,7 +68,7 @@ def get_index_file_path(package_name: str) -> str:
     lower_package_name = package_name.lower()
     package_folders = [folder for folder in installed_package_folders if lower_package_name in folder]
     if not package_folders:
-        raise ValueError(f"No package folder found for {package_name}")
+        raise ValueError(f"Package {package_name} not found in .venv/lib/{python_version_folder}/site-packages. Is it installed?")
     # Remove folders that don't start with the package name
     package_folders = [folder for folder in package_folders if folder.startswith(lower_package_name)]    
     # If a folder has "dist-info" in its name, use that one.
@@ -123,14 +125,17 @@ def get_package_runnables_and_bridges(index_file_path: str) -> dict:
     config_reader = CONFIG_READER_FACTORY.get_config_reader(index_file_path)
     bridges_full_file_paths = [os.path.join(package_root_folder, bridge) for bridge in bridges_file_paths]
     package_bridges = [config_reader.read_config(bridge) for bridge in bridges_full_file_paths]
-    runnable_full_file_paths = [os.path.join(package_root_folder, runnable) for runnable in runnables_file_paths]
-    package_runnables = [config_reader.read_config(runnable) for runnable in runnable_full_file_paths]
+
+    config_parser = RUNNABLE_PARSER_FACTORY.get_runnable_parser(key="name")
+    runnable_full_file_paths = [os.path.join(package_root_folder, runnable) for runnable in runnables_file_paths]    
+    package_runnables = [config_parser.parse_runnable(config_reader.read_config(runnable)) for runnable in runnable_full_file_paths]
 
     # Convert the list of dicts to a single dict for bridges and runnables
     package_bridges_dict = {}
     for bridge in package_bridges:
         package_bridges_dict.update(bridge)
     package_runnables_dict = {}
+    # Each key is the name of the runnable.
     for runnable in package_runnables:
         package_runnables_dict.update(runnable)
 

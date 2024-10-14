@@ -1,4 +1,4 @@
-from runnables.dict_attr_validator import ATTRIBUTE_VALIDATOR_FACTORY
+from ..runnables.dict_attr_validator import ATTRIBUTE_VALIDATOR_FACTORY
 
 class DictValidatorFactory:
     """Factory class to manage and provide appropriate validators for attributes."""
@@ -89,8 +89,7 @@ def register_runnable_validator(type_key: str):
 class ProcessValidator(RunnableValidator):
     """Validator for 'process' type runnables."""
     def __init__(self):
-        self.required_attributes = ["name", "exec", "inputs", "outputs", "type"]
-        self.optional_attributes = ["batch", "level", "subset"]
+        self.required_attributes = ["name", "inputs", "outputs", "type"]
         self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators
 
 @register_runnable_validator("plot")
@@ -98,21 +97,18 @@ class PlotValidator(RunnableValidator):
     """Validator for 'plot' type runnables."""
     def __init__(self):
         self.required_attributes = ["name", "type", "inputs", "axes"]
-        self.optional_attributes = ["batch", "level", "subset", "save_folder", "view", "movie"]
         self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators   
 
 @register_runnable_validator("plot_component")
 class PlotComponentValidator(RunnableValidator):
     """Validator for 'plot' type runnables."""
     def __init__(self):
-        self.required_attributes = ["name", "type", "exec", "inputs"]
-        self.optional_attributes = ["batch", "level", "subset", "save_folder", "view", "movie"]
+        self.required_attributes = ["name", "type", "inputs"]
         self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators   
 
 @register_runnable_validator("summary")
 class SummaryValidator(RunnableValidator):
     """Validator for 'process' type runnables."""
     def __init__(self):
-        self.required_attributes = ["name", "exec", "inputs", "type"]
-        self.optional_attributes = ["batch", "level", "subset"]
+        self.required_attributes = ["name", "inputs", "type"]
         self.attribute_validator_factory = ATTRIBUTE_VALIDATOR_FACTORY  # Use existing attribute validators

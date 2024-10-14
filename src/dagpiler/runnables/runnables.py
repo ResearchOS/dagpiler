@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from variables.variables import VARIABLE_FACTORY
+from ..variables.variables import VARIABLE_FACTORY
 
 class Runnable():
     """Interface for runnable objects that can be run in a DAG.""" 

@@ -1,11 +1,11 @@
 
 import networkx as nx
 
-from variables.variables import VARIABLE_FACTORY, get_variable_type
+from ..variables.variables import VARIABLE_FACTORY, get_variable_type
 
 def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, dag: nx.MultiDiGraph, processed_packages: dict) -> None:
     """Add package dependencies to the package dependency graph."""
-    from compile_dag import process_package, get_package_name_from_runnable
+    from dagpiler.read_and_compile_dag import process_package, get_package_name_from_runnable
 
     # Check if bridges exist for the package
     if not package_bridges_dict:

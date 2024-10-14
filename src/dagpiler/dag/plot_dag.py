@@ -2,13 +2,12 @@ from collections import defaultdict
 from copy import deepcopy
 
 import networkx as nx
-import matplotlib.pyplot as plt
 
 # from ResearchOS.custom_classes import Constant, InputVariable, OutputVariable, Unspecified, Logsheet, Process, Runnable, Variable, Dynamic
-from variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
-from runnables.process import Process
-from runnables.plot import Plot
-from dag.organizer import order_nodes, get_dag_of_runnables
+from ..variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
+from ..runnables.process import Process
+from ..runnables.plot import Plot
+from ..dag.organizer import order_nodes, get_dag_of_runnables
 
 colors_dict = {
     HardcodedVariable: 'blue',
@@ -35,7 +34,8 @@ def get_layers(graph):
         layers_by_generation[layer].append(node)
     return layers_by_generation
 
-def visualize_dag(dag: nx.MultiDiGraph, layout: str = 'generation'):    
+def plot_dag(dag: nx.MultiDiGraph, layout: str = 'generation'):  
+    import matplotlib.pyplot as plt  
     nodes_with_labels = {node: node.name for node in dag.nodes(data=False)}    
     nodes_with_labels = {k: v.replace('.', '.\n') for k, v in nodes_with_labels.items()}
     layers = get_layers(dag)

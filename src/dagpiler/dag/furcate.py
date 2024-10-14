@@ -3,8 +3,8 @@ import uuid
 
 import networkx as nx
 
-from variables.variables import Variable, VARIABLE_FACTORY
-from runnables.runnables import Runnable
+from ..variables.variables import Variable, VARIABLE_FACTORY
+from ..runnables.runnables import Runnable
 
 def polyfurcate_dag(dag: nx.MultiDiGraph) -> nx.MultiDiGraph:
     """Polyfurcate the DAG as needed if multiple variables input into a single variable."""

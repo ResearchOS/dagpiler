@@ -1,4 +1,4 @@
-from constants import DELIMITER
+from ..constants import DELIMITER
      
 class AttributeValidator:
     """Interface for attribute cleaning strategies."""

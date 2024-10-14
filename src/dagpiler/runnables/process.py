@@ -1,5 +1,5 @@
-from runnables.runnables import Runnable, register_runnable, initialize_inputs, initialize_outputs
-from runnables.dict_validator import DictValidator
+from ..runnables.runnables import Runnable, register_runnable, initialize_inputs, initialize_outputs
+from ..runnables.dict_validator import DictValidator
 
 RUNNABLE_TYPE = "process"
 
@@ -8,10 +8,10 @@ class Process(Runnable):
     """A process object that can be run in a DAG."""
     
     def __init__(self, 
-                 name: str, 
-                 exec: str,
+                 name: str,                  
                  inputs: dict, 
                  outputs: list, 
+                 exec: str = "",
                  level: list = "", 
                  batch: list = [],
                  subset: str = "",
@@ -30,12 +30,9 @@ class Process(Runnable):
         runnable_dict.update(kwargs)
         dict_validator = DictValidator()
         dict_validator.validate(runnable_dict)    
-        self.name = name
-        self.exec = exec
-        self.inputs = inputs
-        self.outputs = outputs
-        self.level = level
-        self.batch = batch
+        # Include any additional kwargs as attributes
+        for key, value in runnable_dict.items():
+            setattr(self, key, value)
 
     @classmethod
     def from_dict(cls, runnable_dict: dict):        

@@ -3,7 +3,7 @@ import toml
 
 import networkx as nx
 
-from dag.organizer import order_nodes, order_edges
+from ..dag.organizer import order_nodes, order_edges
 
 def print_dag(dag: nx.MultiDiGraph, path: str = None) -> None:
     """Print the DAG in a human-readable format."""

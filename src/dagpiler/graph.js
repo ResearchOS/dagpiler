@@ -1,11 +1,16 @@
 // graph.js
-document.addEventListener("DOMContentLoaded", function() {
-    if (typeof cytoscape === 'undefined' || typeof cytoscapeDagre === 'undefined') {
-        console.error('cytoscape or cytoscape-dagre failed to load');
+document.addEventListener("DOMContentLoaded", function() {    
+    if (typeof cytoscape === 'undefined') {
+        console.error('cytoscape failed to load');
+        return;
+    }        
+    if (typeof dagre === 'undefined') {
+        console.error('cytoscape-dagre failed to load');
         return;
     }
     
-    cytoscape.use(cytoscapeDagre);
+    cytoscape.use(dagre);    
+    console.log("Here?")
 
     let selectedNodes = [];
     const elements = JSON.parse(elementsJson);  // `elementsJson` will be injected from the backend

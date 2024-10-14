@@ -1,7 +1,7 @@
 
 import networkx as nx
 
-from runnables.runnables import Runnable
+from ..runnables.runnables import Runnable
 
 
 def order_nodes(dag: nx.MultiDiGraph):
