@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -252,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dev_blog/2024-10-02/" class="md-tabs__link">
+        <a href="../../dev_blog/" class="md-tabs__link">
           
   
   Learning in Public
@@ -763,6 +763,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dev_blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Learning in Public
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dev_blog/2024-10-02/" class="md-nav__link">
         
   
@@ -810,6 +831,27 @@
   
   <span class="md-ellipsis">
     October 5, 2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev_blog/2024-10-14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    October 14, 2024
   </span>
   
 
@@ -907,9 +949,10 @@
 
 
 <h1 id="installing-packages">Installing Packages</h1>
-<p>You've found a package you want to use, and now you want to install it. First, you need to put that package in your pyproject.toml file. Depending on where the package is being installed from, there are a few ways to do this using Python's default syntax. For more information than is provided here, check out the linked documentation in the sections below.</p>
+<p>You've found a package you want to use, and now you want to install it! First, you need to put that package in your pyproject.toml file. Depending on where the package is being installed from, there are a few ways to do this using Python's default syntax. For more information than is provided here, check out the linked documentation in the sections below.</p>
+<p>After updating your <code>pyproject.toml</code> file, you can install all of your package's dependencies by installing your own package using <code>pip install .</code> or <code>pip install -e .</code> from the root directory of your package.</p>
 <h2 id="installing-from-pypi">Installing from PyPI</h2>
-<p>Packages installed from PyPI can be specified with their package name, and optionally version restrctions. See <a href="https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#dependencies-and-requirements">Python docs</a> for details. 
+<p>Packages installed from PyPI can be specified with their package name, and optionally version restrictions. See <a href="https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#dependencies-and-requirements">Python docs</a> for details. 
 <div class="highlight"><pre><span></span><code><span class="k">[project]</span>
 <span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span>
@@ -920,14 +963,14 @@
 <p>From the <a href="https://hatch.pypa.io/1.8/config/dependency/#supported-vcs">Hatch documentation</a>, packages can also be installed directly from GitHub repositories.
 <div class="highlight"><pre><span></span><code><span class="k">[project]</span>
 <span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;Package-DAG-Compiler @ git+https://github.com/ResearchOS/Package-DAG-Compiler&quot;</span>
+<span class="w">    </span><span class="s2">&quot;dagpiler @ git+https://github.com/ResearchOS/dagpiler&quot;</span>
 <span class="p">]</span>
 </code></pre></div></p>
 <h2 id="installing-from-a-local-directory">Installing from a local directory</h2>
 <p>Similarly, dependency packages can be <a href="https://hatch.pypa.io/1.8/config/dependency/#local">installed from a local directory</a> as well by specifying paths to either the package folder, a wheel (.whl), or source archive (.tar.gz).
 <div class="highlight"><pre><span></span><code><span class="k">[project]</span>
 <span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;Package-DAG-Compiler @ file:///path/to/dependent/package/Package-DAG-Compiler&quot;</span><span class="w"> </span><span class="c1"># Package folder path</span>
+<span class="w">    </span><span class="s2">&quot;dagpiler @ file:///path/to/dependent/package/dagpiler&quot;</span><span class="w"> </span><span class="c1"># Package folder path</span>
 <span class="p">]</span>
 </code></pre></div></p>
 <h2 id="installing-from-the-internet-other-than-version-control">Installing from the Internet (other than version control)</h2>

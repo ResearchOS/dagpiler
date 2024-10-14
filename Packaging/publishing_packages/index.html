@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -252,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dev_blog/2024-10-02/" class="md-tabs__link">
+        <a href="../../dev_blog/" class="md-tabs__link">
           
   
   Learning in Public
@@ -751,6 +751,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dev_blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Learning in Public
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dev_blog/2024-10-02/" class="md-nav__link">
         
   
@@ -798,6 +819,27 @@
   
   <span class="md-ellipsis">
     October 5, 2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev_blog/2024-10-14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    October 14, 2024
   </span>
   
 
@@ -885,11 +927,7 @@
 <h1 id="publishing-packages">Publishing Packages</h1>
 <p>You've created a set of TOML files, you've compiled them to a DAG, maybe you've even leveraged pre-existing packages by bridging your package with theirs, and you're ready to share your package with the world. </p>
 <h2 id="formatting">Formatting</h2>
-<p>The packaging format described here is inteded to be flexible enough to work with projects of all sizes using the provided tools.</p>
-<div class="admonition todo">
-<p class="admonition-title">Todo</p>
-<p>Command line tools will be provided to generate the folder structure below, including auto-populating the minimum required contents of pyproject.toml files.</p>
-</div>
+<p>The packaging format described here is inteded to be flexible enough to work with projects of all sizes using the provided tools. Recall that when <a href="../creating_packages/">creating a package</a>, the <code>dagpiler init</code> command will create the proper folder structure and files for you.</p>
 <h3 id="package-folder-structure">Package Folder Structure</h3>
 <p>Verify that your package follows the expected folder structure.</p>
 <div class="highlight"><pre><span></span><code>root/
@@ -913,7 +951,28 @@
 </div>
 <p>Once your package is in the proper format and fully functioning, there are multiple ways to share your package with the world.</p>
 <h1 id="1-pypi">1. PyPI</h1>
-<p>The Python Packaging Authority maintains the Python Packaging Index (PyPI), which is where the majority of Python packages reside. Packages in PyPI can be easily installed using <code>pip install $package_name</code>.</p>
+<p>The Python Packaging Authority maintains the Python Packaging Index (PyPI), which is where the majority of Python packages reside. Publishing your package to PyPI is the most common way to share your package with the world. Below are the steps to publish your package to PyPI:</p>
+<ol>
+<li>
+<p><a href="https://pypi.org/account/register/">Create an account on PyPI</a></p>
+</li>
+<li>
+<p><a href="https://packaging.python.org/tutorials/packaging-projects/#generating-distribution-archives">Create a distribution package</a></p>
+<ul>
+<li>Ensure that you have filled out the <code>pyproject.toml</code> file with the necessary metadata.</li>
+</ul>
+</li>
+<li>
+<p><a href="https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives">Upload your package to PyPI</a></p>
+</li>
+<li>
+<p>Publish your documentation</p>
+<ul>
+<li>Run <code>mkdocs gh-deploy</code> to publish your documentation to GitHub Pages</li>
+</ul>
+</li>
+</ol>
+<p>Others can then <a href="../installing_packages/#installing-from-pypi">Install your package from PyPI</a></p>
 <h1 id="2-github-or-other-online-version-control">2. GitHub (or Other Online Version Control)</h1>
 <p>If your package is publicly visible and hosted in an online version control platform such as GitHub or another service, you can simply leave it there! Others can <code>pip install</code> directly from your GitHub repository (see <a href="../installing_packages/#installing-from-github">how to install packages from GitHub</a>). It's always a good idea to test from another computer that your package can be successfully installed and run.</p>
 <h1 id="3-other-online-repositories">3. Other Online Repositories</h1>

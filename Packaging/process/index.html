@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -252,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dev_blog/2024-10-02/" class="md-tabs__link">
+        <a href="../../dev_blog/" class="md-tabs__link">
           
   
   Learning in Public
@@ -805,6 +805,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dev_blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Learning in Public
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dev_blog/2024-10-02/" class="md-nav__link">
         
   
@@ -852,6 +873,27 @@
   
   <span class="md-ellipsis">
     October 5, 2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev_blog/2024-10-14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    October 14, 2024
   </span>
   
 
@@ -1001,11 +1043,16 @@
 <span class="w">    </span><span class="s2">&quot;output2&quot;</span>
 <span class="p">]</span>
 </code></pre></div></p>
-<p>Primarily, the focus when creating Process Runnables is on the <code>inputs</code> fields, as there are many different kinds of inputs that can be specified.</p>
+<p>Primarily, the focus when creating Process Runnables is on the <code>inputs</code> fields, as there are many different kinds of inputs that can be specified. Below are definitions and examples of several different kinds of supported inputs.</p>
 <h2 id="inputs">Inputs</h2>
 <h3 id="dynamic">Dynamic</h3>
 <p>These are the names of variables that were output from a previous Runnable <strong><em>within the same package</em></strong>. If they come from a different package, they should be specified in the <code>bridges.toml</code> file.</p>
-<p>The dynamic variable names are formatted as <code>runnable_name.variable_name</code>. The <code>runnable_name</code> is the name of the Runnable that produced the variable, and the <code>variable_name</code> is the name of the variable that was produced. It must match the name of the variable in the <code>outputs</code> list from the producing Runnable.</p>
+<p>The dynamic variable names are formatted as <code>runnable_name.variable_name</code>. The <code>runnable_name</code> is the name of the Runnable that produced the variable, and the <code>variable_name</code> is the name of the variable that was produced. It must match the name of the variable in the <code>outputs</code> list from the producing Runnable. For example:
+<div class="highlight"><pre><span></span><code><span class="k">[runnable1_name]</span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;process&quot;</span>
+<span class="n">inputs</span><span class="p">.</span><span class="n">input1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;runnable2_name.variable1&quot;</span>
+</code></pre></div>
+This specifies that the input variable <code>variable1</code> from <code>runnable2_name</code> should be used as <code>input1</code> in <code>runnable1_name</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If you specify a variable from a Runnable in a different package in the <code>inputs</code> field, the compiler will not be able to find it and will raise an error.</p>

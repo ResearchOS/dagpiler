@@ -16,11 +16,11 @@
         <link rel="prev" href="../terms/">
       
       
-        <link rel="next" href="../dev_blog/2024-10-02/">
+        <link rel="next" href="../dev_blog/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -252,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../dev_blog/2024-10-02/" class="md-tabs__link">
+        <a href="../dev_blog/" class="md-tabs__link">
           
   
   Learning in Public
@@ -694,6 +694,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../dev_blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Learning in Public
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../dev_blog/2024-10-02/" class="md-nav__link">
         
   
@@ -741,6 +762,27 @@
   
   <span class="md-ellipsis">
     October 5, 2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev_blog/2024-10-14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    October 14, 2024
   </span>
   
 
@@ -801,25 +843,7 @@
 </ol>
 <p>The second, more source-centric interpretation guides the design philosophy of this package. In the context of a workflow orchestration tool, where data flows from a dataset to a final output, I think this makes more sense. In the DAG, nodes are Runnable functions and the edges are the Variables' data flowing between them, the edges look more like <code>Runnable -&gt; Variable</code> which can be read as "data from this Runnable node flows into this output Variable". Similarly, <code>Variable -&gt; Runnable</code> indicates that data flows from a Variable and is an input to a Runnable.</p>
 <p>In this package, edges carry no meaning or metadata, they simply define directional connectivity. All of the metadata is contained in the node properties.</p>
-<p>At a high level, there are two types of nodes: Runnables, and Variables. Runnables represent things that you run, generally a function that you can call or a script you can run. Categories of Runnables include Process, Stats, and Plot. More on those later. The other node type is Variables, which as you would expect help direct the flow of data. Runnable nodes can only directly connect to Variables, they cannot connect to each other directly. However, Variable nodes can connect to either a Runnable or another Variable. The edges between nodes, whether they be Runnable -&gt; Variable, Variable -&gt; Runnable, or Variable - Variable, represent the flow of data between steps in a data processing pipeline. There can only be one connection between an output variable node and an input variable node without triggering a split in the DAG. A split is exactly what it sounds like. An exact copy of the subgraph of nodes descended from the current  Runnable node is created, and attached to that same Runnable node.</p>
-<p>Further Reading:</p>
-<ol>
-<li>
-<p>Recommended package directory structure</p>
-<ul>
-<li>Can use a template to generate the TOML files and directory structure</li>
-</ul>
-</li>
-<li>
-<p>How to use this package</p>
-<ul>
-<li>Example project</li>
-<li>Templates</li>
-<li>Documentation per function</li>
-<li>Output is NetworkX graph</li>
-</ul>
-</li>
-</ol>
+<p>At a high level, there are two types of nodes: Runnables, and Variables. Runnables represent things that you run, generally a function that you can call or a script you can run. Categories of Runnables include Process, Stats, and Plot. More on those later. The other node type is Variables, which as you would expect help direct the flow of data. Runnable nodes can only directly connect to Variables, they cannot connect to each other directly. However, Variable nodes can connect to either a Runnable or another Variable. The edges between nodes, whether they be Runnable -&gt; Variable, Variable -&gt; Runnable, or Variable -&gt; Variable, represent the flow of data between steps in a data processing pipeline. There can only be one connection between an output variable node and an input variable node without triggering a split in the DAG. A split is exactly what it sounds like. An exact copy of the subgraph of nodes descended from the current  Runnable node is created, and attached to that same Runnable node.</p>
 
 
 

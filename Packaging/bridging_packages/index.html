@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -252,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dev_blog/2024-10-02/" class="md-tabs__link">
+        <a href="../../dev_blog/" class="md-tabs__link">
           
   
   Learning in Public
@@ -697,6 +697,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dev_blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Learning in Public
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dev_blog/2024-10-02/" class="md-nav__link">
         
   
@@ -753,6 +774,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev_blog/2024-10-14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    October 14, 2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -797,9 +839,44 @@
 
 
 <h1 id="bridging-packages">Bridging Packages</h1>
-<div class="admonition todo">
-<p class="admonition-title">Todo</p>
-</div>
+<p>When packages are developed independently of one another, by definition they have no way of knowing what inputs or outputs the other provides. Bridging is the mechanism by which independently developed packages are connected together. The bridge name is just an identifier (unique within each package). Sources are the origin of the bridge. Any type of input variable can be entered as the source, see <a href="../process/#inputs">Process</a>. Targets are where the variable is being directed to. Typically, there would either be just one source and multiple targets, or one target and multiple sources.</p>
+<p>Here is an example of a bridges.toml file:</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">[bridge_name]</span>
+<span class="n">sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;package1.runnable1.output1&quot;</span>
+<span class="p">]</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;package2.runnable1.input1&quot;</span>
+<span class="p">]</span>
+</code></pre></div>
+Excerpts from package 1 and 2's runnable.toml file:
+<div class="highlight"><pre><span></span><code><span class="c1"># package1/src/package1/runnable1.toml</span>
+<span class="k">[runnable1]</span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;process&quot;</span>
+<span class="n">inputs</span><span class="p">.</span><span class="n">input1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
+<span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;output1&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># package2/src/package2/runnable1.toml</span>
+<span class="k">[runnable1]</span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;process&quot;</span>
+<span class="n">inputs</span><span class="p">.</span><span class="n">input1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;?&quot;</span>
+<span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;output1&quot;</span>
+<span class="p">]</span>
+</code></pre></div></p>
+<p>Bridges will most typically be used to provide an input variable for a variable that is <a href="../process/#unspecified">Unspecified</a> in its own package, meaning it relies on other packages to provide that variable. However, <strong><em>any</em></strong> variable from any package can be overriden by being bridged. Other common use cases include providing non-default hard-coded values, or specifying a different file path to load a variable from.</p>
+<p>Multiple sources leading to one target indicates that the DAG will split at that target, creating a copy of the subgraph of nodes descended from the target. This is useful when you want to run multiple processes on the same data.
+<div class="highlight"><pre><span></span><code><span class="k">[bridge_name]</span>
+<span class="n">sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;package1.runnable1.output1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;package2.runnable1.output1&quot;</span>
+<span class="p">]</span>
+<span class="n">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;package3.runnable1.input1&quot;</span>
+<span class="p">]</span>
+</code></pre></div></p>
 
 
 

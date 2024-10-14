@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -252,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dev_blog/2024-10-02/" class="md-tabs__link">
+        <a href="../../dev_blog/" class="md-tabs__link">
           
   
   Learning in Public
@@ -508,6 +508,15 @@
   
     <nav class="md-nav" aria-label="index.toml">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#special-keys" class="md-nav__link">
@@ -844,6 +853,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dev_blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Learning in Public
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dev_blog/2024-10-02/" class="md-nav__link">
         
   
@@ -891,6 +921,27 @@
   
   <span class="md-ellipsis">
     October 5, 2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev_blog/2024-10-14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    October 14, 2024
   </span>
   
 
@@ -951,6 +1002,15 @@
   
     <nav class="md-nav" aria-label="index.toml">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#special-keys" class="md-nav__link">
@@ -1091,16 +1151,17 @@
 <span class="p">]</span>
 </code></pre></div></p>
 <h2 id="indextoml">index.toml</h2>
-<p>This file specifies the paths to all of the other files in the package. For your package to work, this file must be located at <code>$project_folder/src/$project_name/index.toml</code>. It can contain arbitrarily nested dictionaries, but every value must be a file path or list of file paths. Relative file paths are preferred for portability. The root directory for the relative file paths is the directory containing the index.toml file, <code>$project_folder/src/$project_name</code>, as that is the root directory when the package is installed via <code>pip</code>.</p>
+<p>This file specifies the paths to all of the other files in the package. For your package to work, this file must be located at <code>$project_folder/src/$project_name/index.toml</code>. It can contain arbitrarily nested dictionaries, but every value must be a file path or list of file paths. <strong>Relative file paths are preferred for portability.</strong> The root directory for the relative file paths is the directory containing the index.toml file, <code>$project_folder/src/$project_name</code>, as that is the root directory when the package is installed via <code>pip</code>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The index.toml file is the only file that is required to be in a specific location. The rest of the files can be located anywhere in the <code>$project_folder/src/$project_name</code> directory, as long as the paths are correctly specified in the index.toml file.</p>
+<p>The index.toml file is the only file that is required to be in a specific location. The rest of the files can be located anywhere as long as the paths are correctly specified in the index.toml file.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Use relative paths whenever your files are within the <code>$project_folder/src/$project_name</code> directory. Use absolute paths only when you need to access files outside of the project folder.</p>
+<p>Try to keep all of the package's files within the <code>$project_folder/src/$project_name</code> directory so that <code>index.toml</code> can reference them using relative paths. Use absolute paths to files outside of this folderonly when necessary, as this is not portable.</p>
 </div>
-<p>At its simplest, this file must contain a reference to at least one file path:
+<h3 id="examples">Examples</h3>
+<p>The simplest <code>index.toml</code> files are just one key-value pair, where the key can be any string and the value is a file path. For example:
 <div class="highlight"><pre><span></span><code><span class="c1"># $project_folder/src/$project_name/index.toml</span>
 <span class="n">package_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path/to/package_file.toml&quot;</span>
 </code></pre></div>
@@ -1124,19 +1185,12 @@ In larger packages with more files, more organization becomes useful. For exampl
 <span class="n">bridges</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path/to/bridges.toml&quot;</span>
 </code></pre></div></p>
 <h2 id="runnablestoml">runnables.toml</h2>
-<p>The main contents of a package reside in its 1+ runnables' .toml files, of which there are multiple types. Every type of runnable needs at minimum the following attributes: <code>type</code>, <code>exec</code> (except <a href="../../terms/#runnable-plot">Plot</a> Runnables), and <code>inputs</code>. Below are outlines of the different types of builtin Runnable types. For more information on a specific type, see that Runnable's page.</p>
-<p>Example runnable format:
-<div class="highlight"><pre><span></span><code><span class="c1"># $project_folder/src/$project_name/path/to/runnables.toml</span>
-<span class="k">[runnable_name]</span>
-<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;runnable_type&quot;</span>
-<span class="n">exec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path/to/file.ext:func_name&quot;</span>
-<span class="n">inputs</span><span class="p">.</span><span class="n">input1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;runnable1.variable1&quot;</span>
-</code></pre></div></p>
+<p>The main contents of a package reside in its 1+ runnables' .toml files, of which there are multiple types. Every type of runnable needs to specify a <code>type</code> attribute, and most will have <code>inputs</code> and/or <code>outputs</code>. Any custom attributes that the user provides in addition to the built-in ones are stored in the nodes, but are not used by the compiler.</p>
+<p>Below are outlines of the different types of builtin Runnable types. For more information on a specific type, see that Runnable's page.</p>
 <h3 id="process">Process</h3>
 <p>Process type runnables are the most frequent runnable type. They process and transform data, and are the only Runnable type that has output variables. Inputs are identified by name, similar to keyword arguments available in most languages. As multiple outputs are typically identified by their ordering, output variables are specified in a list (in the same order that they are output).</p>
 <div class="highlight"><pre><span></span><code><span class="k">[runnable_name]</span>
 <span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;process&quot;</span>
-<span class="n">exec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path/to/file.ext:func_name&quot;</span>
 <span class="n">inputs</span><span class="p">.</span><span class="n">input1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;runnable1.variable1&quot;</span>
 <span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="s2">&quot;output1&quot;</span><span class="p">,</span>
@@ -1147,14 +1201,12 @@ In larger packages with more files, more organization becomes useful. For exampl
 <p>Plot type runnables are exactly what they sound like - they plot and visualize data.</p>
 <div class="highlight"><pre><span></span><code><span class="k">[runnable_name]</span>
 <span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;plot&quot;</span>
-<span class="n">exec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path/to/file.ext:func_name&quot;</span>
 <span class="n">inputs</span><span class="p">.</span><span class="n">input1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;runnable1.variable1&quot;</span>
 </code></pre></div>
 <h3 id="summary">Summary</h3>
 <p>Summary type runnables summarize the data.</p>
 <div class="highlight"><pre><span></span><code><span class="k">[runnable_name]</span>
 <span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;summary&quot;</span>
-<span class="n">exec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path/to/file.ext:func_name&quot;</span>
 <span class="n">inputs</span><span class="p">.</span><span class="n">input1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;runnable1.variable1&quot;</span>
 </code></pre></div>
 <h2 id="bridgestoml">bridges.toml</h2>
@@ -1173,7 +1225,7 @@ In larger packages with more files, more organization becomes useful. For exampl
 <h3 id="one-source-multiple-targets">One source, multiple targets</h3>
 <p>In this case, one output variable is being used as an input to multiple runnables. This is a common practice, as there are often computed variables that need to be used by multiple functions further along the pipeline.</p>
 <h3 id="one-target-multiple-sources">One target, multiple sources</h3>
-<p>In this case, one input variable is receiving data from multiple sources, triggering a polyfurcation of the DAG, with one branch per input variable. Most commonly this would happen with Plot and Summary runnables, to reuse the same runnable to plot or summarize multiple variables. </p>
+<p>In this case, one input variable is receiving data from multiple sources, triggering a polyfurcation of the DAG, with one branch per input variable. Most commonly this would happen with Plot and Summary runnables, to reuse the same runnable to plot or summarize multiple variables, though it is used with Process runnables as well.</p>
 <p>In the below example, two variables are both being connected to the input variable for a Summary runnable.
 <div class="highlight"><pre><span></span><code><span class="k">[summaries]</span>
 <span class="n">sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
