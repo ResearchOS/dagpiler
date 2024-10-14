@@ -22,18 +22,18 @@ def main():
 
     # Initialize the subparser for the 'init' command
     parser_init = subparsers.add_parser("init", help="Initialize a new package in the current directory.")
-    parser_init.add_argument("package_name", type=str, help="The name of the package to initialize")
+    # parser_init.add_argument("package_name", type=str, help="The name of the package to initialize")
     
     # Parse arguments
     args = parser.parse_args()
-    print(args)
-
-    dag = compile_dag(args.package_name)
+    # print(args)    
     
     # Handle each command
     if args.command == "init":
+        init()
         return
-    elif args.command == "compile":
+    dag = compile_dag(args.package_name)
+    if args.command == "compile":
         return dag
     elif args.command == "plot":
         plot_dag(dag, args.output_path)

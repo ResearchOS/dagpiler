@@ -1,6 +1,13 @@
 import os
 import requests
-import toml, yaml
+try:
+    import toml
+except ModuleNotFoundError:
+    pass
+try:
+    import yaml
+except ModuleNotFoundError:
+    pass
 
 # GitHub repository details
 OWNER = "researchos"
@@ -27,7 +34,7 @@ def init():
         if path and path[0] == os.sep:
             path = path[1:]
         # Process directories
-        item_path = os.path.join(local_path, item['path'])
+        item_path = os.path.join(local_path, path)
         if item['type'] == 'tree':
             os.makedirs(item_path, exist_ok=True)
         # Process files
@@ -40,10 +47,21 @@ def init():
     project_name = input("Project name: ")
     if not project_name:
         raise ValueError("Project name is required!")
-    author_name = input("Author name (Enter to skip): ")
-    author_email = input("Author email (Enter to skip): ")
+    author_names = []
+    author_emails = []
+    count = 0
+    while True:
+        count += 1
+        author_name = input(f"Author {count} name (Enter to skip): ")
+        if not author_name:
+            break
+        author_email = input(f"Author {count} email (Enter to skip): ")
+        if not author_email:
+            break
+        author_names.append(author_name)
+        author_emails.append(author_email)
     pyproject_toml_path = os.path.join(local_path, "pyproject.toml")
-    personalize_pyproject_toml(pyproject_toml_path, project_name, author_name, author_email)    
+    personalize_pyproject_toml(pyproject_toml_path, project_name, author_names, author_emails)    
     # Change src/project_name to src/<project_name>
     os.rename(os.path.join(local_path, "src", "project_name"), os.path.join(local_path, "src", project_name))
     # Update the metadata in mkdocs.yml
@@ -62,14 +80,15 @@ def personalize_mkdocs_yml(yml_path: str, project_name: str, author_name: str):
         yaml.dump(mkdocs_yml, file)
     print("Project name updated in mkdocs.yml")
 
-def personalize_pyproject_toml(toml_path: str, project_name: str, author_name: str, author_email: str):
+def personalize_pyproject_toml(toml_path: str, project_name: str, author_names: str, author_emails: str):
     with open(toml_path, "r") as file:
         pyproject_toml = toml.load(file)
     pyproject_toml["project"]["name"] = project_name
-    if author_name:
-        pyproject_toml["project"]["authors"]["name"] = author_name
-    if author_email:
-        pyproject_toml["project"]["authors"]["email"] = author_email
+    pyproject_toml["project"]["authors"] = []    
+    if author_names and author_emails:        
+        for author_name, author_email in zip(author_names, author_emails):
+            current_info = {"name": author_name, "email": author_email}
+            pyproject_toml["project"]["authors"].append(current_info)
     with open(toml_path, "w") as file:
         toml.dump(pyproject_toml, file)
     print("Project name updated in pyproject.toml")

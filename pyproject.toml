@@ -9,7 +9,9 @@ description = 'Compile a DAG representation of a data processing pipeline from T
 authors = [{name = "Mitchell Tillman", email ="mtillman14@gmail.com"}]
 dependencies = [
     "toml",
-    "networkx"
+    "networkx",
+    "requests",
+    "pyyaml",
 ]
 [dependency-groups]
 docs = [
