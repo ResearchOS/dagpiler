@@ -10,7 +10,7 @@ from .init import init
 def main():
     # Initialize the top-level parser
     parser = argparse.ArgumentParser(prog="dagpiler", description="Compile a DAG from packaged config files.")
-    subparsers = parser.add_subparsers(dest="command")
+    subparsers = parser.add_subparsers(dest="command", help="Documentation at 'https://researchos.github.io/dagpiler/'")
     
     # Subparser for the 'compile' command
     parser_compile = subparsers.add_parser("compile", help="Compile the specified package, returning a DAG as a NetworkX MultiDiGraph.")
@@ -22,7 +22,7 @@ def main():
 
     # Initialize the subparser for the 'init' command
     parser_init = subparsers.add_parser("init", help="Initialize a new package in the current directory.")
-    # parser_init.add_argument("package_name", type=str, help="The name of the package to initialize")
+    parser_help = subparsers.add_parser("help", help="Show the help message and exit.")
     
     # Parse arguments
     args = parser.parse_args()
