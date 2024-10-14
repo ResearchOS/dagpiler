@@ -65,17 +65,17 @@ def init():
     # Change src/project_name to src/<project_name>
     os.rename(os.path.join(local_path, "src", "project_name"), os.path.join(local_path, "src", project_name))
     # Update the metadata in mkdocs.yml
-    yml_path = os.path.join(local_path, INIT_TEMPLATE_DIR, "mkdocs.yml")
-    personalize_mkdocs_yml(yml_path, project_name)      
+    yml_path = os.path.join(local_path, "mkdocs.yml")
+    personalize_mkdocs_yml(yml_path, project_name, author_names)      
     os.system("pip install -e .")
     print("Project initialized successfully!")    
 
-def personalize_mkdocs_yml(yml_path: str, project_name: str, author_name: str):
+def personalize_mkdocs_yml(yml_path: str, project_name: str, author_names: str):
     with open(yml_path, "r") as file:
         mkdocs_yml = yaml.safe_load(file)  
     mkdocs_yml["site_name"] = project_name
-    if author_name:
-        mkdocs_yml["site_author"] = author_name
+    if author_names:
+        mkdocs_yml["site_author"] = ', '.join(author_names)
     with open(yml_path, "w") as file:
         yaml.dump(mkdocs_yml, file)
     print("Project name updated in mkdocs.yml")
