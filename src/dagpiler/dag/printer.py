@@ -66,8 +66,7 @@ class TomlDagWriter(DagWriter):
         
         if not os.path.exists(os.path.dirname(path)):
             raise FileNotFoundError(f"Directory {os.path.dirname(path)} does not exist.")
-        
-        # raw_string = toml.dumps(dag_dict)
+                
         pretty_string = self.pretty_format_toml(dag_dict)
         with open(path, "w") as f:        
             f.write(pretty_string)

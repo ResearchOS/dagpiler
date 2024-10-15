@@ -12,7 +12,7 @@ import dagpiler
 dag = dagpiler.compile_dag(package_name, "path/to/save/dag.json")
 ```
 !!!warning
-    Representing DAG nodes as dicts requires many layers of nesting, which TOML is not well suited for as it becomes quite redundant and verbose. Therefore, the JSON format is currently the only format that `dagpiler` can load and save all DAG attributes to, bidirectionally. The TOML format prints only the node names and edge connections, and is intended to provide a high-level overview of the DAG structure.
+    Representing DAG nodes as dicts requires multiple layers of nesting, which TOML is not well suited for as it becomes quite redundant and verbose. Therefore, the JSON format is currently the only format that `dagpiler` can load and save all DAG attributes to, bidirectionally. The TOML format prints only the node names and edge connections, and is intended to provide a high-level overview of the DAG structure.
 ### plot_dag
 ```bash
 dagpiler plot_dag <layout>
