@@ -47,17 +47,13 @@ class Process(Runnable):
             "level": self.level,
             "batch": self.batch
         }
-        print(f"Inputs:, {self.inputs}")
-        print(f"Outputs:, {self.outputs}")
         for input_key, input_value in runnable_dict["inputs"].items():
-            if hasattr(input_value, 'name'):
-                runnable_dict["inputs"][input_key] = input_value.name
-            # If it's a string or another type without `name`, leave as is
+            if hasattr(input_value, 'to_dict') and callable(input_value.to_dict):
+                runnable_dict["inputs"][input_key] = input_value.to_dict()           
 
         for output_key, output_value in runnable_dict["outputs"].items():
-            if hasattr(output_value, 'name'):
-                runnable_dict["outputs"][output_key] = output_value.name
-            # If it's a string or another type without `name`, leave as is
+            if hasattr(output_value, 'to_dict') and callable(output_value.to_dict):
+                runnable_dict["outputs"][output_key] = output_value.to_dict()            
             
         return runnable_dict
     

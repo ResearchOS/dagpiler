@@ -1,7 +1,9 @@
+import hashlib
+
 from abc import abstractmethod
 from ..variables.variables import VARIABLE_FACTORY
 
-class Runnable():
+class Runnable:
     """Interface for runnable objects that can be run in a DAG.""" 
 
     @abstractmethod
@@ -21,6 +23,20 @@ class Runnable():
     
     def __repr__(self) -> str:
         return self.__str__()
+    
+    def __hash__(self) -> int:
+        """Compute a unique SHA256 hash for the instance."""
+        # Convert the dictionary representation to a sorted, stable string for hashing
+        hashable_repr = str(sorted(self.to_dict().items()))
+        sha256_hash = hashlib.sha256(hashable_repr.encode('utf-8')).hexdigest()
+        
+        # Truncate the sha256 hash to fit within the integer space for __hash__.
+        return int(sha256_hash, 16) % (10 ** 8)  # Modulo to fit within typical hash size
+        
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Runnable):
+            return False
+        return self.to_dict() == other.to_dict()
 
 class RunnableFactory():
     """Factory for creating Runnable objects."""

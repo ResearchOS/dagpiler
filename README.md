@@ -5,4 +5,16 @@ By adhering to a portable, flexible standard, data science packages written by i
 
 Dagpiler is the first in a planned series of tools that will build on one another to standardize and facilitate common operations in data processing. 
 
+## Useage
+```python
+from dagpiler import compile_dag
+
+# Compile the DAG.
+dag = compile_dag('package_name')
+
+# Write the DAG to JSON file.
+dag.print_dag('dag.json')
+```
+
+## Documentation
 Documentation: https://researchos.github.io/dagpiler/

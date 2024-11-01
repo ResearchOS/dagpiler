@@ -6,7 +6,6 @@ import os
 from ..config_reader import CONFIG_READER_FACTORY
 from ..constants import VARIABLE_TYPES_KEYS
 
-
 class Variable:
     """Variable object that can be used as input or output to a Runnable."""
     
@@ -49,8 +48,7 @@ class Variable:
             "value": self.user_inputted_value,
             "value_for_hashing": self.value_for_hashing,
         }
-    
-    @abstractmethod
+        
     def from_dict(var_dict: dict) -> "Variable":
         return VARIABLE_FACTORY.create_variable(var_dict["name"], var_dict["user_inputted_value"])
     

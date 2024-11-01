@@ -8,7 +8,7 @@ import networkx as nx
 from ..dag.organizer import order_nodes, order_edges
 from ..runnables.runnables import NodeFactory
 
-def print_dag(dag: nx.MultiDiGraph, path: str = "stdout") -> None:
+def print_dag(dag: nx.MultiDiGraph, path: str = "dag.json") -> None:
     """Print the DAG in a human-readable format."""    
     if path is not "stdout" and not os.path.exists(os.path.dirname(path)):
         raise FileNotFoundError(f"Directory {os.path.dirname(path)} does not exist.")
