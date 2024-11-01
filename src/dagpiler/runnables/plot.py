@@ -1,4 +1,4 @@
-from ..runnables.runnables import Runnable, register_runnable, initialize_inputs, initialize_outputs
+from ..runnables.runnables import Runnable, register_runnable
 from ..runnables.dict_validator import DictValidator
 
 RUNNABLE_TYPE = "plot"
@@ -32,11 +32,7 @@ class Plot(Runnable):
         self.exec = exec
         self.inputs = inputs
         self.level = level
-        self.batch = batch
-
-    @classmethod
-    def from_dict(cls, runnable_dict: dict):        
-        return cls(**runnable_dict)
+        self.batch = batch    
 
     def to_dict(self) -> dict:
         runnable_dict = {
@@ -48,9 +44,5 @@ class Plot(Runnable):
             "batch": self.batch
         }
         return runnable_dict
-    
-    def initialize_variables(self):
-        initialize_inputs(self)
-        initialize_outputs(self)
 
     

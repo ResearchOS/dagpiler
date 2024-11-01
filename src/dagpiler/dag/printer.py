@@ -138,7 +138,7 @@ def json_to_dag(json_dag: dict) -> nx.MultiDiGraph:
 
 def save_dag(dag: nx.MultiDiGraph, file_path: str = None):
     if file_path is None:
-        file_path = os.path.join([os.getcwd(), ".dagpiler", f"{datetime.datetime.now()}_dag.json"])
+        file_path = os.path.join(os.getcwd(), ".dagpiler", f"{datetime.datetime.now()}_dag.json")
 
     if not os.path.exists(os.path.dirname(file_path)):
         os.makedirs(os.path.dirname(file_path))

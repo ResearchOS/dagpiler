@@ -1,4 +1,4 @@
-from ..runnables.runnables import Runnable, register_runnable, initialize_inputs, initialize_outputs
+from ..runnables.runnables import Runnable, register_runnable
 from ..runnables.dict_validator import DictValidator
 
 RUNNABLE_TYPE = "process"
@@ -33,10 +33,6 @@ class Process(Runnable):
         for key, value in runnable_dict.items():
             setattr(self, key, value)
 
-    @classmethod
-    def from_dict(cls, runnable_dict: dict):        
-        return cls(**runnable_dict)
-
     def to_dict(self) -> dict:
         runnable_dict = {
             "name": self.name,
@@ -56,9 +52,5 @@ class Process(Runnable):
                 runnable_dict["outputs"][output_key] = output_value.to_dict()            
             
         return runnable_dict
-    
-    def initialize_variables(self):
-        initialize_inputs(self)
-        initialize_outputs(self)
 
     

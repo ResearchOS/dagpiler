@@ -6,9 +6,9 @@ from ..variables.variables import VARIABLE_FACTORY
 class Runnable:
     """Interface for runnable objects that can be run in a DAG.""" 
 
-    @abstractmethod
-    def from_dict(self, runnable_dict: dict):
-        raise NotImplementedError("from_dict method not implemented")
+    @classmethod
+    def from_dict(cls, runnable_dict: dict):        
+        return cls(**runnable_dict)
 
     @abstractmethod
     def to_dict(self) -> dict:
@@ -62,6 +62,13 @@ def register_runnable(runnable_type: str):
         RUNNABLE_FACTORY.register_runnable(runnable_type, cls)
         return cls
     return decorator
+
+def initialize_variables(runnable: Runnable):
+    """Initialize input and output variables for the runnable."""
+    if hasattr(runnable, "inputs"):
+        initialize_inputs(runnable)
+    if hasattr(runnable, "outputs"):
+        initialize_outputs(runnable)
 
 def initialize_inputs(runnable: Runnable):
     """Initialize input variables for the runnable."""

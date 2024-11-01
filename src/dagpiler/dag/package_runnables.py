@@ -1,6 +1,6 @@
 import networkx as nx
 
-from ..runnables.runnables import RUNNABLE_FACTORY
+from ..runnables.runnables import RUNNABLE_FACTORY, initialize_variables
 from ..variables.variables import VARIABLE_FACTORY
 
 def add_package_runnables_to_dag(package_name: str, package_runnables_dict: dict, dag: nx.MultiDiGraph) -> None:
@@ -14,7 +14,7 @@ def add_package_runnables_to_dag(package_name: str, package_runnables_dict: dict
             raise ValueError(f"""Missing "type" attribute in runnable {runnable_name}""")
         runnable_node = RUNNABLE_FACTORY.create_runnable(runnable)
         # Create separate Variable nodes for each input and output
-        runnable_node.initialize_variables()
+        initialize_variables(runnable_node)
         runnable_nodes.append(runnable_node) # For connecting the variables later
         
         # Add the runnable to the DAG
