@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 import pytest
-import networkx as nx
+from networkx import MultiDiGraph as DAG
 
 from ResearchOS.hash_dag import hash_node, get_attrs_to_hash
 from ResearchOS.custom_classes import Runnable, Variable
@@ -18,7 +18,7 @@ variable1 = Variable('1', 'variable1', {})
 
 def test_hash_runnable_node_no_data_object():
 
-    dag = nx.MultiDiGraph()    
+    dag = DAG()    
     dag.add_node('1', node=runnable1)
 
     hash1 = hash_node(dag, '1')
@@ -46,7 +46,7 @@ def test_hash_runnable_node_no_data_object():
 
 def test_hash_variable_node_no_data_object():
     
-    dag = nx.MultiDiGraph()    
+    dag = DAG()    
     dag.add_node('1', node=variable1)
     hash1 = hash_node(dag, '1')
     hash2 = hash_node(dag, '1')
@@ -62,7 +62,7 @@ def test_hash_variable_node_no_data_object():
 
 def test_hash_changing_connectivity():
     
-    dag = nx.MultiDiGraph()
+    dag = DAG()
     dag.add_node('1', node=runnable1)
     dag.add_node('2', node=variable1)
     dag.add_edge('1', '2')

@@ -1,19 +1,19 @@
 import copy
 import uuid
 
-import networkx as nx
+from networkx import MultiDiGraph as DAG
 
 from ..variables.variables import Variable, VARIABLE_FACTORY
 from ..runnables.runnables import Runnable
 
-def polyfurcate_dag(dag: nx.MultiDiGraph) -> nx.MultiDiGraph:
+def polyfurcate_dag(dag: DAG) -> DAG:
     """Polyfurcate the DAG as needed if multiple variables input into a single variable."""
     nodes_to_furcate = get_nodes_to_furcate(dag)
     if not nodes_to_furcate:
         return dag
     return perform_polyfurcatation(dag, nodes_to_furcate)
 
-def get_nodes_to_furcate(dag: nx.MultiDiGraph) -> list:
+def get_nodes_to_furcate(dag: DAG) -> list:
     """Get the nodes in the DAG that need to be furcated.
     If an input variable has more than one source, then the node needs to be furcated."""
     nodes_to_furcate = []
@@ -26,7 +26,7 @@ def get_nodes_to_furcate(dag: nx.MultiDiGraph) -> list:
             nodes_to_furcate.append(target_node)
     return nodes_to_furcate
 
-def perform_polyfurcatation(dag: nx.MultiDiGraph, nodes_to_furcate: list):
+def perform_polyfurcatation(dag: DAG, nodes_to_furcate: list):
     """Furcate (split) the DAG downstream from each node.
     Do this in topological order so that the furcations propagate exponentially."""
     # Turn off the singleton pattern for the Variable Factory, as multiple variables will now potentially be created with the same name.
@@ -69,11 +69,11 @@ def perform_polyfurcatation(dag: nx.MultiDiGraph, nodes_to_furcate: list):
     return dag
 
         
-# def copy_dag_new_uuid(original_dag: nx.MultiDiGraph) -> nx.MultiDiGraph:
+# def copy_dag_new_uuid(original_dag: DAG) -> DAG:
 #     """Copy the DAG with new node UUID's, preserving (deep copying) the node data."""
 #     original_edges = original_dag.edges
     
-#     new_dag = nx.MultiDiGraph()
+#     new_dag = DAG()
 
 #     # Mapping from the original node UUID to the new node UUID
 #     node_mapping = {node: str(uuid.uuid4()) for node in original_dag.nodes}

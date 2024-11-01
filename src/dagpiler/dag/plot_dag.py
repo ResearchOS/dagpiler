@@ -1,7 +1,7 @@
 from collections import defaultdict
 from copy import deepcopy
 
-import networkx as nx
+from networkx import MultiDiGraph as DAG
 
 from ..variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
 from ..runnables.process import Process
@@ -33,7 +33,7 @@ def get_layers(graph):
         layers_by_generation[layer].append(node)
     return layers_by_generation
 
-def plot_dag(dag: nx.MultiDiGraph, layout: str = 'generation'):  
+def plot_dag(dag: DAG, layout: str = 'generation'):  
     import matplotlib.pyplot as plt  
     nodes_with_labels = {node: node.name for node in dag.nodes(data=False)}    
     nodes_with_labels = {k: v.replace('.', '.\n') for k, v in nodes_with_labels.items()}
@@ -58,7 +58,7 @@ def plot_dag(dag: nx.MultiDiGraph, layout: str = 'generation'):
     nx.draw_networkx_labels(dag, pos, nodes_with_labels, font_size=8)
     plt.show()
 
-def set_topological_layout(dag: nx.MultiDiGraph, layer_width: float, layer_height: float):
+def set_topological_layout(dag: DAG, layer_width: float, layer_height: float):
     """Left to right layout"""
     runnables_dag = get_dag_of_runnables(dag)   
     sorted_runnable_nodes = order_nodes(runnables_dag)
@@ -81,7 +81,7 @@ def set_topological_layout(dag: nx.MultiDiGraph, layer_width: float, layer_heigh
     # label_pos = deepcopy(pos)
     return pos
 
-def set_generational_layout(dag: nx.MultiDiGraph, layers: list, layer_width: float, layer_height: float):
+def set_generational_layout(dag: DAG, layers: list, layer_width: float, layer_height: float):
     """Top to bottom layout"""
     # Move constants to the layer below the lowest layer of their successors
     pos = {}

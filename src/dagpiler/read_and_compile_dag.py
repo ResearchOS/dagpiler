@@ -1,7 +1,7 @@
 import os
 import json
 
-import networkx as nx
+from networkx import MultiDiGraph as DAG
 
 from .index.index_processor import INDEX_LOADER_FACTORY, IndexProcessor
 from .index.index_parser import IndexParser
@@ -11,7 +11,7 @@ from .bridges.bridges import add_bridges_to_dag
 
 from .variables.variables import UnspecifiedVariable
 
-def check_no_unspecified_variables(dag: nx.MultiDiGraph) -> None:
+def check_no_unspecified_variables(dag: DAG) -> None:
     """Check that there are no unspecified variables in the DAG."""
     unspecified_input_variables = [n for n in dag.nodes if n.__class__==UnspecifiedVariable and dag.in_degree(n)>0]
     if len(unspecified_input_variables) > 0:
@@ -19,7 +19,7 @@ def check_no_unspecified_variables(dag: nx.MultiDiGraph) -> None:
             print(f"Unspecified input variable found in the DAG: {unspecified_input_variable}")
         raise ValueError("Unspecified input variables found in the DAG. Please specify all inputs.")
 
-def process_package(package_name: str, processed_packages: dict, package_dependency_graph: nx.MultiDiGraph) -> None:
+def process_package(package_name: str, processed_packages: dict, package_dependency_graph: DAG) -> None:
     """Recursively process packages based on bridges."""
     # Check if the package has already been processed
     if package_name in processed_packages:

@@ -1,10 +1,10 @@
 
-import networkx as nx
+from networkx import MultiDiGraph as DAG
 
 from ..runnables.runnables import Runnable
 
 
-def order_nodes(dag: nx.MultiDiGraph):
+def order_nodes(dag: DAG):
     """Order the nodes in the DAG. Within each topological generation, order by the node name."""
     sorted_nodes = []
     
@@ -16,7 +16,7 @@ def order_nodes(dag: nx.MultiDiGraph):
     
     return sorted_nodes
 
-def order_edges(dag: nx.MultiDiGraph):
+def order_edges(dag: DAG):
     """Order the edges in the DAG. Within each topological generation, order by the edge name."""
     sorted_nodes = order_nodes(dag)
 
@@ -30,7 +30,7 @@ def order_edges(dag: nx.MultiDiGraph):
     
     return sorted_edges
 
-def get_dag_of_runnables(dag: nx.MultiDiGraph) -> nx.MultiDiGraph:
+def get_dag_of_runnables(dag: DAG) -> DAG:
     """Given a DAG with variables & Runnables, return a DAG with only Runnable nodes.
     This DAG has the advantage of being able to topologically sort the Runnable nodes."""
     # Get the transitive closure

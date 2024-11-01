@@ -1,5 +1,5 @@
 
-import networkx as nx
+from networkx import MultiDiGraph as DAG
 
 from .read_and_compile_dag import process_package, check_no_unspecified_variables
 from .dag.furcate import polyfurcate_dag
@@ -10,7 +10,7 @@ from .config_reader import CONFIG_READER_FACTORY
 from .runnables.process import Process
 
 
-def compile_dag(package_name: str, file_path: str = None) -> nx.MultiDiGraph:
+def compile_dag(package_name: str, file_path: str = None) -> DAG:
     """Get the dependency graph of packages and their runnables."""    
     if file_path:
         # Create a config reader, read the config file, and convert it to DAG.
@@ -18,7 +18,7 @@ def compile_dag(package_name: str, file_path: str = None) -> nx.MultiDiGraph:
     
     processed_packages = {}
         
-    dag = nx.MultiDiGraph()
+    dag = DAG()
 
     # Get the DAG with all packages and their runnables, and bridged edges.
     process_package(package_name, processed_packages, dag)
