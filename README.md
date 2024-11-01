@@ -8,12 +8,16 @@ Dagpiler is the first in a planned series of tools that will build on one anothe
 ## Useage
 ```python
 from dagpiler import compile_dag
+from dagpiler.printer import print_dag, json_to_dag
 
-# Compile the DAG.
+# Compile the DAG from the various packages.
 dag = compile_dag('package_name')
 
 # Write the DAG to JSON file.
 dag.print_dag('dag.json')
+
+# Re-create the DAG from a JSON file.
+dag_from_json = json_to_dag('dag.json')
 ```
 
 ## Documentation

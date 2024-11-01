@@ -1,3 +1,4 @@
+import datetime
 import os
 import toml
 import json
@@ -5,7 +6,7 @@ import yaml
 
 import networkx as nx
 
-from ..dag.organizer import order_nodes, order_edges
+from ..dag.organizer import order_nodes, order_edges, get_dag_of_runnables
 from ..runnables.runnables import NodeFactory
 
 def print_dag(dag: nx.MultiDiGraph, path: str = "dag.json") -> None:
@@ -117,7 +118,7 @@ class YamlDagWriter(DagWriter):
     def write(self, dag: nx.MultiDiGraph, path: str) -> None:
         raise NotImplementedError
 
-def json_to_graph(json_dag: dict) -> nx.MultiDiGraph:
+def json_to_dag(json_dag: dict) -> nx.MultiDiGraph:
     """Convert the saved JSON back to a NetworkX MultiDiGraph."""
     data = json.loads(json_dag)
     dag = nx.MultiDiGraph()
@@ -134,3 +135,20 @@ def json_to_graph(json_dag: dict) -> nx.MultiDiGraph:
         dag.add_edge(source, target)
 
     return dag
+
+def save_dag(dag: nx.MultiDiGraph, file_path: str = None):
+    if file_path is None:
+        file_path = os.path.join([os.getcwd(), ".dagpiler", f"{datetime.datetime.now()}_dag.json"])
+
+    if not os.path.exists(os.path.dirname(file_path)):
+        os.makedirs(os.path.dirname(file_path))
+
+    dagwriter = DAG_WRITER_FACTORY.create(file_path.split(".")[-1])
+    dagwriter.write(dag, file_path)
+
+def load_dag(file_path: str) -> nx.MultiDiGraph:
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File {file_path} does not exist.")
+    
+    with open(file_path, "r") as f:
+        return json_to_dag(f.read())
