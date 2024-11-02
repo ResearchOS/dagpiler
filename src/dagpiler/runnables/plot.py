@@ -1,5 +1,5 @@
-from ..runnables.runnables import Runnable, register_runnable
-from ..runnables.dict_validator import DictValidator
+from runnables.runnables import Runnable, register_runnable
+from runnables.dict_validator import DictValidator
 
 RUNNABLE_TYPE = "plot"
 

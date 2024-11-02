@@ -1,7 +1,7 @@
 import hashlib
 
 from abc import abstractmethod
-from ..variables.variables import VARIABLE_FACTORY
+from variables.variables import VARIABLE_FACTORY
 
 class Runnable:
     """Interface for runnable objects that can be run in a DAG.""" 
@@ -26,7 +26,7 @@ class Runnable:
     
     def __hash__(self) -> int:
         """Compute a unique SHA256 hash for the instance."""
-        # Convert the dictionary representation to a sorted, stable string for hashing
+        # Convert the dictionary representation to a sorted, stable string for hashing        
         hashable_repr = str(sorted(self.to_dict().items()))
         sha256_hash = hashlib.sha256(hashable_repr.encode('utf-8')).hexdigest()
         

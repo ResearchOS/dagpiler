@@ -1,15 +1,16 @@
 import os
 import json
 
-from networkx import MultiDiGraph as DAG
+# from networkx import MultiDiGraph as DAG
+from base_dag import DAG
 
-from .index.index_processor import INDEX_LOADER_FACTORY, IndexProcessor
-from .index.index_parser import IndexParser
-from .config_reader import CONFIG_READER_FACTORY, RUNNABLE_PARSER_FACTORY
-from .dag.package_runnables import add_package_runnables_to_dag
-from .bridges.bridges import add_bridges_to_dag
+from index.index_processor import INDEX_LOADER_FACTORY, IndexProcessor
+from index.index_parser import IndexParser
+from config_reader import CONFIG_READER_FACTORY, RUNNABLE_PARSER_FACTORY
+from dag.package_runnables import add_package_runnables_to_dag
+from bridges.bridges import add_bridges_to_dag
 
-from .variables.variables import UnspecifiedVariable
+from variables.variables import UnspecifiedVariable
 
 def check_no_unspecified_variables(dag: DAG) -> None:
     """Check that there are no unspecified variables in the DAG."""

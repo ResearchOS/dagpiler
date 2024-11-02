@@ -3,10 +3,10 @@ from copy import deepcopy
 
 from networkx import MultiDiGraph as DAG
 
-from ..variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
-from ..runnables.process import Process
-from ..runnables.plot import Plot
-from ..dag.organizer import order_nodes, get_dag_of_runnables
+from variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
+from runnables.process import Process
+from runnables.plot import Plot
+from dag.organizer import order_nodes, get_dag_of_runnables
 
 colors_dict = {
     HardcodedVariable: 'blue',

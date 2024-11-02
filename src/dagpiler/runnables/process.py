@@ -1,5 +1,7 @@
-from ..runnables.runnables import Runnable, register_runnable
-from ..runnables.dict_validator import DictValidator
+import copy
+
+from runnables.runnables import Runnable, register_runnable
+from runnables.dict_validator import DictValidator
 
 RUNNABLE_TYPE = "process"
 
@@ -38,8 +40,8 @@ class Process(Runnable):
             "name": self.name,
             "type": RUNNABLE_TYPE,
             "exec": self.exec,                        
-            "inputs": self.inputs,
-            "outputs": self.outputs,
+            "inputs": copy.deepcopy(self.inputs),
+            "outputs": copy.deepcopy(self.outputs),
             "level": self.level,
             "batch": self.batch
         }

@@ -4,14 +4,15 @@ import toml
 import json
 import yaml
 
-from networkx import MultiDiGraph as DAG
+# from networkx import MultiDiGraph as DAG
+from base_dag import DAG
 
-from ..dag.organizer import order_nodes, order_edges, get_dag_of_runnables
-from ..runnables.runnables import NodeFactory
+from dag.organizer import order_nodes, order_edges, get_dag_of_runnables
+from runnables.runnables import NodeFactory
 
 def print_dag(dag: DAG, path: str = "dag.json") -> None:
     """Print the DAG in a human-readable format."""    
-    if path is not "stdout" and not os.path.exists(os.path.dirname(path)):
+    if path != "stdout" and not os.path.exists(os.path.dirname(path)):
         raise FileNotFoundError(f"Directory {os.path.dirname(path)} does not exist.")
     
     dag_writer = DAG_WRITER_FACTORY.create(path.split(".")[-1])

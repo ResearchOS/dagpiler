@@ -5,8 +5,8 @@ import toml
 import yaml
 
 
-from .constants import OWNER, REPO, BRANCH
-from .constants import INIT_TEMPLATE_DIR, DEFAULT_PROJECT_NAME, DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_EMAIL
+from constants import OWNER, REPO, BRANCH
+from constants import INIT_TEMPLATE_DIR, DEFAULT_PROJECT_NAME, DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_EMAIL
 
 def init():
     """Download the init_template_directory from the package's GitHub repository."""

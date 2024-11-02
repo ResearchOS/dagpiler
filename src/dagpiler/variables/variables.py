@@ -2,9 +2,10 @@ from abc import abstractmethod
 from typing import Any
 import re
 import os
+import hashlib
 
-from ..config_reader import CONFIG_READER_FACTORY
-from ..constants import VARIABLE_TYPES_KEYS
+from config_reader import CONFIG_READER_FACTORY
+from constants import VARIABLE_TYPES_KEYS
 
 class Variable:
     """Variable object that can be used as input or output to a Runnable."""
@@ -38,8 +39,14 @@ class Variable:
     def __eq__(self, other: "Variable"):
         return self.name == other.name and self.value_for_hashing == other.value_for_hashing
 
-    def __hash__(self):
-        return hash(self.name)
+    def __hash__(self) -> int:
+        """Compute a unique SHA256 hash for the instance."""
+        # Convert the dictionary representation to a sorted, stable string for hashing        
+        hashable_repr = str(sorted(self.to_dict().items()))
+        sha256_hash = hashlib.sha256(hashable_repr.encode('utf-8')).hexdigest()
+        
+        # Truncate the sha256 hash to fit within the integer space for __hash__.
+        return int(sha256_hash, 16) % (10 ** 8)  # Modulo to fit within typical hash size
     
     def to_dict(self) -> dict:
         return {

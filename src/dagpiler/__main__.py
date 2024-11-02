@@ -2,10 +2,10 @@
 import argparse
 import sys
 
-from .core import compile_dag
-from .dag.printer import print_dag
-from .dag.plot_dag import plot_dag
-from .init import init
+from core import compile_dag
+from dag.printer import print_dag
+from dag.plot_dag import plot_dag
+from init import init
 
 def main():
     # Initialize the top-level parser
@@ -27,7 +27,6 @@ def main():
     
     # Parse arguments
     args = parser.parse_args()
-    # print(args)    
     
     # Handle each command
     if args.command == "init":

@@ -3,15 +3,15 @@ import uuid
 
 from networkx import MultiDiGraph as DAG
 
-from ..variables.variables import Variable, VARIABLE_FACTORY
-from ..runnables.runnables import Runnable
+from variables.variables import Variable, VARIABLE_FACTORY
+from runnables.runnables import Runnable
 
 def polyfurcate_dag(dag: DAG) -> DAG:
     """Polyfurcate the DAG as needed if multiple variables input into a single variable."""
     nodes_to_furcate = get_nodes_to_furcate(dag)
     if not nodes_to_furcate:
         return dag
-    return perform_polyfurcatation(dag, nodes_to_furcate)
+    return perform_polyfurcation(dag, nodes_to_furcate)
 
 def get_nodes_to_furcate(dag: DAG) -> list:
     """Get the nodes in the DAG that need to be furcated.
@@ -26,7 +26,7 @@ def get_nodes_to_furcate(dag: DAG) -> list:
             nodes_to_furcate.append(target_node)
     return nodes_to_furcate
 
-def perform_polyfurcatation(dag: DAG, nodes_to_furcate: list):
+def perform_polyfurcation(dag: DAG, nodes_to_furcate: list):
     """Furcate (split) the DAG downstream from each node.
     Do this in topological order so that the furcations propagate exponentially."""
     # Turn off the singleton pattern for the Variable Factory, as multiple variables will now potentially be created with the same name.
