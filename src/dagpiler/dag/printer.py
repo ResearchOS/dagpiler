@@ -8,7 +8,7 @@ import yaml
 from base_dag import DAG
 
 from dag.organizer import order_nodes, order_edges, get_dag_of_runnables
-from runnables.runnables import NodeFactory
+from nodes.node import NodeFactory
 
 def print_dag(dag: DAG, path: str = "dag.json") -> None:
     """Print the DAG in a human-readable format."""    

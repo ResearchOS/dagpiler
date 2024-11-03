@@ -7,7 +7,7 @@ from dag.printer import json_to_dag
 from config_reader import CONFIG_READER_FACTORY
 
 # Hard-coded import to load Runnable types for now. In the future this should be read from configuration files.
-from runnables.process import Process
+from nodes.runnables.process import Process
 
 
 def compile_dag(package_name: str, file_path: str = None) -> DAG:

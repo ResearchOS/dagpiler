@@ -10,7 +10,7 @@ from config_reader import CONFIG_READER_FACTORY, RUNNABLE_PARSER_FACTORY
 from dag.package_runnables import add_package_runnables_to_dag
 from bridges.bridges import add_bridges_to_dag
 
-from variables.variables import UnspecifiedVariable
+from nodes.variables.variables import UnspecifiedVariable
 
 def check_no_unspecified_variables(dag: DAG) -> None:
     """Check that there are no unspecified variables in the DAG."""

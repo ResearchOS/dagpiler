@@ -76,7 +76,7 @@ class BatchValidator(AttributeValidator):
     def validate(self, value):
         if not isinstance(value, list):
             raise ValueError(f"Expected 'batch' to be a list, got {type(value)}")
-        return value
+        return tuple(value)
     
 @register_attr_validator("subset")
 class SubsetValidator(AttributeValidator):

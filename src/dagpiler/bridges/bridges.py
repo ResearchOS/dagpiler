@@ -1,8 +1,7 @@
 
-# from networkx import MultiDiGraph as DAG
 from base_dag import DAG
 
-from variables.variables import VARIABLE_FACTORY, get_variable_type
+from nodes.variables.variable_factory import VARIABLE_FACTORY, get_variable_type
 
 def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, dag: DAG, processed_packages: dict) -> None:
     """Add package dependencies to the package dependency graph."""
@@ -57,7 +56,7 @@ def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, dag: DAG, 
                         for key, value in runnable.inputs.items():
                             if value == previous_input_variable:
                                 runnable.inputs[key] = converted_input_variable
-                mapping = {previous_input_variable: converted_input_variable}                
+                mapping = {previous_input_variable: converted_input_variable}
                 dag = dag.relabel_nodes(mapping)
 
                 # Add edge from source to target
