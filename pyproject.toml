@@ -44,3 +44,11 @@ plot = [
 
 [project.scripts]
 dagpiler = "dagpiler.__main__:main"
+
+[tool.hatch.build.targets.sdist]
+include = "src"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/dagpiler"
+]

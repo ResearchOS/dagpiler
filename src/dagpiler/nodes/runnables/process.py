@@ -1,6 +1,6 @@
-from nodes.runnables.runnables import Runnable
-from nodes.runnables.runnable_factory import register_runnable
-from nodes.runnables.dict_validator import DictValidator
+from ...nodes.runnables.runnables import Runnable
+from ...nodes.runnables.runnable_factory import register_runnable
+from ...nodes.runnables.dict_validator import DictValidator
 
 RUNNABLE_TYPE = "process"
 

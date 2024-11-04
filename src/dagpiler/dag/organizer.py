@@ -1,7 +1,7 @@
 
 from base_dag import DAG
 
-from nodes.runnables.runnables import Runnable
+from ..nodes.runnables.runnables import Runnable
 
 
 def order_nodes(dag: DAG):

@@ -1,5 +1,5 @@
-from nodes.node import Node
-from nodes.variables.variable_factory import VARIABLE_FACTORY
+from ...nodes.node import Node
+from ...nodes.variables.variable_factory import VARIABLE_FACTORY
 
 class Runnable(Node):
     """Interface for runnable objects that can be run in a DAG."""   

@@ -1,4 +1,4 @@
-from nodes.runnables.dict_attr_validator import ATTRIBUTE_VALIDATOR_FACTORY
+from ...nodes.runnables.dict_attr_validator import ATTRIBUTE_VALIDATOR_FACTORY
 
 class DictValidatorFactory:
     """Factory class to manage and provide appropriate validators for attributes."""

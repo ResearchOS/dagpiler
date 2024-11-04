@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from nodes.runnables.runnables import Runnable
+    from ...nodes.runnables.runnables import Runnable
 
 class RunnableFactory():
     """Factory for creating Runnable objects."""

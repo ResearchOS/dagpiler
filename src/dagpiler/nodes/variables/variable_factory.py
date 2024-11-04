@@ -1,9 +1,9 @@
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from variables.variables import Variable
+    from ..variables.variables import Variable
 
-from constants import VARIABLE_TYPES_KEYS
+from ...constants import VARIABLE_TYPES_KEYS
 
 class VariableFactory:
     """Factory for creating Variable objects."""

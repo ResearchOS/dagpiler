@@ -1,8 +1,8 @@
 from base_dag import DAG
 
-from nodes.variables.variables import Variable
-from nodes.variables.variable_factory import VARIABLE_FACTORY
-from nodes.runnables.runnables import Runnable
+from ..nodes.variables.variables import Variable
+from ..nodes.variables.variable_factory import VARIABLE_FACTORY
+from ..nodes.runnables.runnables import Runnable
 
 def polyfurcate_dag(dag: DAG) -> DAG:
     """Polyfurcate the DAG as needed if multiple variables input into a single variable."""

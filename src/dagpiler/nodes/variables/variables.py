@@ -1,10 +1,9 @@
-from abc import abstractmethod
 import re
 import os
 
-from config_reader import CONFIG_READER_FACTORY
-from nodes.node import Node
-from nodes.variables.variable_factory import VARIABLE_FACTORY, register_variable
+from ...config_reader import CONFIG_READER_FACTORY
+from ...nodes.node import Node
+from ...nodes.variables.variable_factory import VARIABLE_FACTORY, register_variable
 
 class Variable(Node):
     """Variable object that can be used as input or output to a Runnable."""

@@ -1,11 +1,11 @@
 
 from base_dag import DAG
 
-from nodes.variables.variable_factory import VARIABLE_FACTORY, get_variable_type
+from ..nodes.variables.variable_factory import VARIABLE_FACTORY, get_variable_type
 
 def add_bridges_to_dag(package_name: str, package_bridges_dict: dict, dag: DAG, processed_packages: dict) -> None:
     """Add package dependencies to the package dependency graph."""
-    from read_and_compile_dag import process_package, get_package_name_from_runnable
+    from ..read_and_compile_dag import process_package, get_package_name_from_runnable
 
     # Check if bridges exist for the package
     if not package_bridges_dict:
