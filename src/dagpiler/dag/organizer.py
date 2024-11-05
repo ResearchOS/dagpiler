@@ -34,7 +34,7 @@ def get_dag_of_runnables(dag: DAG) -> DAG:
     """Given a DAG with variables & Runnables, return a DAG with only Runnable nodes.
     This DAG has the advantage of being able to topologically sort the Runnable nodes."""
     # Get the transitive closure
-    trans_clos_dag = nx.transitive_closure_dag(dag)
+    trans_clos_dag = dag.transitive_closure()
     runnable_nodes = [node for node in dag.nodes if issubclass(node.__class__, Runnable)]
     runnable_dag = trans_clos_dag.subgraph(runnable_nodes).copy()
     

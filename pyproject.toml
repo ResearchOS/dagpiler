@@ -4,7 +4,7 @@ build-backend = 'hatchling.build'
 
 [project]
 name = "dagpiler"
-version = '0.1.2'
+version = '0.1.6'
 readme = "README.md"
 license ={ file = "LICENSE" }
 description = 'Compile a DAG representation of a data processing pipeline from TOML files.'
@@ -53,9 +53,9 @@ dagpiler = "dagpiler.__main__:main"
 #     "src/dagpiler"
 # ]
 
-[tool.hatch.build]
-packages = ["src/dagpiler"]
-include = ["src/dagpiler"]
+# [tool.hatch.build]
+# packages = ["src/dagpiler"]
+# include = ["src/dagpiler"]
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/dagpiler"]
+# [tool.hatch.build.targets.wheel]
+# packages = ["src/dagpiler"]

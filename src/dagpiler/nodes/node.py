@@ -24,16 +24,6 @@ class Node:
     def attrs_hash(self):
         """Hash the attributes of the Process object."""
         attrs_dict = self.to_dict()
-        # if "inputs" in attrs_dict:
-        #     inputs_list = []
-        #     for input_name, input in attrs_dict["inputs"].items():
-        #         inputs_list.append(input_name + ": " + str(frozenset(input.items())))
-        #     attrs_dict["inputs"] = ", ".join(inputs_list)
-        # if "outputs" in attrs_dict:
-        #     attrs_dict["outputs"] = tuple(attrs_dict["outputs"])
-        # if "batch" in attrs_dict:
-        #     attrs_dict["batch"] = tuple(attrs_dict["batch"])
-
         hashable_repr = str(attrs_dict.items())
         return self._hash(hashable_repr)
     
@@ -59,6 +49,12 @@ class Node:
         if not isinstance(other, Node):
             return False
         return self.attrs_hash() == other.attrs_hash()
+    
+    def package_name(self) -> str:
+        """Get the package name for the current node."""
+        name = str(self.name)
+        name_split = name.split('.')
+        return name_split[0]
     
 class NodeFactory:
     """Decides whether to create a Runnable or Variable based on the dictionary passed in."""

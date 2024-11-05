@@ -10,6 +10,8 @@ try:
 except:
     pass
 
+from base_dag import DAG
+
 from ..nodes.variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
 from ..nodes.runnables.process import Process
 from ..nodes.runnables.plot import Plot

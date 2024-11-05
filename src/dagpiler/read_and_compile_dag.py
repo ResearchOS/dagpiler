@@ -54,15 +54,21 @@ def get_package_name_from_runnable(runnable_full_name: str) -> str:
         return runnable_full_name.split('.')[0]
     return None
 
-def get_index_file_path(package_name: str) -> str:
-    """Map a package name to its index file path."""
+def get_python_version_folder():
+    """Within the virtual environment."""
     # Get the python folder
     python_version_folders = os.listdir(os.path.join(os.getcwd(), '.venv', 'lib'))
     # Remove folders that don't contain "python"
     python_version_folders = [folder for folder in python_version_folders if "python" in folder]
     if not python_version_folders:
         raise ValueError("No python version folders found in the virtual environment.")
-    python_version_folder = python_version_folders[0]    
+    python_version_folder = python_version_folders[0] 
+    return python_version_folder
+
+def get_package_folders_in_venv(package_name: str, python_version_folder: str):
+    """Should return a list of two folders:
+    1. The dist-info folder
+    2. The folder containing the source code."""       
     installed_package_folders = os.listdir(os.path.join(os.getcwd(), '.venv', 'lib', python_version_folder, 'site-packages'))
     # Get the package folders that contain the project name
     lower_package_name = package_name.lower()
@@ -71,6 +77,29 @@ def get_index_file_path(package_name: str) -> str:
         raise ValueError(f"Package {package_name} not found in .venv/lib/{python_version_folder}/site-packages. Is it installed?")
     # Remove folders that don't start with the package name
     package_folders = [folder for folder in package_folders if folder.startswith(lower_package_name)]    
+    return package_folders
+
+def get_package_folder_and_index_path(package_name: str, dist_info_folder_path: str, python_version_folder: str):
+    """Get the package folder path. If editable, points to local folder. If not, points to folder in virtual environment."""
+    if "direct_url.json" not in os.listdir(dist_info_folder_path):
+        ## Non-editable package
+        package_folder_path = os.path.join(dist_info_folder_path, package_name)
+        return (package_folder_path, os.path.join(package_folder_path, "index.toml"))
+    
+    # Read the direct_url.json file
+    with open(os.path.join(dist_info_folder_path, "direct_url.json"), 'r') as f:
+        direct_url_json = json.load(f)            
+    if direct_url_json.get("dir_info") and direct_url_json["dir_info"].get("editable") and direct_url_json["dir_info"]["editable"] is True:
+        ## Editable installation
+        package_folder_path = direct_url_json["url"].split("://")[-1]
+        return (package_folder_path, os.path.join(package_folder_path, "src", package_name, 'index.toml'))
+    else:
+        # Non-editable package that have a direct_url.json file
+        package_folder_path = os.path.join(os.getcwd(), '.venv', 'lib', python_version_folder, 'site-packages', package_name)
+        return (package_folder_path, os.path.join(package_folder_path, "index.toml"))
+    
+def get_dist_info_folder(package_folders: list, package_name: str, python_version_folder: str):
+    """Given the list of folders in the virtual env that contain the package name, return the dist-info folder."""
     # If a folder has "dist-info" in its name, use that one.
     dist_info_folders = [folder for folder in package_folders if "dist-info" in folder]    
 
@@ -80,23 +109,22 @@ def get_index_file_path(package_name: str) -> str:
     dist_info_folder = dist_info_folders[0]
 
     dist_info_folder_path = os.path.join(os.getcwd(), '.venv', 'lib', python_version_folder, 'site-packages', dist_info_folder)
-    if "direct_url.json" not in os.listdir(dist_info_folder_path):
-        ## Non-editable package
-        package_folder_path = os.path.join(dist_info_folder_path, package_name)
-        return os.path.join(package_folder_path, "index.toml")
-    
-    # Read the direct_url.json file
-    with open(os.path.join(dist_info_folder_path, "direct_url.json"), 'r') as f:
-        direct_url_json = json.load(f)            
-    if direct_url_json.get("dir_info") and direct_url_json["dir_info"].get("editable") and direct_url_json["dir_info"]["editable"] is True:
-        ## Editable installation
-        package_folder_path = direct_url_json["url"].split("://")[-1]
-        return os.path.join(package_folder_path, "src", package_name, 'index.toml')
-    else:
-        # Non-editable package that have a direct_url.json file
-        package_folder_path = os.path.join(os.getcwd(), '.venv', 'lib', python_version_folder, 'site-packages', package_name)
-        return os.path.join(package_folder_path, "index.toml")
-   
+    return dist_info_folder_path
+
+def get_index_file_path(package_name: str) -> str:
+    """Map a package name to its index file path."""
+    python_version_folder = get_python_version_folder()
+    package_folders = get_package_folders_in_venv(package_name, python_version_folder)
+    dist_info_folder_path = get_dist_info_folder(package_folders, package_name, python_version_folder)
+    package_folder_path, index_path = get_package_folder_and_index_path(package_name, dist_info_folder_path, python_version_folder)
+    return index_path
+
+def get_package_folder_path(package_name: str) -> str:
+    python_version_folder = get_python_version_folder()
+    package_folders = get_package_folders_in_venv(package_name, python_version_folder)
+    dist_info_folder_path = get_dist_info_folder(package_folders, package_name, python_version_folder)
+    package_folder_path, index_path = get_package_folder_and_index_path(package_name, dist_info_folder_path, python_version_folder)
+    return package_folder_path
 
 def get_package_runnables_and_bridges(index_file_path: str) -> dict:
     """Read the configuration files."""

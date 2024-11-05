@@ -7,23 +7,7 @@ class FileUtils:
     @staticmethod
     def get_extension(file_path: str) -> str:
         """Extract the file extension from the file path."""
-        return os.path.splitext(file_path)[1]
-
-class IndexProcessor:
-    def __init__(self, factory):
-        """IndexProcessor should be initialized with an IndexLoaderFactory."""
-        self.factory = factory
-        self.index_path = None
-
-    def process_index(self, index_file_path: str) -> dict:
-        """Process the index file."""
-        self.index_path = index_file_path
-        if not os.path.exists(index_file_path):
-            raise FileNotFoundError(f"Index file {index_file_path} not found")
-        
-        ext = FileUtils.get_extension(index_file_path)
-        index_loader = self.factory.get_index_loader(ext)        
-        return index_loader.load_index(index_file_path)
+        return os.path.splitext(file_path)[-1]
 
 class IndexLoader(ABC):
     """Interface for loading the index file."""
@@ -66,3 +50,19 @@ class IndexLoaderJSON(IndexLoader):
     def load_index(self, file_path: str) -> dict:
         with open(file_path, "r") as f:
             return json.load(f)
+        
+class IndexProcessor:
+    def __init__(self, factory: IndexLoaderFactory):
+        """IndexProcessor should be initialized with an IndexLoaderFactory."""
+        self.factory = factory
+        self.index_path = None
+
+    def process_index(self, index_file_path: str) -> dict:
+        """Process the index file."""
+        self.index_path = index_file_path
+        if not os.path.exists(index_file_path):
+            raise FileNotFoundError(f"Index file {index_file_path} not found")
+        
+        ext = FileUtils.get_extension(index_file_path)
+        index_loader = self.factory.get_index_loader(ext)        
+        return index_loader.load_index(index_file_path)
