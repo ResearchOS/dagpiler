@@ -38,7 +38,7 @@ It will ask you for the following metadata to set up the pyproject.toml and mkdo
 
 5. Write the TOML files that define your data processing pipeline components. For more information on the types of TOML files, see the [Types of TOML Files](toml_files.md) page.
 
-6. Compile the TOML files into a Directed Acyclic Graph (DAG) as a NetworkX MultiDiGraph object using the `dagpiler compile` command line command. This command will check the TOML files for errors and compile them into the DAG.
+6. Compile the TOML files into a Directed Acyclic Graph (DAG) object using the `dagpiler compile` command line command. This command will check the TOML files for errors and compile them into the DAG.
 
 !!!warning
     No matter how you run the `compile` command, the package name must match a package that has been pip installed in the current folder's virtual environment (.venv).

@@ -4,7 +4,7 @@
 ```bash
 dagpiler compile_dag <package_name> <output_path>
 ```
-Compile the DAG for the specified package (which must be installed in the current folder's `/.venv` virtual environment), returning a NetworkX MultiDiGraph object. 
+Compile the DAG for the specified package (which must be installed in the current folder's `/.venv` virtual environment), returning a DAG object. 
 
 Called with only the `package_name` argument at the command line, it will just print the number of nodes and edges in the compiled DAG. Providing the `output_path` saves the compiled DAG to the TOML or JSON file specified.
 ```python

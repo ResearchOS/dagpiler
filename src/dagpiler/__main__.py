@@ -13,7 +13,7 @@ def main():
     subparsers = parser.add_subparsers(dest="command", help="Documentation at 'https://researchos.github.io/dagpiler/'")
     
     # Subparser for the 'compile' command
-    parser_compile = subparsers.add_parser("compile", help="Compile the specified package, returning a DAG as a NetworkX MultiDiGraph.")
+    parser_compile = subparsers.add_parser("compile", help="Compile the specified package, returning a DAG.")
     parser_compile.add_argument("package_name", type=str, help="The name of the package to compile")
     
     # Subparser for the 'plot' command

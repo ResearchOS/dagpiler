@@ -1,4 +1,3 @@
-# from networkx import MultiDiGraph as DAG
 from base_dag import DAG
 
 from ..nodes.runnables.runnables import initialize_variables

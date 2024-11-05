@@ -4,7 +4,7 @@
 Throughout the glossary and the docs, you may see notation for file and folder paths that include dollar signs `$`. Whatever comes after this symbol is intended to be a dynamic variable, e.g. `$project_folder` will be replaced with the actual folder path for your project.
 
 ## DAG
-The output of this package is a Directional Acyclic Graph (DAG) consisting of nodes and edges as [NetworkX MultiDiGraph](https://networkx.org/documentation/stable/reference/classes/multidigraph.html) object. Nodes can be Runnables or Variables, and edges are the connections between nodes. 
+The output of this package is a Directional Acyclic Graph (DAG) consisting of nodes and edges. Nodes can be Runnables or Variables, and edges are the connections between nodes. 
 
 ## index.toml
 Recommended to be located at `$project_folder/src/$project_name/index.toml`. This file contains all of the file paths to all of the files that comprise this package. For maximum flexibility, the only requirement as to the structure of this file is that it consist only of dictionaries (with any degree of nesting for organizational purposes), where each key is a user-defined string, and the values are either a subdictionary, or a file path. No other strings, no numbers, or lists are allowed outside of dictionaries. Relative file paths are preferred for portability. They are relative to the `$project_folder/src/$project_name` directory, as that is the root directory when the package is installed. Absolute file paths should be used only when needed to access files outside of the project folder.

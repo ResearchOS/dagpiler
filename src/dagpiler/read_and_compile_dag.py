@@ -1,7 +1,6 @@
 import os
 import json
 
-# from networkx import MultiDiGraph as DAG
 from base_dag import DAG
 
 from .index.index_processor import INDEX_LOADER_FACTORY, IndexProcessor

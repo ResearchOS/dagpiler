@@ -11,7 +11,6 @@ description = 'Compile a DAG representation of a data processing pipeline from T
 authors = [{name = "Mitchell Tillman", email ="mtillman14@gmail.com"}]
 dependencies = [
     "toml",
-    "networkx",
     "requests",    
     # Documentation dependencies
     "mkdocs-material",
@@ -19,6 +18,7 @@ dependencies = [
     "mkdocs-awesome-pages-plugin",
     "mkdocstrings",
     "pyyaml",
+    "base_dag",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -45,10 +45,17 @@ plot = [
 [project.scripts]
 dagpiler = "dagpiler.__main__:main"
 
-[tool.hatch.build.targets.sdist]
-include = "src"
+# [tool.hatch.build.targets.sdist]
+# include = "src"
+
+# [tool.hatch.build.targets.wheel]
+# packages = [
+#     "src/dagpiler"
+# ]
+
+[tool.hatch.build]
+packages = ["src/dagpiler"]
+include = ["src/dagpiler"]
 
 [tool.hatch.build.targets.wheel]
-packages = [
-    "src/dagpiler"
-]
+packages = ["src/dagpiler"]

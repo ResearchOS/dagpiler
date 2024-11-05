@@ -4,7 +4,6 @@ import toml
 import json
 import yaml
 
-# from networkx import MultiDiGraph as DAG
 from base_dag import DAG
 
 from ..dag.organizer import order_nodes, order_edges, get_dag_of_runnables
@@ -93,7 +92,7 @@ class JsonDagWriter(DagWriter):
             json.dump(self.graph_to_json(dag), f)
 
     def graph_to_json(self, dag: DAG) -> str:
-        """Convert the NetworkX MultiDiGraph to a JSON string."""
+        """Convert the DAG to a JSON string."""
         # Prepare a dictionary to hold the graph data
         graph_dict = {
             "nodes": [],
@@ -120,7 +119,7 @@ class YamlDagWriter(DagWriter):
         raise NotImplementedError
 
 def json_to_dag(json_dag: dict) -> DAG:
-    """Convert the saved JSON back to a NetworkX MultiDiGraph."""
+    """Convert the saved JSON back to a DAG."""
     data = json.loads(json_dag)
     dag = DAG()
 
