@@ -1,7 +1,14 @@
 from collections import defaultdict
 from copy import deepcopy
+from typing import TYPE_CHECKING
 
-from networkx import MultiDiGraph as DAG
+if TYPE_CHECKING:
+    from networkx import MultiDiGraph as DAG
+
+try:
+    import networkx as nx
+except:
+    pass
 
 from ..nodes.variables.variables import Variable, OutputVariable, DynamicVariable, HardcodedVariable, UnspecifiedVariable, LoadFromFile, DataObjectFilePath, DataObjectName
 from ..nodes.runnables.process import Process
@@ -20,7 +27,7 @@ colors_dict = {
     Plot: 'purple'   
 }
 
-def get_layers(graph):
+def get_layers(graph: DAG):
     layers = defaultdict(list)
     for node in nx.topological_sort(graph):
         layer = 0
@@ -34,7 +41,7 @@ def get_layers(graph):
     return layers_by_generation
 
 def plot_dag(dag: DAG, layout: str = 'generation'):  
-    import matplotlib.pyplot as plt  
+    import matplotlib.pyplot as plt      
     nodes_with_labels = {node: node.name for node in dag.nodes(data=False)}    
     nodes_with_labels = {k: v.replace('.', '.\n') for k, v in nodes_with_labels.items()}
     layers = get_layers(dag)

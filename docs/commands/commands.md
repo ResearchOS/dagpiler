@@ -1,8 +1,8 @@
 # Commands
 
-### compile_dag
+### compile
 ```bash
-dagpiler compile_dag <package_name> <output_path>
+dagpiler compile <package_name> <output_path>
 ```
 Compile the DAG for the specified package (which must be installed in the current folder's `/.venv` virtual environment), returning a DAG object. 
 
